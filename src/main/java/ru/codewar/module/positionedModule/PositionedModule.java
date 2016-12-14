@@ -1,4 +1,4 @@
-package ru.codewar.module;
+package ru.codewar.module.positionedModule;
 
 import ru.codewar.geometry.Point;
 import ru.codewar.geometry.Vector;
@@ -8,6 +8,5 @@ import ru.codewar.geometry.Vector;
  */
 public interface PositionedModule {
     Point getPosition();
-
     Vector getOrientation();
 }

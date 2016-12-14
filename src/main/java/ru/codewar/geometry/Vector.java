@@ -6,9 +6,26 @@ package ru.codewar.geometry;
 public class Vector extends Point {
     private double length;
 
+    public Vector() {}
+    public Vector(double x, double y) {
+        super(x, y);
+    }
+    public Vector(Point from, Point to) {
+        super(to.getX() - from.getX(), to.getY() - from.getY());
+    }
+
     @Override
     public void setPosition(double x, double y) {
         super.setPosition(this.x, this.y);
+        updateSelf();
+    }
+
+    public double getNormilizedX() {
+        return x / length;
+    }
+
+    public double getNormilizedY() {
+        return y / length;
     }
 
     public void normalize() {
