@@ -1,4 +1,4 @@
-package ru.codewar.module.rotatableModule;
+package ru.codewar.module.types.rotatableModule;
 
 import ru.codewar.protocol.module.ModuleController;
 import ru.codewar.util.ArgumentsReader;
@@ -8,13 +8,14 @@ import java.util.regex.Pattern;
 
 
 public class RotatableModuleControllerImpl implements ModuleController {
-    private final static Pattern checkPattern = Pattern.compile("(getMaxSpeed\\s*|rotate\\s+.*)");
+    private final static Pattern checkPattern = Pattern.compile("(getMaxSpeed\\s*|rotate\\s+.*|orient\\s*)");
     private final static Pattern getMaxSpeedReqPattern = Pattern.compile("getMaxSpeed\\s*");
     private final static Pattern rotateCommandPattern = Pattern.compile("rotate\\s+(?<ARGS>.+)");
+    private final static Pattern orientationReqPattern = Pattern.compile("orient\\s*");
 
-    RotatableModule module;
+    RotatableModuleType module;
 
-    public void attachToModule(RotatableModule module)
+    public void attachToModule(RotatableModuleType module)
     {
         this.module = module;
     }
@@ -35,8 +36,12 @@ public class RotatableModuleControllerImpl implements ModuleController {
             ArgumentsReader reader = new ArgumentsReader(matcher.group("ARGS"));
             Double delta = reader.readDouble();
             Double speed = reader.readDouble();
-            if(delta != null && speed != null)
+            if(delta != null) {
+                if(speed == null) {
+                    speed = module.getMaxRotationSpeed();
+                }
                 module.rotate(delta, speed);
+            }
         }
     }
 
@@ -46,6 +51,10 @@ public class RotatableModuleControllerImpl implements ModuleController {
         }
         if(getMaxSpeedReqPattern.matcher(request).matches()) {
             return String.valueOf(module.getMaxRotationSpeed());
+        }
+        if(orientationReqPattern.matcher(request).matches()) {
+            return module.getOrientation().getNormilizedX() + " " +
+                    module.getOrientation().getNormilizedY();
         }
         return "fail: incorrect request";
     }

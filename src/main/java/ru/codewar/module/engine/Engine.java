@@ -1,7 +1,9 @@
 package ru.codewar.module.engine;
 
 
-public interface Engine {
+import ru.codewar.module.types.rotatableModule.RotatableModuleType;
+
+public interface Engine extends RotatableModuleType {
 
     double getMaxThrust();
 

@@ -1,8 +1,7 @@
-package ru.codewar.module.positionedModule;
+package ru.codewar.module.types.positionedModule;
 
 import org.junit.Test;
 import ru.codewar.geometry.Point;
-import ru.codewar.geometry.Vector;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -15,12 +14,9 @@ public class PositionedModuleControllerTests {
     @Test
     public void checkIfSupportedTest() {
         assertTrue(PositionedModuleControllerImpl.checkIfSupported("position"));
-        assertTrue(PositionedModuleControllerImpl.checkIfSupported("orient"));
         assertTrue(PositionedModuleControllerImpl.checkIfSupported("position "));
-        assertTrue(PositionedModuleControllerImpl.checkIfSupported("orient "));
 
         assertFalse(PositionedModuleControllerImpl.checkIfSupported("positio"));
-        assertFalse(PositionedModuleControllerImpl.checkIfSupported("orint"));
     }
 
     @Test
@@ -32,7 +28,7 @@ public class PositionedModuleControllerTests {
 
     @Test
     public void incorrectRequestTest() {
-        PositionedModule mockedModule = mock(PositionedModule.class);
+        PositionedModuleType mockedModule = mock(PositionedModuleType.class);
 
         PositionedModuleControllerImpl controller = new PositionedModuleControllerImpl();
         controller.attachToModule(mockedModule);
@@ -42,7 +38,7 @@ public class PositionedModuleControllerTests {
 
     @Test
     public void positionRequestTest() {
-        PositionedModule mockedModule = mock(PositionedModule.class);
+        PositionedModuleType mockedModule = mock(PositionedModuleType.class);
 
         PositionedModuleControllerImpl controller = new PositionedModuleControllerImpl();
         controller.attachToModule(mockedModule);
@@ -54,17 +50,4 @@ public class PositionedModuleControllerTests {
         verify(mockedModule, times(2)).getPosition();
     }
 
-    @Test
-    public void orientationRequestTest() {
-        PositionedModule mockedModule = mock(PositionedModule.class);
-
-        PositionedModuleControllerImpl controller = new PositionedModuleControllerImpl();
-        controller.attachToModule(mockedModule);
-
-        Vector orientation = new Vector(4, 2);
-        when(mockedModule.getOrientation()).thenReturn(orientation);
-        assertEquals(controller.onRequest(1, "orient"),
-                orientation.getNormilizedX() + " " + orientation.getNormilizedY());
-        verify(mockedModule, times(2)).getOrientation();
-    }
 }

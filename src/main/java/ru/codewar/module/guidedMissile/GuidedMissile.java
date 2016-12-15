@@ -1,12 +1,12 @@
 package ru.codewar.module.guidedMissile;
 
-import ru.codewar.module.detonatableModule.DetonatableModule;
+import ru.codewar.module.types.detonatableModule.DetonatableModuleType;
 import ru.codewar.module.engine.Engine;
-import ru.codewar.module.positionedModule.PositionedModule;
-import ru.codewar.module.rotatableModule.RotatableModule;
+import ru.codewar.module.types.positionedModule.PositionedModuleType;
+import ru.codewar.module.types.rotatableModule.RotatableModuleType;
 
 
-public interface GuidedMissile extends DetonatableModule, PositionedModule, Engine, RotatableModule {
+public interface GuidedMissile extends DetonatableModuleType, PositionedModuleType, Engine, RotatableModuleType {
 
     void lunch();
 

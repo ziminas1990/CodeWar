@@ -25,4 +25,22 @@ public class ModuleOperatorTests {
         verify(mockedController).onRequest(12, "test request");
         verify(mockedChannel).sendMessage("RESP 12 test response");
     }
+
+    @Test
+    public void proceedRequestWithDelayedResponse() {
+        ModuleController mockedController = mock(ModuleController.class);
+        Channel mockedChannel = mock(Channel.class);
+
+        ModuleOperatorImpl moduleOperator = new ModuleOperatorImpl();
+        moduleOperator.attachToChannel(mockedChannel);
+        moduleOperator.attachToModuleController(mockedController);
+
+        moduleOperator.onMessageReceived("REQ 12 test request");
+
+        verify(mockedController).onRequest(12, "test request");
+        verify(mockedChannel, times(0)).sendMessage(null);
+
+        moduleOperator.onResponse(12, "test response");
+        verify(mockedChannel).sendMessage("RESP 12 test response");
+    }
 }

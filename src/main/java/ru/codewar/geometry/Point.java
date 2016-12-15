@@ -1,7 +1,5 @@
 package ru.codewar.geometry;
 
-import ru.codewar.module.positionedModule.PositionedModule;
-
 /**
  * Created by Александр on 08.12.2016.
  */

@@ -1,4 +1,4 @@
-package ru.codewar.module.positionedModule;
+package ru.codewar.module.types.positionedModule;
 
 import ru.codewar.protocol.module.ModuleController;
 
@@ -10,20 +10,18 @@ import java.util.regex.Pattern;
  * 2. "orientation" - request module orientation
  */
 public class PositionedModuleControllerImpl implements ModuleController {
-    private final static Pattern checkPattern = Pattern.compile("(position|orient)\\s*");
     private final static Pattern positionReqPattern = Pattern.compile("position\\s*");
-    private final static Pattern orientationReqPattern = Pattern.compile("orient\\s*");
 
-    PositionedModule module;
+    PositionedModuleType module;
 
-    public void attachToModule(PositionedModule module)
+    public void attachToModule(PositionedModuleType module)
     {
         this.module = module;
     }
 
     static boolean checkIfSupported(String message)
     {
-        return checkPattern.matcher(message).matches();
+        return positionReqPattern.matcher(message).matches();
     }
 
     public void onCommand(String command)
@@ -38,10 +36,6 @@ public class PositionedModuleControllerImpl implements ModuleController {
         }
         if(positionReqPattern.matcher(request).matches()) {
             return module.getPosition().getX() + " " + module.getPosition().getY();
-        }
-        if(orientationReqPattern.matcher(request).matches()) {
-            return module.getOrientation().getNormilizedX() + " " +
-                    module.getOrientation().getNormilizedY();
         }
         return "fail: incorrect request";
     }

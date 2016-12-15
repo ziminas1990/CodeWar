@@ -1,9 +1,9 @@
 package ru.codewar.module.antiMissileCannon;
 
-import ru.codewar.module.positionedModule.PositionedModule;
-import ru.codewar.module.rotatableModule.RotatableModule;
+import ru.codewar.module.types.positionedModule.PositionedModuleType;
+import ru.codewar.module.types.rotatableModule.RotatableModuleType;
 
-public interface AntiMissileCannon extends PositionedModule, RotatableModule {
+public interface AntiMissileCannon extends PositionedModuleType, RotatableModuleType {
     void fire(int detonateTimeout);
     int ticksToReload();
 }
