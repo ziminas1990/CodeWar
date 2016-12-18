@@ -8,8 +8,8 @@ import java.util.regex.Pattern;
 
 
 public class RotatableModuleControllerImpl implements ModuleController {
-    private final static Pattern checkPattern = Pattern.compile("(getMaxSpeed\\s*|rotate\\s+.*|orient\\s*)");
-    private final static Pattern getMaxSpeedReqPattern = Pattern.compile("getMaxSpeed\\s*");
+    private final static Pattern checkPattern = Pattern.compile("(getMaxRotateSpeed\\s*|rotate\\s+.*|orient\\s*)");
+    private final static Pattern getMaxSpeedReqPattern = Pattern.compile("getMaxRotateSpeed\\s*");
     private final static Pattern rotateCommandPattern = Pattern.compile("rotate\\s+(?<ARGS>.+)");
     private final static Pattern orientationReqPattern = Pattern.compile("orient\\s*");
 
@@ -20,7 +20,7 @@ public class RotatableModuleControllerImpl implements ModuleController {
         this.module = module;
     }
 
-    static boolean checkIfSupported(String message)
+    public static boolean checkIfSupported(String message)
     {
         return checkPattern.matcher(message).matches();
     }

@@ -10,11 +10,11 @@ import static org.mockito.Mockito.*;
 /**
  * Created by Александр on 15.12.2016.
  */
-public class RotatableModuleTests {
+public class RotatableModuleControllerTests {
 
     @Test
     public void checkIfSupportedTest() {
-        assertTrue(RotatableModuleControllerImpl.checkIfSupported("getMaxSpeed"));
+        assertTrue(RotatableModuleControllerImpl.checkIfSupported("getMaxRotateSpeed"));
         assertTrue(RotatableModuleControllerImpl.checkIfSupported("rotate 232 323"));
         assertTrue(RotatableModuleControllerImpl.checkIfSupported("orient"));
     }
@@ -42,7 +42,7 @@ public class RotatableModuleTests {
 
         double maxSpeed = 20;
         when(mockedModule.getMaxRotationSpeed()).thenReturn(maxSpeed);
-        assertEquals(controller.onRequest(1, "getMaxSpeed"), String.valueOf(maxSpeed));
+        assertEquals(controller.onRequest(1, "getMaxRotateSpeed"), String.valueOf(maxSpeed));
         verify(mockedModule).getMaxRotationSpeed();
     }
 

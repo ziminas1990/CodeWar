@@ -1,4 +1,4 @@
-package ru.codewar.module.antiMissileCannon;
+package ru.codewar.module.antimissilecannon;
 
 import ru.codewar.module.types.positionedModule.PositionedModuleType;
 import ru.codewar.module.types.rotatableModule.RotatableModuleType;
