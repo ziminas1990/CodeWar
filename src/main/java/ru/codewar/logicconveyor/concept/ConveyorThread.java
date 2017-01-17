@@ -23,15 +23,22 @@ public class ConveyorThread extends Thread {
     }
 
     public void singleshotLogic() {
-        // Proceeding all logics in conveyor chain once
+        // Waiting other threads on barrier before first logic
+        try {
+            conveyor.getBarrier().await();
+        } catch (Exception exp) {
+            System.out.println("Thread #" + threadId + ": awaiting failed! Details: " + exp);
+        }
+        // Proceeding all logic in conveyor chain once
         java.util.List<ConveyorLogic> logicChain = conveyor.getLogicsChain();
         for(int logicId = 0; logicId < logicChain.size(); logicId++) {
+            logicChain.get(logicId).proceed(threadId, totalThreads);
+            // Waiting other threads on barrier after each logic
             try {
                 conveyor.getBarrier().await();
             } catch (Exception exp) {
                 System.out.println("Thread #" + threadId + ": awaiting failed! Details: " + exp);
             }
-            logicChain.get(logicId).proceed(threadId, totalThreads);
         }
     }
 
