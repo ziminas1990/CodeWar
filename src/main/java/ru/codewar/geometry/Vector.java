@@ -1,22 +1,20 @@
 package ru.codewar.geometry;
 
-/**
- * Created by Александр on 08.12.2016.
- */
 public class Vector extends Point {
     private double length;
 
     public Vector() {}
     public Vector(double x, double y) {
-        super(x, y);
+        setPosition(x, y);
     }
+    public Vector(Vector other) { super(other); }
     public Vector(Point from, Point to) {
         super(to.getX() - from.getX(), to.getY() - from.getY());
     }
 
     @Override
     public void setPosition(double x, double y) {
-        super.setPosition(this.x, this.y);
+        super.setPosition(x, y);
         updateSelf();
     }
 

@@ -1,13 +1,11 @@
 package ru.codewar.geometry;
 
-/**
- * Created by Александр on 08.12.2016.
- */
 public class Point {
     double x;
     double y;
 
     public Point() {}
+    public Point(Point other) { setPosition(other);}
     public Point(double x, double y) {
         setPosition(x, y);
     }
@@ -17,6 +15,10 @@ public class Point {
         this.y = y;
     }
 
+    public void setPosition(Point position) {
+        setPosition(position.x, position.y);
+    }
+
     public double getX() {
         return x;
     }
@@ -24,5 +26,7 @@ public class Point {
     public double getY() {
         return y;
     }
+
+    public void move(Vector vector) { setPosition(x + vector.getX(), y + vector.getY()); }
 
 }

@@ -1,4 +1,4 @@
-package ru.codewar.logicconveyor.baseconveyor;
+package ru.codewar.logicconveyor.concept;
 
 
 public class ConveyorThread extends Thread {
@@ -17,13 +17,21 @@ public class ConveyorThread extends Thread {
 
     @Override
     public void run() {
-        for(AbstractLogic logic : conveyor.getLogicsChain()) {
-            logic.proceed(threadId, totalThreads);
+        while(true) {
+            singleshotLogic();
+        }
+    }
+
+    public void singleshotLogic() {
+        // Proceeding all logics in conveyor chain once
+        java.util.List<ConveyorLogic> logicChain = conveyor.getLogicsChain();
+        for(int logicId = 0; logicId < logicChain.size(); logicId++) {
             try {
                 conveyor.getBarrier().await();
             } catch (Exception exp) {
                 System.out.println("Thread #" + threadId + ": awaiting failed! Details: " + exp);
             }
+            logicChain.get(logicId).proceed(threadId, totalThreads);
         }
     }
 
