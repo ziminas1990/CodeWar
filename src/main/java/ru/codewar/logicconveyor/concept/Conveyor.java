@@ -4,20 +4,20 @@ import java.util.concurrent.CyclicBarrier;
 
 public class Conveyor {
 
-    private java.util.List<ConveyorLogic> logicsChain = new java.util.ArrayList<>();
+    private java.util.List<ConveyorLogic> logicChain = new java.util.ArrayList<>();
     private ConveyorThread masterThreadLogic;
-    private java.util.Vector<ConveyorThread> extraThreads;
+    private java.util.Vector<ConveyorThread> slaveThreads;
     private CyclicBarrier barrier;
 
-    public Conveyor(int extraThreadsCount)    {
-        int totalThreads = extraThreadsCount + 1;
+    public Conveyor(int slaveThreadsCount)    {
+        int totalThreads = slaveThreadsCount + 1;
         barrier = new CyclicBarrier(totalThreads);
 
         masterThreadLogic = new ConveyorThread(this, 0, totalThreads);
-        extraThreads = new java.util.Vector<>(extraThreadsCount);
+        slaveThreads = new java.util.Vector<>(slaveThreadsCount);
         for(int i = 1; i < totalThreads; i++) {
             ConveyorThread thread = new ConveyorThread(this, i, totalThreads);
-            extraThreads.add(thread);
+            slaveThreads.add(thread);
             thread.start();
         }
     }
@@ -25,15 +25,26 @@ public class Conveyor {
     public void proceed()
     {
         // We are not starting master thread logic in separate thread, but just running it
-        // in current thread. Extra threads are waiting for master thread on barrier
+        // in current thread. Slave threads are waiting for master thread on barrier
+        long start = System.currentTimeMillis();
+        for(ConveyorLogic logic : logicChain)
+            logic.prephare();
         masterThreadLogic.singleshotLogic();
+
+        // If proceeding is slow, printing statistic after every proceed
+        long proceedTime = System.currentTimeMillis() - start;
+        if(proceedTime > 50) {
+            // Waiting while slave threads print their statistic
+            try { Thread.sleep(1); } catch (Exception ex) {}
+            System.out.println("\t | total " + proceedTime + " ms");
+        }
     }
 
     public void addLogic(ConveyorLogic logic) {
-        logicsChain.add(logic);
+        logicChain.add(logic);
     }
 
-    public java.util.List<ConveyorLogic> getLogicsChain() { return logicsChain; }
+    public java.util.List<ConveyorLogic> getLogicChain() { return logicChain; }
 
     public CyclicBarrier getBarrier() { return barrier; }
 

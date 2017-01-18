@@ -15,15 +15,15 @@ public class KinematicsEngineTests {
     @Test
     public void simpleMultithreadTest() {
 
-        int extraThreads = 0;
-        int totalObjects = 1000000;
-        int totalTicks = 300;
+        int extraThreads = 3;
+        int totalObjects = 3000000;
+        int totalTicks = 30;
 
         Conveyor conveyor = new Conveyor(extraThreads);
         KinematickWorld world = new KinematickWorld();
         conveyor.addLogic(world);
 
-        java.util.Vector<KinematickObject> createdObjects = new java.util.Vector<>();
+        java.util.List<KinematickObject> createdObjects = new java.util.ArrayList<>();
 
         // ObjectId value is the same as object start position coordinates and velocity vector coordinates
         // This fact will be useful, when checking objects position
