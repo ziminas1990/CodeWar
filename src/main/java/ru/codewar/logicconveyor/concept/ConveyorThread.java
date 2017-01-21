@@ -30,7 +30,6 @@ public class ConveyorThread extends Thread {
             System.out.println("Thread #" + threadId + ": awaiting failed! Details: " + exp);
         }
         // Proceeding all logic in conveyor chain once
-        long start = System.currentTimeMillis();
         java.util.List<ConveyorLogic> logicChain = conveyor.getLogicChain();
         for(int logicId = 0; logicId < logicChain.size(); logicId++) {
             logicChain.get(logicId).proceed(threadId, totalThreads);
@@ -41,11 +40,6 @@ public class ConveyorThread extends Thread {
                 System.out.println("Thread #" + threadId + ": awaiting failed! Details: " + exp);
             }
         }
-
-        // If proceeding is slow, printing statistic after every proceed
-        long proceedTime = System.currentTimeMillis() - start;
-        if(proceedTime > 50)
-            System.out.print(proceedTime + "\t");
     }
 
 }

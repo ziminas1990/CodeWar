@@ -27,6 +27,7 @@ public class Point {
         return y;
     }
 
+    public void move(double dx, double dy) { setPosition(x + dx, y + dy); }
     public void move(Vector vector) { setPosition(x + vector.getX(), y + vector.getY()); }
 
 }

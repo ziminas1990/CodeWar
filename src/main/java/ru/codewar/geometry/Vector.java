@@ -1,7 +1,8 @@
 package ru.codewar.geometry;
 
 public class Vector extends Point {
-    private double length;
+    private double length;  // Access only via getLength() - lazy semantics is used
+    private boolean needToUpdateLength;
 
     public Vector() {}
     public Vector(double x, double y) {
@@ -15,26 +16,28 @@ public class Vector extends Point {
     @Override
     public void setPosition(double x, double y) {
         super.setPosition(x, y);
-        updateSelf();
+        needToUpdateLength = true;
     }
 
     public double getNormilizedX() {
-        return x / length;
+        return x / getLength();
     }
 
     public double getNormilizedY() {
-        return y / length;
+        return y / getLength();
     }
 
     public void normalize() {
-        this.x /= length;
-        this.y /= length;
+        this.x /= getLength();
+        this.y /= getLength();
         length = 1;
     }
 
-    private void updateSelf()
-    {
-        length = Math.hypot(this.x, this.y);
+    public double getLength() {
+        if(needToUpdateLength) {
+            length = Math.hypot(this.x, this.y);
+        }
+        return length;
     }
 
 }

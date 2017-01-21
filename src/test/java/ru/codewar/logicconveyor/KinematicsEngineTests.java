@@ -17,7 +17,7 @@ public class KinematicsEngineTests {
 
         int extraThreads = 3;
         int totalObjects = 3000000;
-        int totalTicks = 30;
+        int totalTicks = 15;
 
         Conveyor conveyor = new Conveyor(extraThreads);
         KinematickWorld world = new KinematickWorld();
@@ -30,6 +30,7 @@ public class KinematicsEngineTests {
         for(int i = 0; i < totalObjects; i++) {
             KinematickObject object = new KinematickObjectImpl(i, 1, new Point(i, i), new Vector(i, i));
             world.registerObject(object);
+            object.getAcceleration().setPosition(i, i);
             createdObjects.add(object);
         }
 
@@ -38,10 +39,10 @@ public class KinematicsEngineTests {
         }
 
         for(KinematickObject object : createdObjects) {
-            assertEquals(object.getObjectId() + object.getObjectId() * totalTicks,
-                    object.getPosition().getX(), 1);
-            assertEquals(object.getObjectId() + object.getObjectId() * totalTicks,
-                    object.getPosition().getY(), 1);
+            double vt = object.getObjectId() * totalTicks;
+            double at2 = object.getObjectId() * totalTicks * totalTicks;
+            assertEquals(object.getObjectId() + vt + at2/2, object.getPosition().getX(), 1);
+            assertEquals(object.getObjectId() + vt + at2/2, object.getPosition().getY(), 1);
         }
 
     }

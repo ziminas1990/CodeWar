@@ -36,7 +36,7 @@ public class Conveyor {
         if(proceedTime > 50) {
             // Waiting while slave threads print their statistic
             try { Thread.sleep(1); } catch (Exception ex) {}
-            System.out.println("\t | total " + proceedTime + " ms");
+            System.out.println("proceed(): " + proceedTime + " ms");
         }
     }
 

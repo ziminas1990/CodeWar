@@ -29,7 +29,10 @@ public class KinematickWorld implements ConveyorLogic {
         int totalObjects = objects.size();
         for(int idx = index.getAndAdd(1); idx < totalObjects; idx = index.getAndAdd(1)) {
             KinematickObject object = objects.get(idx);
-            object.getPosition().move(object.getVelocity());
+            object.getPosition().move(
+                    object.getVelocity().getX() + object.getAcceleration().getX() / 2,
+                    object.getVelocity().getY() + object.getAcceleration().getY() / 2);
+            object.getVelocity().move(object.getAcceleration());
         }
     }
 
