@@ -2,7 +2,6 @@ package ru.codewar.protocol.module;
 
 import org.junit.Test;
 import ru.codewar.networking.Channel;
-import ru.codewar.protocol.module.impl.ModuleOperatorImpl;
 
 import static org.mockito.Mockito.*;
 
@@ -14,7 +13,7 @@ public class ModuleOperatorTests {
         ModuleController mockedController = mock(ModuleController.class);
         Channel mockedChannel = mock(Channel.class);
 
-        ModuleOperatorImpl moduleOperator = new ModuleOperatorImpl();
+        ModuleOperator moduleOperator = new ModuleOperator();
         moduleOperator.attachToChannel(mockedChannel);
         moduleOperator.attachToModuleController(mockedController);
 
@@ -31,7 +30,7 @@ public class ModuleOperatorTests {
         ModuleController mockedController = mock(ModuleController.class);
         Channel mockedChannel = mock(Channel.class);
 
-        ModuleOperatorImpl moduleOperator = new ModuleOperatorImpl();
+        ModuleOperator moduleOperator = new ModuleOperator();
         moduleOperator.attachToChannel(mockedChannel);
         moduleOperator.attachToModuleController(mockedController);
 
