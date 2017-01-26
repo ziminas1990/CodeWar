@@ -14,16 +14,16 @@ public class RotatableModuleControllerTests {
 
     @Test
     public void checkIfSupportedTest() {
-        assertTrue(RotatableModuleControllerImpl.checkIfSupported("getMaxRotateSpeed"));
-        assertTrue(RotatableModuleControllerImpl.checkIfSupported("rotate 232 323"));
-        assertTrue(RotatableModuleControllerImpl.checkIfSupported("orient"));
+        assertTrue(RotatableModuleController.checkIfSupported("getMaxRotateSpeed"));
+        assertTrue(RotatableModuleController.checkIfSupported("rotate 232 323"));
+        assertTrue(RotatableModuleController.checkIfSupported("orient"));
     }
 
     @Test
     public void orientationRequestTest() {
         RotatableModuleType mockedModule = mock(RotatableModuleType.class);
 
-        RotatableModuleControllerImpl controller = new RotatableModuleControllerImpl();
+        RotatableModuleController controller = new RotatableModuleController();
         controller.attachToModule(mockedModule);
 
         Vector orientation = new Vector(4, 2);
@@ -37,7 +37,7 @@ public class RotatableModuleControllerTests {
     public void getMaxSpeedTest() {
         RotatableModuleType mockedModule = mock(RotatableModuleType.class);
 
-        RotatableModuleControllerImpl controller = new RotatableModuleControllerImpl();
+        RotatableModuleController controller = new RotatableModuleController();
         controller.attachToModule(mockedModule);
 
         double maxSpeed = 20;
@@ -50,7 +50,7 @@ public class RotatableModuleControllerTests {
     public void rotateCommandTest() {
         RotatableModuleType mockedModule = mock(RotatableModuleType.class);
 
-        RotatableModuleControllerImpl controller = new RotatableModuleControllerImpl();
+        RotatableModuleController controller = new RotatableModuleController();
         controller.attachToModule(mockedModule);
 
         controller.onCommand("rotate -3.1 0.1");
@@ -61,7 +61,7 @@ public class RotatableModuleControllerTests {
     public void rotateWithMaxSpeedCommandTest() {
         RotatableModuleType mockedModule = mock(RotatableModuleType.class);
 
-        RotatableModuleControllerImpl controller = new RotatableModuleControllerImpl();
+        RotatableModuleController controller = new RotatableModuleController();
         controller.attachToModule(mockedModule);
 
         double maxSpeed = 20;

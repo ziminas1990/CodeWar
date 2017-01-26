@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * 1. "position" - request module position
  * 2. "orientation" - request module orientation
  */
-public class PositionedModuleControllerImpl implements ModuleController {
+public class PositionedModuleController implements ModuleController {
     private final static Pattern positionReqPattern = Pattern.compile("position\\s*");
 
     PositionedModuleType module;

@@ -74,7 +74,7 @@ public class MultiThreadPerfomanceTests {
     @Test
     public void simpleTest() {
         int totalThreads = 4;
-        int totalObjects = 500000;
+        int totalObjects = 50000;
         int actionsPerObject = 30;
         int totalProceeds = 10;
 

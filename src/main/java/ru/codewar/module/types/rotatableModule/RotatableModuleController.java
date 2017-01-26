@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class RotatableModuleControllerImpl implements ModuleController {
+public class RotatableModuleController implements ModuleController {
     private final static Pattern checkPattern = Pattern.compile("(getMaxRotateSpeed\\s*|rotate\\s+.*|orient\\s*)");
     private final static Pattern getMaxSpeedReqPattern = Pattern.compile("getMaxRotateSpeed\\s*");
     private final static Pattern rotateCommandPattern = Pattern.compile("rotate\\s+(?<ARGS>.+)");

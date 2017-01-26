@@ -1,6 +1,6 @@
 package ru.codewar.module.engine;
 
-import ru.codewar.module.types.rotatableModule.RotatableModuleControllerImpl;
+import ru.codewar.module.types.rotatableModule.RotatableModuleController;
 
 import ru.codewar.protocol.module.ModuleController;
 import ru.codewar.util.ArgumentsReader;
@@ -8,7 +8,7 @@ import ru.codewar.util.ArgumentsReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EngineControllerImpl implements ModuleController {
+public class EngineController implements ModuleController {
 
     private final static Pattern checkPattern =
             Pattern.compile("(getMaxThrust\\s*|getCurrentThrust\\s*|setThrust\\s+.*)");
@@ -17,10 +17,10 @@ public class EngineControllerImpl implements ModuleController {
     private final static Pattern setThrustCommandPattern = Pattern.compile("setThrust\\s+(?<ARGS>.+)");
 
     private Engine module;
-    private RotatableModuleControllerImpl rotatableModuleController = new RotatableModuleControllerImpl();
+    private RotatableModuleController rotatableModuleController = new RotatableModuleController();
 
     static boolean checkIfSupported(String message) {
-        if(RotatableModuleControllerImpl.checkIfSupported(message))
+        if(RotatableModuleController.checkIfSupported(message))
             return true;
         return checkPattern.matcher(message).matches();
     }
@@ -33,7 +33,7 @@ public class EngineControllerImpl implements ModuleController {
     public void onCommand(String command) {
         if(module == null)
             return;
-        if(RotatableModuleControllerImpl.checkIfSupported(command)) {
+        if(RotatableModuleController.checkIfSupported(command)) {
             rotatableModuleController.onCommand(command);
             return;
         }
@@ -52,7 +52,7 @@ public class EngineControllerImpl implements ModuleController {
     public String onRequest(Integer transactionId, String request) {
         if(module == null)
             return null;
-        if(RotatableModuleControllerImpl.checkIfSupported(request)) {
+        if(RotatableModuleController.checkIfSupported(request)) {
             return rotatableModuleController.onRequest(transactionId, request);
         }
         if(getCurrentThrustReqPattern.matcher(request).matches()) {

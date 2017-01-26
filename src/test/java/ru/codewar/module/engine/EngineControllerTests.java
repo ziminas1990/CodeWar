@@ -14,20 +14,20 @@ public class EngineControllerTests {
     @Test
     public void checkIfSupportedTest() {
         // Check interface, that was inherited from RotatableModuleType
-        assertTrue(EngineControllerImpl.checkIfSupported("getMaxRotateSpeed"));
-        assertTrue(EngineControllerImpl.checkIfSupported("rotate 10 1"));
-        assertTrue(EngineControllerImpl.checkIfSupported("orient"));
+        assertTrue(EngineController.checkIfSupported("getMaxRotateSpeed"));
+        assertTrue(EngineController.checkIfSupported("rotate 10 1"));
+        assertTrue(EngineController.checkIfSupported("orient"));
         // check interface, that specific for engine
-        assertTrue(EngineControllerImpl.checkIfSupported("getMaxThrust"));
-        assertTrue(EngineControllerImpl.checkIfSupported("getCurrentThrust"));
-        assertTrue(EngineControllerImpl.checkIfSupported("setThrust 333"));
+        assertTrue(EngineController.checkIfSupported("getMaxThrust"));
+        assertTrue(EngineController.checkIfSupported("getCurrentThrust"));
+        assertTrue(EngineController.checkIfSupported("setThrust 333"));
     }
 
     @Test
     public void rotatableModuleInheritedTypeTests() {
         // Check, that interface, inherited from RotatableModuleType, work properly
         Engine mockedModule = mock(Engine.class);
-        EngineControllerImpl controller = new EngineControllerImpl();
+        EngineController controller = new EngineController();
         controller.attachToEngine(mockedModule);
 
         Vector orientation = new Vector(4, 2);
@@ -53,7 +53,7 @@ public class EngineControllerTests {
     @Test
     public void getMaxAndCurrentThrust() {
         Engine mockedModule = mock(Engine.class);
-        EngineControllerImpl controller = new EngineControllerImpl();
+        EngineController controller = new EngineController();
         controller.attachToEngine(mockedModule);
 
         double maxThrust = 10000;
@@ -71,7 +71,7 @@ public class EngineControllerTests {
     @Test
     public void setThrust() {
         Engine mockedModule = mock(Engine.class);
-        EngineControllerImpl controller = new EngineControllerImpl();
+        EngineController controller = new EngineController();
         controller.attachToEngine(mockedModule);
 
         double maxThrust = 10000;

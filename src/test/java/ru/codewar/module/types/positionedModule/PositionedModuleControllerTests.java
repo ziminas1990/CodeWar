@@ -13,15 +13,15 @@ public class PositionedModuleControllerTests {
 
     @Test
     public void checkIfSupportedTest() {
-        assertTrue(PositionedModuleControllerImpl.checkIfSupported("position"));
-        assertTrue(PositionedModuleControllerImpl.checkIfSupported("position "));
+        assertTrue(PositionedModuleController.checkIfSupported("position"));
+        assertTrue(PositionedModuleController.checkIfSupported("position "));
 
-        assertFalse(PositionedModuleControllerImpl.checkIfSupported("positio"));
+        assertFalse(PositionedModuleController.checkIfSupported("positio"));
     }
 
     @Test
     public void moduleNotAttachedTest() {
-        PositionedModuleControllerImpl controller = new PositionedModuleControllerImpl();
+        PositionedModuleController controller = new PositionedModuleController();
         assertEquals(controller.onRequest(1, "position"), "fail: controller wasn't attached to module!");
         assertEquals(controller.onRequest(1, "orient"), "fail: controller wasn't attached to module!");
     }
@@ -30,7 +30,7 @@ public class PositionedModuleControllerTests {
     public void incorrectRequestTest() {
         PositionedModuleType mockedModule = mock(PositionedModuleType.class);
 
-        PositionedModuleControllerImpl controller = new PositionedModuleControllerImpl();
+        PositionedModuleController controller = new PositionedModuleController();
         controller.attachToModule(mockedModule);
 
         assertEquals(controller.onRequest(1, "positio"), "fail: incorrect request");
@@ -40,7 +40,7 @@ public class PositionedModuleControllerTests {
     public void positionRequestTest() {
         PositionedModuleType mockedModule = mock(PositionedModuleType.class);
 
-        PositionedModuleControllerImpl controller = new PositionedModuleControllerImpl();
+        PositionedModuleController controller = new PositionedModuleController();
         controller.attachToModule(mockedModule);
 
         Point position = new Point(4, 2);

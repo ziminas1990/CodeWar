@@ -16,8 +16,8 @@ public class KinematicsEngineTests {
     public void simpleMultithreadTest() {
 
         int extraThreads = 3;
-        int totalObjects = 3000000;
-        int totalTicks = 15;
+        int totalObjects = 1000000;
+        int totalTicks = 5;
 
         Conveyor conveyor = new Conveyor(extraThreads);
         KinematickWorld world = new KinematickWorld();
