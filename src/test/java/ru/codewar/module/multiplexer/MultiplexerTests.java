@@ -61,7 +61,7 @@ public class MultiplexerTests {
         try {
             multiplexer.openVirtualChannel("ship.restroom");
         } catch (IllegalArgumentException e) {
-            assertEquals("Element ship.restroom NOT found!", e.getMessage());
+            assertEquals("Element ship.restroom NOT found", e.getMessage());
         }
 
         try {
@@ -87,7 +87,7 @@ public class MultiplexerTests {
         try {
             multiplexer.closeVirtualChannel(engineChannelId + 1);
         } catch (IllegalArgumentException e) {
-            assertEquals("Virtual channel " + (engineChannelId + 1) + " doesn't exist!", e.getMessage());
+            assertEquals("Virtual channel " + (engineChannelId + 1) + " doesn't exist", e.getMessage());
         }
     }
 
@@ -103,10 +103,10 @@ public class MultiplexerTests {
         verify(rocketMock).attachToChannel(rocketChannelCaptured.capture());
 
         // Checking forwarding messages from client to module
-        multiplexer.onMessageReceived(engineChannelId, "Message to engine module");
+        multiplexer.forwardingMessage(engineChannelId, "Message to engine module");
         verify(engineMock).onMessageReceived("Message to engine module");
 
-        multiplexer.onMessageReceived(rocketChannelId, "Message to rocket module");
+        multiplexer.forwardingMessage(rocketChannelId, "Message to rocket module");
         verify(rocketMock).onMessageReceived("Message to rocket module");
 
         // Checking forwarding messages from module to client

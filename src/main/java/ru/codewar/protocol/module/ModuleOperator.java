@@ -16,8 +16,7 @@ public class ModuleOperator implements NetworkTerminal {
     private ModuleController module;
     private Channel channel;
 
-    ModuleOperator() {}
-    ModuleOperator(String address, String type) {
+    public ModuleOperator(String address, String type) {
         this.address = address;
         this.type = type;
     }
@@ -60,6 +59,14 @@ public class ModuleOperator implements NetworkTerminal {
     public void onIndication(String indication) {
         // Adding header to response and send it via channel
         channel.sendMessage("IND " + indication);
+    }
+
+    public void onCommandFailed(String details) {
+        channel.sendMessage("CMD FAILED: " + details);
+    }
+
+    public void onRequestFailed(int transactionId, String details) {
+        channel.sendMessage("REQ " + transactionId + " FAILED: " + details);
     }
 
 }

@@ -3,6 +3,8 @@ package ru.codewar.utils;
 import org.junit.Test;
 import ru.codewar.util.ArgumentsReader;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 /**
@@ -36,6 +38,19 @@ public class ArgumentsReaderTests {
         reader = new ArgumentsReader("d123");
         assertEquals(null, reader.readDouble());
         assertEquals("d123", reader.getTail());
+    }
+
+    @Test
+    public void readArrayTest() {
+        ArgumentsReader reader =
+                new ArgumentsReader("{ [element_1] [ { [ element_2_1 ] [ element_2_2 ] } ] [ element_2 ] }");
+        ArrayList<String> result;
+
+        result = reader.readArray();
+        assertEquals(3, result.size());
+        assertEquals("element_1", result.get(0));
+        assertEquals("{ [ element_2_1 ] [ element_2_2 ] }", result.get(1));
+        assertEquals("element_2", result.get(2));
     }
 
 }

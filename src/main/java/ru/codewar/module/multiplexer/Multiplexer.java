@@ -36,7 +36,7 @@ public class Multiplexer {
 
         ModuleOperator operator = modules.get(moduleAddress);
         if(operator == null) {
-            throw new IllegalArgumentException("Element " + moduleAddress + " NOT found!");
+            throw new IllegalArgumentException("Element " + moduleAddress + " NOT found");
         }
 
         int virtualChannelId = idPool.getNextId();
@@ -54,13 +54,13 @@ public class Multiplexer {
     public void closeVirtualChannel(int virtualChannelId)  {
         VirtualChannel virtualChannel = virtualChannels.get(virtualChannelId);
         if(virtualChannel == null) {
-            throw new IllegalArgumentException("Virtual channel " + virtualChannelId + " doesn't exist!");
+            throw new IllegalArgumentException("Virtual channel " + virtualChannelId + " doesn't exist");
         }
         modulesInUse.remove(virtualChannel.getEndPointAddress());
         virtualChannels.remove(virtualChannelId);
     }
 
-    public void onMessageReceived(int virtualChannelId, String message) {
+    public void forwardingMessage(int virtualChannelId, String message) {
         VirtualChannel virtualChannel = virtualChannels.get(virtualChannelId);
         if(virtualChannel != null) {
             virtualChannel.onMessageReceived(message);

@@ -1,18 +1,22 @@
 package ru.codewar.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by Александр on 14.12.2016.
- */
 public class ArgumentsReader {
     final private static Pattern integerReader =
-            Pattern.compile("\\s*(?<NUMBER>[-+]?[0-9]+)\\s*(?<TAIL>.*)");
+            Pattern.compile("\\s*(?<NUMBER>[-+]?\\d+)\\s*(?<TAIL>.*)");
     final private static Pattern doubleReader =
-            Pattern.compile("\\s*(?<NUMBER>[-+]?[0-9]+(\\.[0-9]+)?([eE][-+]?[0-9]+)?)\\s*(?<TAIL>.*)");
+            Pattern.compile("\\s*(?<NUMBER>[-+]?\\d+(\\.\\d+)?([eE][-+]?\\d+)?)\\s*(?<TAIL>.*)");
 
-    String arguments;
+    final private static Pattern arrayContent =
+            Pattern.compile("\\{\\s*(?<CONTENT>\\s*\\[.*\\])*\\s*\\}(?<TAIL>.*)");
+    final private static Pattern arrayContentReader =
+            Pattern.compile("\\[\\s*(?<ELEMENT>(\\{.*\\})|(.*?))\\s*\\]\\s*(?<TAIL>.*)");
+
+    private String arguments;
 
     public ArgumentsReader(String arguments) {
         this.arguments = arguments;
@@ -52,4 +56,25 @@ public class ArgumentsReader {
             return null;
         }
     }
+
+    public ArrayList<String> readArray()
+    {
+        // "{ [element1] [ element2 ] }" -> "element1", " element2 "
+        Matcher matcher = arrayContent.matcher(arguments);
+        if(!matcher.matches()) {
+            return null;
+        }
+        arguments = matcher.group("TAIL");
+
+        ArrayList<String> result = new ArrayList<>();
+        String arrayContent = matcher.group("CONTENT");
+        matcher = arrayContentReader.matcher(arrayContent);
+        while(matcher.matches()) {
+            arrayContent = matcher.group("TAIL");
+            result.add(matcher.group("ELEMENT"));
+            matcher = arrayContentReader.matcher(arrayContent);
+        }
+        return result;
+    }
+
 }
