@@ -1,9 +1,9 @@
-package ru.codewar.logicconveyor.kinematicsengine;
+package ru.codewar.logicconveyor.physicallogic;
 
 import ru.codewar.geometry.Point;
 import ru.codewar.geometry.Vector;
 
-public interface KinematickObject {
+public interface PhysicalObject {
     Integer getObjectId();
     Vector getVelocity();
     Vector getAcceleration();

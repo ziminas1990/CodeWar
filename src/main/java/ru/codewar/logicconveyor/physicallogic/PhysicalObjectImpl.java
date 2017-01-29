@@ -1,10 +1,10 @@
-package ru.codewar.logicconveyor.kinematicsengine;
+package ru.codewar.logicconveyor.physicallogic;
 
 import ru.codewar.geometry.Point;
 import ru.codewar.geometry.Vector;
 
 
-public class KinematickObjectImpl implements KinematickObject {
+public class PhysicalObjectImpl implements PhysicalObject {
 
     private Integer objectId;
     private Point position;
@@ -12,7 +12,7 @@ public class KinematickObjectImpl implements KinematickObject {
     private Vector acceleration;
     private double signature;
 
-    public KinematickObjectImpl(int objectId, double signature) {
+    public PhysicalObjectImpl(int objectId, double signature) {
         this.objectId =  objectId;
         this.signature = signature;
         this.position = new Point();
@@ -20,7 +20,7 @@ public class KinematickObjectImpl implements KinematickObject {
         this.acceleration = new Vector();
     }
 
-    public KinematickObjectImpl(int objectId, double signature, Point position) {
+    public PhysicalObjectImpl(int objectId, double signature, Point position) {
         this.objectId =  objectId;
         this.signature = signature;
         this.position = new Point(position);
@@ -28,7 +28,7 @@ public class KinematickObjectImpl implements KinematickObject {
         this.acceleration = new Vector();
     }
 
-    public KinematickObjectImpl(int objectId, double signature, Point position, Vector velocity) {
+    public PhysicalObjectImpl(int objectId, double signature, Point position, Vector velocity) {
         this.objectId =  objectId;
         this.position = new Point(position);
         this.signature = signature;
@@ -36,7 +36,7 @@ public class KinematickObjectImpl implements KinematickObject {
         this.acceleration = new Vector();
     }
 
-    public KinematickObjectImpl(int objectId, double signature, Point position, Vector velocity, Vector acceleration) {
+    public PhysicalObjectImpl(int objectId, double signature, Point position, Vector velocity, Vector acceleration) {
         this.objectId =  objectId;
         this.position = new Point(position);
         this.signature = signature;
