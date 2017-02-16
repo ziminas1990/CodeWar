@@ -26,7 +26,7 @@ public class PositionedModuleController implements ModuleController {
 
     public void onCommand(String command)
     {
-        // Positioned module doesn't proceed any commands
+        // Positioned module doesn't proceedStage any commands
     }
 
     public String onRequest(Integer transactionId, String request)

@@ -5,8 +5,12 @@ import ru.codewar.geometry.Vector;
 
 public interface PhysicalObject {
     Integer getObjectId();
-    Vector getVelocity();
-    Vector getAcceleration();
     Point getPosition();
     double getSignature();
+    double getMass();
+
+    Vector getVelocity();
+
+    void pushForce(Vector force);
+    Vector getForce();
 }

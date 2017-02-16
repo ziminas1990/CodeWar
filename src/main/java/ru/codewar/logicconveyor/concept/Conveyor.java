@@ -27,16 +27,14 @@ public class Conveyor {
         // We are not starting master thread logic in separate thread, but just running it
         // in current thread. Slave threads are waiting for master thread on barrier
         long start = System.currentTimeMillis();
-        for(ConveyorLogic logic : logicChain)
-            logic.prephare();
         masterThreadLogic.singleshotLogic();
 
-        // If proceeding is slow, printing statistic after every proceed
+        // If proceeding is slow, printing statistic after every proceedStage
         long proceedTime = System.currentTimeMillis() - start;
         if(proceedTime > 50) {
             // Waiting while slave threads print their statistic
             try { Thread.sleep(1); } catch (Exception ex) {}
-            System.out.println("proceed(): " + proceedTime + " ms");
+            System.out.println("proceedStage(): " + proceedTime + " ms");
         }
     }
 

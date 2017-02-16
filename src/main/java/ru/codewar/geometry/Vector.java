@@ -19,6 +19,16 @@ public class Vector extends Point {
         needToUpdateLength = true;
     }
 
+    public void setPosition(Point begin, Point end) {
+        super.setPosition(end.getX() - begin.getX(), end.getY() - begin.getY());
+        needToUpdateLength = true;
+    }
+
+    public void setPosition(Vector other, double k) {
+        super.setPosition(other.getX() * k, other.getY() * k);
+        needToUpdateLength = true;
+    }
+
     public double getNormilizedX() {
         return x / getLength();
     }
@@ -28,16 +38,43 @@ public class Vector extends Point {
     }
 
     public void normalize() {
-        this.x /= getLength();
-        this.y /= getLength();
+        x /= getLength();
+        y /= getLength();
         length = 1;
+    }
+
+    public void reset() {
+        x = 0;
+        y = 0;
+        length = 0;
+        needToUpdateLength = false;
+    }
+
+    public void setLength(double length) {
+        double factor = length / getLength();
+        x *= factor;
+        y *= factor;
+        this.length = length;
+    }
+
+    public void divideLength(double k) {
+        if(k == 0)
+            return;
+        x /= k;
+        y /= k;
+        this.length /= k;
     }
 
     public double getLength() {
         if(needToUpdateLength) {
             length = Math.hypot(this.x, this.y);
+            needToUpdateLength = false;
         }
         return length;
+    }
+
+    public double getSquaredLength() {
+        return x * x + y * y;
     }
 
 }

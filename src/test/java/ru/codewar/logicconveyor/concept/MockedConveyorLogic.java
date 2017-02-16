@@ -13,10 +13,13 @@ public class MockedConveyorLogic implements ConveyorLogic {
     }
 
     @Override
-    public void prephare() {}
+    public int stagesCount() { return 1; }
 
     @Override
-    public void proceed(int threadId, int totalThreads) {
+    public void prepareStage(int stageId) {}
+
+    @Override
+    public void proceedStage(int stageId, int threadId, int totalThreads) {
         totalProceeds.set(threadId, totalProceeds.get(threadId) + 1);
         if(timeToProceed > 0) {
             for(int i = threadId; i < timeToProceed; i += totalThreads) {

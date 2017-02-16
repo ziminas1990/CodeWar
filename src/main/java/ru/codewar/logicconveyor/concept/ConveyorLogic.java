@@ -3,7 +3,8 @@ package ru.codewar.logicconveyor.concept;
 
 public interface ConveyorLogic {
 
-    public void prephare();
-    public void proceed(int threadId, int totalThreads);
+    public int stagesCount();
+    public void prepareStage(int stageId);
+    public void proceedStage(int stageId, int threadId, int totalThreads);
 
 }
