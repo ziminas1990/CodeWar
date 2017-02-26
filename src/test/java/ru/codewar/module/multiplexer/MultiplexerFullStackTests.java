@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 import org.mockito.ArgumentCaptor;
 import ru.codewar.networking.Channel;
+import ru.codewar.networking.Message;
 import ru.codewar.protocol.module.ModuleOperator;
 import ru.codewar.util.ArgumentsReader;
 
@@ -87,9 +88,9 @@ public class MultiplexerFullStackTests {
 
     @Test
     public void getModulesList() {
-        String answer = controller.onRequest(1, "getModulesList");
+        Message answer = controller.onRequest(1, "getModulesList");
 
-        ArgumentsReader answerParser = new ArgumentsReader(answer);
+        ArgumentsReader answerParser = new ArgumentsReader(answer.data);
         ArrayList<String> modulesList = answerParser.readArray();
 
         assertEquals(2, modulesList.size());
@@ -101,17 +102,17 @@ public class MultiplexerFullStackTests {
 
     @Test
     public void openVirtualChannel() {
-        multiplexerOperator.onMessageReceived("REQ 1 openVirtualChannel ship.engine");
+        multiplexerOperator.onMessageReceived(new Message("openVirtualChannel ship.engine").addHeader("REQ 1"));
         verify(engineMocked).attachToChannel(any());
 
-        multiplexerOperator.onMessageReceived("REQ 2 openVirtualChannel ship.rocket");
+        multiplexerOperator.onMessageReceived(new Message("openVirtualChannel ship.rocket").addHeader("REQ 2"));
         verify(rocketMocked).attachToChannel(any());
 
-        multiplexerOperator.onMessageReceived("REQ 3 openVirtualChannel ship.restroom");
-        verify(channelMocked).sendMessage("REQ 3 FAILED: Element ship.restroom NOT found");
+        multiplexerOperator.onMessageReceived(new Message("openVirtualChannel ship.restroom").addHeader("REQ 3"));
+        verify(channelMocked).sendMessage(new Message("REQ 3 FAILED: Element ship.restroom NOT found"));
 
-        multiplexerOperator.onMessageReceived("REQ 4 openVirtualChannel ship.engine");
-        verify(channelMocked).sendMessage("REQ 4 FAILED: Module ship.engine is already in use");
+        multiplexerOperator.onMessageReceived(new Message("openVirtualChannel ship.engine").addHeader("REQ 4"));
+        verify(channelMocked).sendMessage(new Message("REQ 4 FAILED: Module ship.engine is already in use"));
     }
 
     @Test
@@ -119,11 +120,11 @@ public class MultiplexerFullStackTests {
         int engineVC = openVirtualChannel("ship.engine");
         int rocketVC = openVirtualChannel("ship.rocket");
 
-        multiplexerOperator.onMessageReceived("VC " + engineVC + ": message to engine");
-        multiplexerOperator.onMessageReceived("VC " + rocketVC + ": message to rocket");
+        multiplexerOperator.onMessageReceived(new Message("VC " + engineVC + " message to engine"));
+        multiplexerOperator.onMessageReceived(new Message("VC " + rocketVC + " message to rocket"));
 
-        verify(engineMocked).onMessageReceived("message to engine");
-        verify(rocketMocked).onMessageReceived("message to rocket");
+        verify(engineMocked).onMessageReceived(new Message("message to engine"));
+        verify(rocketMocked).onMessageReceived(new Message("message to rocket"));
     }
 
     @Test
@@ -131,24 +132,26 @@ public class MultiplexerFullStackTests {
         int engineVC = openVirtualChannel("ship.engine");
         int rocketVC = openVirtualChannel("ship.rocket");
 
-        multiplexerOperator.onMessageReceived("CMD closeVirtualChannel " + engineVC);
-        multiplexerOperator.onMessageReceived("CMD closeVirtualChannel " + rocketVC);
+        multiplexerOperator.onMessageReceived(new Message("CMD closeVirtualChannel " + engineVC));
+        multiplexerOperator.onMessageReceived(new Message("CMD closeVirtualChannel " + rocketVC));
         // No any answers in both cases are expected
 
-        multiplexerOperator.onMessageReceived("CMD closeVirtualChannel " + (engineVC + rocketVC));
-        verify(channelMocked).sendMessage("CMD FAILED: Virtual channel " + (engineVC + rocketVC) + " doesn't exist");
+        multiplexerOperator.onMessageReceived(new Message("CMD closeVirtualChannel " + (engineVC + rocketVC)));
+        verify(channelMocked).sendMessage(
+                new Message("CMD FAILED: Virtual channel " + (engineVC + rocketVC) + " doesn't exist"));
     }
 
     private int openVirtualChannel(String address)
     {
         Pattern responseParser = Pattern.compile("RESP\\s+(?<TID>\\w+)\\s+(?<VC>\\w+)");
 
-        multiplexerOperator.onMessageReceived("REQ 100500 openVirtualChannel " + address);
-        ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
+        multiplexerOperator.onMessageReceived(
+                new Message("REQ 100500 openVirtualChannel " + address));
+        ArgumentCaptor<Message> messageCaptor = ArgumentCaptor.forClass(Message.class);
         verify(channelMocked, atLeastOnce()).sendMessage(messageCaptor.capture());
-        String response = messageCaptor.getValue();
+        Message response = messageCaptor.getValue();
 
-        Matcher match = responseParser.matcher(response);
+        Matcher match = responseParser.matcher(response.data);
         assertTrue(match.matches());
         return Integer.parseInt(match.group("VC"));
     }

@@ -1,5 +1,7 @@
 package ru.codewar.networking;
 
 public interface NetworkTerminal {
-    void onMessageReceived(String message);
+    void onMessageReceived(Message message);
+
+    void attachToChannel(Channel channel);
 }

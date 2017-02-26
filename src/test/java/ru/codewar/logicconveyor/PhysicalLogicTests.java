@@ -57,6 +57,8 @@ public class PhysicalLogicTests {
 
         int totalTicks = (int)(t * world.getTicksInSecond() / 2);
         for(int i = 0; i < totalTicks; i++) {
+            if(i % 1000 == 0)
+                System.out.println("Tick #" + i + " / " + totalTicks);
             conveyor.proceed();
         }
 

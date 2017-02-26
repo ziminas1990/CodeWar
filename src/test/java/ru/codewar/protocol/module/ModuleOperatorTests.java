@@ -2,6 +2,7 @@ package ru.codewar.protocol.module;
 
 import org.junit.Test;
 import ru.codewar.networking.Channel;
+import ru.codewar.networking.Message;
 
 import static org.mockito.Mockito.*;
 
@@ -17,12 +18,12 @@ public class ModuleOperatorTests {
         moduleOperator.attachToChannel(mockedChannel);
         moduleOperator.attachToModuleController(mockedController);
 
-        when(mockedController.onRequest(12, "test request")).thenReturn("test response");
+        when(mockedController.onRequest(12, "test request")).thenReturn(new Message("test response"));
 
-        moduleOperator.onMessageReceived("REQ 12 test request");
+        moduleOperator.onMessageReceived(new Message("test request").addHeader("REQ 12"));
 
         verify(mockedController).onRequest(12, "test request");
-        verify(mockedChannel).sendMessage("RESP 12 test response");
+        verify(mockedChannel).sendMessage(new Message("test response").addHeader("RESP 12"));
     }
 
     @Test
@@ -34,12 +35,12 @@ public class ModuleOperatorTests {
         moduleOperator.attachToChannel(mockedChannel);
         moduleOperator.attachToModuleController(mockedController);
 
-        moduleOperator.onMessageReceived("REQ 12 test request");
+        moduleOperator.onMessageReceived(new Message("test request").addHeader("REQ 12"));
 
         verify(mockedController).onRequest(12, "test request");
         verify(mockedChannel, times(0)).sendMessage(null);
 
-        moduleOperator.onResponse(12, "test response");
-        verify(mockedChannel).sendMessage("RESP 12 test response");
+        moduleOperator.onResponse(12, new Message("test response"));
+        verify(mockedChannel).sendMessage(new Message("test response").addHeader("RESP 12"));
     }
 }

@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 
 import org.mockito.ArgumentCaptor;
 import ru.codewar.networking.Channel;
+import ru.codewar.networking.Message;
 import ru.codewar.protocol.module.ModuleOperator;
 
 public class MultiplexerTests {
@@ -103,18 +104,20 @@ public class MultiplexerTests {
         verify(rocketMock).attachToChannel(rocketChannelCaptured.capture());
 
         // Checking forwarding messages from client to module
-        multiplexer.forwardingMessage(engineChannelId, "Message to engine module");
-        verify(engineMock).onMessageReceived("Message to engine module");
+        multiplexer.forwardingMessage(engineChannelId, new Message("Frame to engine module"));
+        verify(engineMock).onMessageReceived(new Message("Frame to engine module"));
 
-        multiplexer.forwardingMessage(rocketChannelId, "Message to rocket module");
-        verify(rocketMock).onMessageReceived("Message to rocket module");
+        multiplexer.forwardingMessage(rocketChannelId, new Message("Frame to rocket module"));
+        verify(rocketMock).onMessageReceived(new Message("Frame to rocket module"));
 
         // Checking forwarding messages from module to client
-        engineChannelCaptured.getValue().sendMessage("Response from engine module");
-        verify(channelMock, times(1)).sendMessage("vc " + engineChannelId + " [Response from engine module]");
+        engineChannelCaptured.getValue().sendMessage(new Message("Response from engine module"));
+        verify(channelMock, times(1)).sendMessage(
+                new Message("Response from engine module").addHeader("VC " + engineChannelId));
 
-        rocketChannelCaptured.getValue().sendMessage("Response from rocket module");
-        verify(channelMock, times(1)).sendMessage("vc " + rocketChannelId + " [Response from rocket module]");
+        rocketChannelCaptured.getValue().sendMessage(new Message("Response from rocket module"));
+        verify(channelMock, times(1)).sendMessage(
+                new Message("Response from rocket module").addHeader("VC " + rocketChannelId));
     }
 
 }

@@ -1,6 +1,7 @@
 package ru.codewar.module.multiplexer;
 
 import ru.codewar.networking.Channel;
+import ru.codewar.networking.Message;
 import ru.codewar.protocol.module.ModuleOperator;
 import ru.codewar.util.IdPool;
 
@@ -60,7 +61,7 @@ public class Multiplexer {
         virtualChannels.remove(virtualChannelId);
     }
 
-    public void forwardingMessage(int virtualChannelId, String message) {
+    public void forwardingMessage(int virtualChannelId, Message message) {
         VirtualChannel virtualChannel = virtualChannels.get(virtualChannelId);
         if(virtualChannel != null) {
             virtualChannel.onMessageReceived(message);

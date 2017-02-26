@@ -1,5 +1,6 @@
 package ru.codewar.module.multiplexer;
 
+import ru.codewar.networking.Message;
 import ru.codewar.protocol.module.ModuleController;
 import ru.codewar.protocol.module.ModuleOperator;
 
@@ -13,7 +14,7 @@ import java.util.regex.Pattern;
  */
 public class MultiplexerOperator extends ModuleOperator {
 
-    private final Pattern virtualChannelPattern = Pattern.compile("VC\\s+(\\w+):\\s+(.*)");
+    private final Pattern virtualChannelPattern = Pattern.compile("VC\\s+(\\w+)\\s+(.*)");
 
     private MultiplexerController controller;
 
@@ -30,13 +31,13 @@ public class MultiplexerOperator extends ModuleOperator {
         }
     }
 
-    public void onMessageReceived(String message) {
+    public void onMessageReceived(Message message) {
         // Received a message, we should read it header and call an
         // appropriate function of the module
-        Matcher result = virtualChannelPattern.matcher(message);
+        Matcher result = virtualChannelPattern.matcher(message.data);
         if (result.matches()) {
             Integer virtualChannelId = Integer.valueOf(result.group(1));
-            controller.forwardingMessage(virtualChannelId, result.group(2));
+            controller.forwardingMessage(virtualChannelId, new Message(result.group(2)));
         } else {
             super.onMessageReceived(message);
         }

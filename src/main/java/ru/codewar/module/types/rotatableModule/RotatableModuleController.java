@@ -1,5 +1,6 @@
 package ru.codewar.module.types.rotatableModule;
 
+import ru.codewar.networking.Message;
 import ru.codewar.protocol.module.ModuleController;
 import ru.codewar.util.ArgumentsReader;
 
@@ -29,9 +30,7 @@ public class RotatableModuleController implements ModuleController {
         if(module == null) {
             return;
         }
-        Matcher matcher;
-
-        matcher = rotateCommandPattern.matcher(command);
+        Matcher matcher = rotateCommandPattern.matcher(command);
         if(matcher.matches()) {
             ArgumentsReader reader = new ArgumentsReader(matcher.group("ARGS"));
             Double delta = reader.readDouble();
@@ -45,17 +44,18 @@ public class RotatableModuleController implements ModuleController {
         }
     }
 
-    public String onRequest(Integer transactionId, String request) {
+    public Message onRequest(Integer transactionId, String request) {
         if(module == null) {
-            return "fail: controller wasn't attached to module!";
+            return new Message("fail: controller wasn't attached to module!");
         }
         if(getMaxSpeedReqPattern.matcher(request).matches()) {
-            return String.valueOf(module.getMaxRotationSpeed());
+            return new Message(String.valueOf(module.getMaxRotationSpeed()));
         }
         if(orientationReqPattern.matcher(request).matches()) {
-            return module.getOrientation().getNormilizedX() + " " +
-                    module.getOrientation().getNormilizedY();
+            return new Message(
+                    module.getOrientation().getNormilizedX() + " " +
+                    module.getOrientation().getNormilizedY());
         }
-        return "fail: incorrect request";
+        return new Message("fail: incorrect request");
     }
 }

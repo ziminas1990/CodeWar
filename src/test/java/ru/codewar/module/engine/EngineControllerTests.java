@@ -2,6 +2,7 @@ package ru.codewar.module.engine;
 
 import org.junit.Test;
 import ru.codewar.geometry.Vector;
+import ru.codewar.networking.Message;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -32,13 +33,16 @@ public class EngineControllerTests {
 
         Vector orientation = new Vector(4, 2);
         when(mockedModule.getOrientation()).thenReturn(orientation);
-        assertEquals(controller.onRequest(1, "orient"),
-                orientation.getNormilizedX() + " " + orientation.getNormilizedY());
+        assertEquals(
+                controller.onRequest(1, "orient"),
+                new Message(orientation.getNormilizedX() + " " + orientation.getNormilizedY()));
         verify(mockedModule, times(2)).getOrientation();
 
         double maxSpeed = 20;
         when(mockedModule.getMaxRotationSpeed()).thenReturn(maxSpeed);
-        assertEquals(controller.onRequest(1, "getMaxRotateSpeed"), String.valueOf(maxSpeed));
+        assertEquals(
+                controller.onRequest(1, "getMaxRotateSpeed"),
+                new Message(String.valueOf(maxSpeed)));
         verify(mockedModule).getMaxRotationSpeed();
 
         controller.onCommand("rotate -3.1 0.1");
@@ -58,12 +62,12 @@ public class EngineControllerTests {
 
         double maxThrust = 10000;
         when(mockedModule.getMaxThrust()).thenReturn(maxThrust);
-        assertEquals(controller.onRequest(1, "getMaxThrust"), String.valueOf(maxThrust));
+        assertEquals(controller.onRequest(1, "getMaxThrust"), new Message(String.valueOf(maxThrust)));
         verify(mockedModule).getMaxThrust();
 
         double currentThrust = 5000;
         when(mockedModule.getCurrentThrust()).thenReturn(currentThrust);
-        assertEquals(controller.onRequest(1, "getCurrentThrust"), String.valueOf(currentThrust));
+        assertEquals(controller.onRequest(1, "getCurrentThrust"), new Message(String.valueOf(currentThrust)));
         verify(mockedModule).getCurrentThrust();
 
     }

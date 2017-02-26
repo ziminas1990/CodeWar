@@ -1,6 +1,7 @@
 package ru.codewar.protocol.module;
 
 import ru.codewar.networking.Channel;
+import ru.codewar.networking.Message;
 import ru.codewar.networking.NetworkTerminal;
 
 import java.util.regex.Matcher;
@@ -32,41 +33,43 @@ public class ModuleOperator implements NetworkTerminal {
         this.channel = channel;
     }
 
-    public void onMessageReceived(String message) {
+    @Override // from NetworkTerminal
+    public void onMessageReceived(Message message) {
         // Received a message, we should read it header and call an
         // appropriate function of the module
-        Matcher result = requestPattern.matcher(message);
+        Matcher result = requestPattern.matcher(message.data);
         if (result.matches()) {
             Integer transactionId = Integer.valueOf(result.group(1));
-            String response = module.onRequest(transactionId, result.group(2));
+            Message response = module.onRequest(transactionId, result.group(2));
             if (response != null) {
                 // Got response immediately - sending it to client
                 onResponse(transactionId, response);
             }
         } else {
-            result = commandPattern.matcher(message);
+            result = commandPattern.matcher(message.data);
             if (result.matches()) {
                 module.onCommand(result.group(1));
             }
         }
     }
 
-    public void onResponse(int transactionId, String response) {
+    public void onResponse(int transactionId, Message response) {
         // Adding header to response and send it via channel
-        channel.sendMessage("RESP " + transactionId + " " + response);
+
+        channel.sendMessage(response.addHeader("RESP " + transactionId));
     }
 
-    public void onIndication(String indication) {
+    public void onIndication(Message indication) {
         // Adding header to response and send it via channel
-        channel.sendMessage("IND " + indication);
+        channel.sendMessage(indication.addHeader("IND"));
     }
 
     public void onCommandFailed(String details) {
-        channel.sendMessage("CMD FAILED: " + details);
+        channel.sendMessage(new Message("CMD FAILED: " + details));
     }
 
     public void onRequestFailed(int transactionId, String details) {
-        channel.sendMessage("REQ " + transactionId + " FAILED: " + details);
+        channel.sendMessage(new Message("REQ " + transactionId + " FAILED: " + details));
     }
 
 }

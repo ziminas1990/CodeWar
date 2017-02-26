@@ -1,5 +1,6 @@
 package ru.codewar.module.types.positionedModule;
 
+import ru.codewar.networking.Message;
 import ru.codewar.protocol.module.ModuleController;
 
 import java.util.regex.Pattern;
@@ -24,19 +25,21 @@ public class PositionedModuleController implements ModuleController {
         return positionReqPattern.matcher(message).matches();
     }
 
+    @Override // from ModuleController
     public void onCommand(String command)
     {
         // Positioned module doesn't proceedStage any commands
     }
 
-    public String onRequest(Integer transactionId, String request)
+    @Override // from ModuleController
+    public Message onRequest(Integer transactionId, String request)
     {
         if(module == null) {
-            return "fail: controller wasn't attached to module!";
+            return new Message("fail: controller wasn't attached to module!");
         }
         if(positionReqPattern.matcher(request).matches()) {
-            return module.getPosition().getX() + " " + module.getPosition().getY();
+            return new Message(module.getPosition().getX() + " " + module.getPosition().getY());
         }
-        return "fail: incorrect request";
+        return new Message("fail: incorrect request");
     }
 }

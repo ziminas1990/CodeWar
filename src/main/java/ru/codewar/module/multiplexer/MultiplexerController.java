@@ -1,5 +1,6 @@
 package ru.codewar.module.multiplexer;
 
+import ru.codewar.networking.Message;
 import ru.codewar.protocol.module.ModuleController;
 import ru.codewar.protocol.module.ModuleOperator;
 import ru.codewar.util.ArgumentsReader;
@@ -43,11 +44,11 @@ public class MultiplexerController implements ModuleController {
         operator.onCommandFailed("invalid command");
     }
 
-    public String onRequest(Integer transactionId, String request)
+    public Message onRequest(Integer transactionId, String request)
     {
         if(multiplexer == null) {
             operator.onRequestFailed(transactionId, "controller NOT attached to module");
-            return "";
+            return null;
         }
 
         Matcher match;
@@ -62,18 +63,18 @@ public class MultiplexerController implements ModuleController {
         }
 
         operator.onRequestFailed(transactionId, "invalid request");
-        return "";
+        return null;
     }
 
-    public void forwardingMessage(Integer virtualChannelId, String message)
+    public void forwardingMessage(Integer virtualChannelId, Message message)
     {
         multiplexer.forwardingMessage(virtualChannelId, message);
     }
 
-    private String onOpenVirtualChannelRequest(Integer transactionId, String address)
+    private Message onOpenVirtualChannelRequest(Integer transactionId, String address)
     {
         try {
-            return Integer.toString(multiplexer.openVirtualChannel(address));
+            return new Message(Integer.toString(multiplexer.openVirtualChannel(address)));
         } catch (IllegalArgumentException e) {
             operator.onRequestFailed(transactionId, e.getMessage());
             return null;
@@ -93,7 +94,7 @@ public class MultiplexerController implements ModuleController {
         }
     }
 
-    private String onGetAllModulesRequest()
+    private Message onGetAllModulesRequest()
     {
         Map<String, ModuleOperator> allModules = multiplexer.getAllModules();
         String response = "{";
@@ -101,6 +102,6 @@ public class MultiplexerController implements ModuleController {
             response += "[" + module.getAddress() + " " + module.getType() + "] ";
         }
         response += "}";
-        return response;
+        return new Message(response);
     }
 }

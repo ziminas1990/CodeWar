@@ -2,6 +2,7 @@ package ru.codewar.module.types.rotatableModule;
 
 import org.junit.Test;
 import ru.codewar.geometry.Vector;
+import ru.codewar.networking.Message;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -28,8 +29,9 @@ public class RotatableModuleControllerTests {
 
         Vector orientation = new Vector(4, 2);
         when(mockedModule.getOrientation()).thenReturn(orientation);
-        assertEquals(controller.onRequest(1, "orient"),
-                orientation.getNormilizedX() + " " + orientation.getNormilizedY());
+        assertEquals(
+                controller.onRequest(1, "orient"),
+                new Message(orientation.getNormilizedX() + " " + orientation.getNormilizedY()));
         verify(mockedModule, times(2)).getOrientation();
     }
 
@@ -42,7 +44,9 @@ public class RotatableModuleControllerTests {
 
         double maxSpeed = 20;
         when(mockedModule.getMaxRotationSpeed()).thenReturn(maxSpeed);
-        assertEquals(controller.onRequest(1, "getMaxRotateSpeed"), String.valueOf(maxSpeed));
+        assertEquals(
+                controller.onRequest(1, "getMaxRotateSpeed"),
+                new Message(String.valueOf(maxSpeed)));
         verify(mockedModule).getMaxRotationSpeed();
     }
 

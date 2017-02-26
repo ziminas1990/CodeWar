@@ -4,17 +4,17 @@ package ru.codewar.protocol.link;
 import java.util.Vector;
 
 
-public class Message {
+public class Frame {
     private short nSeq = 0x0FFF;
     private Vector<Short> confirmedFrames = new Vector<>();
     private Vector<Short> lostedFrames = new Vector<>();
     private String data;
 
-    public Message() {
+    public Frame() {
 
     }
 
-    public Message(short nSeq, String sData) {
+    public Frame(short nSeq, String sData) {
         this.nSeq = nSeq;
         this.data = sData;
     }

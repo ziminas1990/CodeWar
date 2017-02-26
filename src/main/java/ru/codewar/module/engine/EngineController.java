@@ -2,6 +2,7 @@ package ru.codewar.module.engine;
 
 import ru.codewar.module.types.rotatableModule.RotatableModuleController;
 
+import ru.codewar.networking.Message;
 import ru.codewar.protocol.module.ModuleController;
 import ru.codewar.util.ArgumentsReader;
 
@@ -49,17 +50,17 @@ public class EngineController implements ModuleController {
         }
     }
 
-    public String onRequest(Integer transactionId, String request) {
+    public Message onRequest(Integer transactionId, String request) {
         if(module == null)
             return null;
         if(RotatableModuleController.checkIfSupported(request)) {
             return rotatableModuleController.onRequest(transactionId, request);
         }
         if(getCurrentThrustReqPattern.matcher(request).matches()) {
-            return String.valueOf(module.getCurrentThrust());
+            return new Message(String.valueOf(module.getCurrentThrust()));
         }
         if(getMaxThrustReqPattern.matcher(request).matches()) {
-            return String.valueOf(module.getMaxThrust());
+            return new Message(String.valueOf(module.getMaxThrust()));
         }
         return null;
     }

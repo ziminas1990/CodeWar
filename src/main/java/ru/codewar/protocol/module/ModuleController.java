@@ -1,6 +1,8 @@
 package ru.codewar.protocol.module;
 
 
+import ru.codewar.networking.Message;
+
 public interface ModuleController {
     /**
      * check if controller is able to parse and execute command or request
@@ -20,5 +22,5 @@ public interface ModuleController {
      * immediately, function will return response as ready-to-send string, otherwise return null
      * If controller receive response later, it will call an "onResponse" function of ModuleOperator
      */
-    String onRequest(Integer transactionId, String request);
+    Message onRequest(Integer transactionId, String request);
 }
