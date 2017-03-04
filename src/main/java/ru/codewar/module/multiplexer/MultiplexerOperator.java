@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Multiplexer operator extends base operations list REQ/CMD, and add new operation "VC",
+ * MultiplexerLogic operator extends base operations list REQ/CMD, and add new operation "VC",
  * that means "VirtualChannel". It allows to transparently forward messages through multiplexer to
  * destination module
  */

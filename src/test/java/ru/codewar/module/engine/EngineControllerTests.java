@@ -36,7 +36,7 @@ public class EngineControllerTests {
         assertEquals(
                 controller.onRequest(1, "orient"),
                 new Message(orientation.getNormilizedX() + " " + orientation.getNormilizedY()));
-        verify(mockedModule, times(2)).getOrientation();
+        verify(mockedModule).getOrientation();
 
         double maxSpeed = 20;
         when(mockedModule.getMaxRotationSpeed()).thenReturn(maxSpeed);

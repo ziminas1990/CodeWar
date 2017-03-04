@@ -10,13 +10,13 @@ public class ConveyorTests {
         int extraThreads  = 50;
         int totalProceeds = 100;
         int totalThreads  = extraThreads + 1;
-        Conveyor conveyor = new Conveyor(extraThreads);
+        MultithreadConveyor multithreadConveyor = new MultithreadConveyor(extraThreads);
 
         MockedConveyorLogic mockedLogic = new MockedConveyorLogic(totalThreads, 100);
-        conveyor.addLogic(mockedLogic);
+        multithreadConveyor.addLogic(mockedLogic);
 
         for(int i = 0; i < totalProceeds; i++) {
-            conveyor.proceed();
+            multithreadConveyor.proceed();
         }
 
         for(int i = 0; i < totalThreads; i++) {

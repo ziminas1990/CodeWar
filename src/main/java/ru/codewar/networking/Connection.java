@@ -40,5 +40,6 @@ class Connection implements Channel {
                 channel.sendMessage(responses.get(index));
             } catch (IOException ioexception) {}
         }
+        responses.clear();
     }
 }

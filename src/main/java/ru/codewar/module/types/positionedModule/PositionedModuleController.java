@@ -1,5 +1,6 @@
 package ru.codewar.module.types.positionedModule;
 
+import ru.codewar.geometry.Point;
 import ru.codewar.networking.Message;
 import ru.codewar.protocol.module.ModuleController;
 
@@ -8,7 +9,7 @@ import java.util.regex.Pattern;
 /**
  * Possible requests:
  * 1. "position" - request module position
- * 2. "orientation" - request module orientation
+ * 2. "orientation" - request module orientation (nut supported)
  */
 public class PositionedModuleController implements ModuleController {
     private final static Pattern positionReqPattern = Pattern.compile("position\\s*");
@@ -20,7 +21,7 @@ public class PositionedModuleController implements ModuleController {
         this.module = module;
     }
 
-    static boolean checkIfSupported(String message)
+    public static boolean checkIfSupported(String message)
     {
         return positionReqPattern.matcher(message).matches();
     }
@@ -38,7 +39,8 @@ public class PositionedModuleController implements ModuleController {
             return new Message("fail: controller wasn't attached to module!");
         }
         if(positionReqPattern.matcher(request).matches()) {
-            return new Message(module.getPosition().getX() + " " + module.getPosition().getY());
+            Point position = module.getPosition();
+            return new Message(position.getX() + " " + position.getY());
         }
         return new Message("fail: incorrect request");
     }

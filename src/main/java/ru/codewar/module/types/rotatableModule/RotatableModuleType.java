@@ -5,7 +5,7 @@ import ru.codewar.geometry.Vector;
 public interface RotatableModuleType {
     double getMaxRotationSpeed();
 
-    double rotate(double delta, double speed);
+    void rotate(double delta, double speed);
 
     Vector getOrientation();
 }

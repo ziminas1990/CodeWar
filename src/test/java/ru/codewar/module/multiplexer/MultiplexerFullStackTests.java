@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 
 public class MultiplexerFullStackTests {
 
-    private Multiplexer multiplexer;
+    private MultiplexerLogic multiplexerLogic;
     private MultiplexerController controller;
     private ModuleOperator engineMocked;
     private ModuleOperator rocketMocked;
@@ -30,33 +30,33 @@ public class MultiplexerFullStackTests {
          +------------+             +------------+
          | engineMock |             | rocketMock |
          +------------+             +------------+
-           | ^    |                   |      ^ |
-           | |    +-------+   +-------+      | |
-           v |            |   |              | v
-          +----+      +-------------+       +----+
-          | VC |<-----| multiplexer |------>| VC |
-          +----+      +-------------+       +----+
-             |               ^                 |
+           | A     |                   |     A |
+           | |     +-------+   +-------+     | |
+           V |             |   |             | V
+          +----+    +------------------+    +----+
+          | VC |<---| multiplexerLogic |--->| VC |
+          +----+    +------------------+    +----+
+             |               A                 |
              |               |                 |
              |    +-----------------------+    |
              |    | multiplexerController |    |
              |    +-----------------------+    |
-             |               ^                 |
+             |               A                 |
              |               |                 |
              |    +-----------------------+    |
              |    |  multiplexerOperator  |    |
              |    +-----------------------+    |
-             v               |                 v
+             V               |                 V
            +-------------------------------------+
            |            channelMocked            |
            +-------------------------------------+
 
 
-          "VC" - virtual channels. They would be created by multiplexer after
+          "VC" - virtual channels. They would be created by multiplexerLogic after
            openVirtualChannel() function be called
          */
 
-        multiplexer = new Multiplexer();
+        multiplexerLogic = new MultiplexerLogic();
         controller = new MultiplexerController();
         multiplexerOperator = new MultiplexerOperator("ship.mux");
 
@@ -70,9 +70,9 @@ public class MultiplexerFullStackTests {
 
         channelMocked = mock(Channel.class);
 
-        multiplexer.addModule(engineMocked);
-        multiplexer.addModule(rocketMocked);
-        controller.attachToMultiplexer(multiplexer);
+        multiplexerLogic.addModule(engineMocked);
+        multiplexerLogic.addModule(rocketMocked);
+        controller.attachToMultiplexer(multiplexerLogic);
         controller.attachToOperator(multiplexerOperator);
         multiplexerOperator.attachToModuleController(controller);
         multiplexerOperator.attachToChannel(channelMocked);

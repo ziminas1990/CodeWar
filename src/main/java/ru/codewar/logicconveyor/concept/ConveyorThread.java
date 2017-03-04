@@ -3,11 +3,11 @@ package ru.codewar.logicconveyor.concept;
 
 public class ConveyorThread extends Thread {
 
-    private Conveyor conveyor;
+    private MultithreadConveyor conveyor;
     private int threadId;
     private int totalThreads;
 
-    ConveyorThread(Conveyor conveyor, int threadId, int totalThreads) {
+    ConveyorThread(MultithreadConveyor conveyor, int threadId, int totalThreads) {
         this.conveyor = conveyor;
         this.threadId = threadId;
         this.totalThreads = totalThreads;

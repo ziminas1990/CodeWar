@@ -2,7 +2,7 @@ package ru.codewar.geometry;
 
 public class Vector extends Point {
     private double length;  // Access only via getLength() - lazy semantics is used
-    private boolean needToUpdateLength;
+    private boolean needToUpdateLength = true;
 
     public Vector() {}
     public Vector(double x, double y) {
@@ -11,6 +11,13 @@ public class Vector extends Point {
     public Vector(Vector other) { super(other); }
     public Vector(Point from, Point to) {
         super(to.getX() - from.getX(), to.getY() - from.getY());
+    }
+
+    private Vector(double x, double y, double length) {
+        this.x = x;
+        this.y = y;
+        this.length = length;
+        needToUpdateLength = false;
     }
 
     @Override
@@ -75,6 +82,33 @@ public class Vector extends Point {
 
     public double getSquaredLength() {
         return x * x + y * y;
+    }
+
+    public void rotate(double angle) {
+        double sinAngle = Math.sin(angle);
+        double cosAngle = Math.cos(angle);
+        x = x * cosAngle - y * sinAngle;
+        y = x * sinAngle + y * cosAngle;
+    }
+
+    public void turnToLeft() {
+        double oldX = x;
+        x = -y;
+        y = oldX;
+    }
+
+    public Vector getLeftDirection() {
+        return (needToUpdateLength) ? new Vector(-y, x) : new Vector(-y, x, length);
+    }
+
+    public void turnToRight() {
+        double oldX = x;
+        x = y;
+        y = -oldX;
+    }
+
+    public Vector getRightDirection() {
+        return (needToUpdateLength) ? new Vector(y, -x) : new Vector(y, -x, length);
     }
 
 }

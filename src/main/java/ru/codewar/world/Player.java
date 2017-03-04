@@ -2,38 +2,40 @@ package ru.codewar.world;
 
 
 import ru.codewar.module.multiplexer.Multiplexer;
-import ru.codewar.module.multiplexer.MultiplexerController;
 import ru.codewar.module.multiplexer.MultiplexerOperator;
+import ru.codewar.module.ship.Ship;
+import ru.codewar.module.ship.ShipController;
+import ru.codewar.module.ship.ShipModule;
 import ru.codewar.networking.Channel;
+import ru.codewar.protocol.module.ModuleOperator;
 
 public class Player {
 
     private String login;
-    private Multiplexer multiplexer;
-    private MultiplexerController multiplexerController;
-    private MultiplexerOperator multiplexerOperator;
+
+    private Multiplexer multiplexer = new Multiplexer("root");
+
+    private Ship ship;
 
     public Player(String login) {
         this.login = login;
-        multiplexer = new Multiplexer();
-        multiplexerController = new MultiplexerController();
-        multiplexerOperator = new MultiplexerOperator("root");
-
-        multiplexerController.attachToMultiplexer(multiplexer);
-        multiplexerController.attachToOperator(multiplexerOperator);
-        multiplexerOperator.attachToModuleController(multiplexerController);
     }
 
     public void attachToChannel(Channel channel) {
         multiplexer.attachToChannel(channel);
-        multiplexerOperator.attachToChannel(channel);
     }
+
+    public void setShip(ShipModule shipLogic) {
+        ship = new Ship(shipLogic, "ship");
+        multiplexer.addModule(ship.getOperator());
+    }
+    public Ship getShip() { return ship; }
 
     public String getLogin() { return login; }
 
     public MultiplexerOperator getMessagesEntryPoint()
     {
-        return multiplexerOperator;
+        return multiplexer.getOperator();
     }
 
 

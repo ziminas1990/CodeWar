@@ -1,8 +1,10 @@
 package ru.codewar.module.types.rotatableModule;
 
 import org.junit.Test;
+import ru.codewar.geometry.Point;
 import ru.codewar.geometry.Vector;
 import ru.codewar.networking.Message;
+import ru.codewar.protocol.module.ModuleController;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -32,7 +34,7 @@ public class RotatableModuleControllerTests {
         assertEquals(
                 controller.onRequest(1, "orient"),
                 new Message(orientation.getNormilizedX() + " " + orientation.getNormilizedY()));
-        verify(mockedModule, times(2)).getOrientation();
+        verify(mockedModule).getOrientation();
     }
 
     @Test
@@ -74,5 +76,30 @@ public class RotatableModuleControllerTests {
         controller.onCommand("rotate -3.1");
         verify(mockedModule).getMaxRotationSpeed();
         verify(mockedModule).rotate(Double.parseDouble("-3.1"), maxSpeed);
+    }
+
+    // Useful to check, that other controller aggregates positioned module controller correctly
+    // controller - instance of controller, that use PositionedModuleController
+    // mockedModule - mock instance of PositionedModule, to which controller is connected
+    public static void inheritanceChecker(ModuleController controller, RotatableModuleType mockedModule) {
+        Point position = new Point(4, 2);
+
+        Vector orientation = new Vector(4, 2);
+        double maxSpeed = 20;
+        when(mockedModule.getOrientation()).thenReturn(orientation);
+        when(mockedModule.getMaxRotationSpeed()).thenReturn(maxSpeed);
+
+        assertEquals(
+                controller.onRequest(1, "orient"),
+                new Message(orientation.getNormilizedX() + " " + orientation.getNormilizedY()));
+        verify(mockedModule).getOrientation();
+
+        assertEquals(
+                controller.onRequest(1, "getMaxRotateSpeed"),
+                new Message(String.valueOf(maxSpeed)));
+        verify(mockedModule).getMaxRotationSpeed();
+
+        controller.onCommand("rotate -3.1 0.1");
+        verify(mockedModule).rotate(Double.parseDouble("-3.1"), Double.parseDouble("0.1"));
     }
 }

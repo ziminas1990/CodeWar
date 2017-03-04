@@ -17,20 +17,20 @@ public class MultiplexerController implements ModuleController {
     private final static Pattern closePattern = Pattern.compile("closeVirtualChannel\\s+(\\d+)");
     private final static Pattern getModulesListPattern = Pattern.compile("getModulesList");
 
-    private Multiplexer multiplexer;
+    private MultiplexerLogic multiplexerLogic;
     private ModuleOperator operator;
 
     public static boolean checkIfSupported(String message) {
         return checkPattern.matcher(message).matches();
     }
 
-    public void attachToMultiplexer(Multiplexer multiplexer) { this.multiplexer = multiplexer; }
+    public void attachToMultiplexer(MultiplexerLogic multiplexerLogic) { this.multiplexerLogic = multiplexerLogic; }
 
     public void attachToOperator(ModuleOperator operator) { this.operator = operator; }
 
     public void onCommand(String command)
     {
-        if(multiplexer == null) {
+        if(multiplexerLogic == null) {
             operator.onCommandFailed("controller NOT attached to module");
             return;
         }
@@ -46,7 +46,7 @@ public class MultiplexerController implements ModuleController {
 
     public Message onRequest(Integer transactionId, String request)
     {
-        if(multiplexer == null) {
+        if(multiplexerLogic == null) {
             operator.onRequestFailed(transactionId, "controller NOT attached to module");
             return null;
         }
@@ -68,13 +68,13 @@ public class MultiplexerController implements ModuleController {
 
     public void forwardingMessage(Integer virtualChannelId, Message message)
     {
-        multiplexer.forwardingMessage(virtualChannelId, message);
+        multiplexerLogic.forwardingMessage(virtualChannelId, message);
     }
 
     private Message onOpenVirtualChannelRequest(Integer transactionId, String address)
     {
         try {
-            return new Message(Integer.toString(multiplexer.openVirtualChannel(address)));
+            return new Message(Integer.toString(multiplexerLogic.openVirtualChannel(address)));
         } catch (IllegalArgumentException e) {
             operator.onRequestFailed(transactionId, e.getMessage());
             return null;
@@ -88,7 +88,7 @@ public class MultiplexerController implements ModuleController {
             operator.onCommandFailed("incorrect channel id value");
         }
         try {
-            multiplexer.closeVirtualChannel(channelId);
+            multiplexerLogic.closeVirtualChannel(channelId);
         } catch (IllegalArgumentException e) {
             operator.onCommandFailed(e.getMessage());
         }
@@ -96,7 +96,7 @@ public class MultiplexerController implements ModuleController {
 
     private Message onGetAllModulesRequest()
     {
-        Map<String, ModuleOperator> allModules = multiplexer.getAllModules();
+        Map<String, ModuleOperator> allModules = multiplexerLogic.getAllModules();
         String response = "{";
         for(ModuleOperator module : allModules.values()) {
             response += "[" + module.getAddress() + " " + module.getType() + "] ";

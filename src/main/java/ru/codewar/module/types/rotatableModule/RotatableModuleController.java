@@ -1,5 +1,6 @@
 package ru.codewar.module.types.rotatableModule;
 
+import ru.codewar.geometry.Vector;
 import ru.codewar.networking.Message;
 import ru.codewar.protocol.module.ModuleController;
 import ru.codewar.util.ArgumentsReader;
@@ -52,9 +53,10 @@ public class RotatableModuleController implements ModuleController {
             return new Message(String.valueOf(module.getMaxRotationSpeed()));
         }
         if(orientationReqPattern.matcher(request).matches()) {
+            Vector orientation = module.getOrientation();
             return new Message(
-                    module.getOrientation().getNormilizedX() + " " +
-                    module.getOrientation().getNormilizedY());
+                    orientation.getNormilizedX() + " " +
+                            orientation.getNormilizedY());
         }
         return new Message("fail: incorrect request");
     }

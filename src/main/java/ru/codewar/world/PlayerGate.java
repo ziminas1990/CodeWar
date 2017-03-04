@@ -14,6 +14,7 @@ public class PlayerGate {
 
     Map<String, String> playersPasswords = new HashMap<>();
     World world;
+    PlayerLoader playerLoader = new PlayerLoader();
 
     public PlayerGate(World world) {
         this.world = world;
@@ -41,7 +42,16 @@ public class PlayerGate {
         if(!playersPasswords.get(login).equals(password)) {
             return null;
         }
-        return world.getPlayer(login);
+
+        Player player = world.getPlayer(login);
+        if(player == null) {
+            // we should create player and add him to the world
+            player = playerLoader.loadPlayer(login);
+            if (player != null) {
+                world.addPlayer(player);
+            }
+        }
+        return player;
     }
 
 }

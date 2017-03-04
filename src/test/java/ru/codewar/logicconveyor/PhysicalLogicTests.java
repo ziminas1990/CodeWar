@@ -3,7 +3,7 @@ package ru.codewar.logicconveyor;
 import org.junit.Test;
 import ru.codewar.geometry.Point;
 import ru.codewar.geometry.Vector;
-import ru.codewar.logicconveyor.concept.Conveyor;
+import ru.codewar.logicconveyor.concept.MultithreadConveyor;
 import ru.codewar.logicconveyor.physicallogic.PhysicalObject;
 import ru.codewar.logicconveyor.physicallogic.PhysicalObjectImpl;
 import ru.codewar.logicconveyor.physicallogic.PhysicalLogic;
@@ -30,10 +30,10 @@ public class PhysicalLogicTests {
         int totalOrbits = 2;
         int totalObjectsOnEachOrbit = 200;
 
-        Conveyor conveyor = new Conveyor(extraThreads);
+        MultithreadConveyor multithreadConveyor = new MultithreadConveyor(extraThreads);
         PhysicalLogic world = new PhysicalLogic();
         world.setSecondsInTick(0.001);
-        conveyor.addLogic(world);
+        multithreadConveyor.addLogic(world);
 
         java.util.List<PhysicalObject> createdObjects = new java.util.ArrayList<>();
 
@@ -59,7 +59,7 @@ public class PhysicalLogicTests {
         for(int i = 0; i < totalTicks; i++) {
             if(i % 1000 == 0)
                 System.out.println("Tick #" + i + " / " + totalTicks);
-            conveyor.proceed();
+            multithreadConveyor.proceed();
         }
 
         for(PhysicalObject object : createdObjects) {

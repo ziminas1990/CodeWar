@@ -12,7 +12,7 @@ import ru.codewar.protocol.module.ModuleOperator;
 
 public class MultiplexerTests {
 
-    private Multiplexer multiplexer;
+    private MultiplexerLogic multiplexerLogic;
     private ModuleOperator engineMock;
     private ModuleOperator rocketMock;
     private Channel channelMock;
@@ -26,9 +26,9 @@ public class MultiplexerTests {
                   |                   |
                   +-------+   +-------+
                           |   |
-                    +--------------+
-                    |  multiplexer |
-                    +--------------+
+                  +-------------------+
+                  |  multiplexerLogic |
+                  +-------------------+
                             |
                     +--------------+
                     |  channelMock |
@@ -43,30 +43,30 @@ public class MultiplexerTests {
 
         channelMock = mock(Channel.class);
 
-        multiplexer = new Multiplexer();
-        multiplexer.addModule(engineMock);
-        multiplexer.addModule(rocketMock);
-        multiplexer.attachToChannel(channelMock);
+        multiplexerLogic = new MultiplexerLogic();
+        multiplexerLogic.addModule(engineMock);
+        multiplexerLogic.addModule(rocketMock);
+        multiplexerLogic.attachToChannel(channelMock);
     }
 
     @Test
     public void createVirtualChannel() {
-        int engineChannelId = multiplexer.openVirtualChannel("ship.engine");
+        int engineChannelId = multiplexerLogic.openVirtualChannel("ship.engine");
         verify(engineMock).attachToChannel(any());
 
-        int rocketChannelId = multiplexer.openVirtualChannel("ship.rocket");
+        int rocketChannelId = multiplexerLogic.openVirtualChannel("ship.rocket");
         verify(rocketMock).attachToChannel(any());
 
         assertNotEquals(engineChannelId, rocketChannelId);
 
         try {
-            multiplexer.openVirtualChannel("ship.restroom");
+            multiplexerLogic.openVirtualChannel("ship.restroom");
         } catch (IllegalArgumentException e) {
             assertEquals("Element ship.restroom NOT found", e.getMessage());
         }
 
         try {
-            multiplexer.openVirtualChannel("ship.engine");
+            multiplexerLogic.openVirtualChannel("ship.engine");
         } catch (IllegalArgumentException e) {
             assertEquals("Module ship.engine is already in use", e.getMessage());
         }
@@ -74,19 +74,19 @@ public class MultiplexerTests {
 
     @Test
     public void closeVirtualChannel() {
-        int engineChannelId = multiplexer.openVirtualChannel("ship.engine");
+        int engineChannelId = multiplexerLogic.openVirtualChannel("ship.engine");
         verify(engineMock).attachToChannel(any());
 
-        multiplexer.closeVirtualChannel(engineChannelId);
+        multiplexerLogic.closeVirtualChannel(engineChannelId);
 
         // Checking, that after the channel was closed, it is possible to
         // open new channel
-        multiplexer.openVirtualChannel("ship.engine");
+        multiplexerLogic.openVirtualChannel("ship.engine");
         verify(engineMock, times(2)).attachToChannel(any());
 
         // Trying to close a non-existent channel
         try {
-            multiplexer.closeVirtualChannel(engineChannelId + 1);
+            multiplexerLogic.closeVirtualChannel(engineChannelId + 1);
         } catch (IllegalArgumentException e) {
             assertEquals("Virtual channel " + (engineChannelId + 1) + " doesn't exist", e.getMessage());
         }
@@ -94,8 +94,8 @@ public class MultiplexerTests {
 
     @Test
     public void forwardingMessages() {
-        int engineChannelId = multiplexer.openVirtualChannel("ship.engine");
-        int rocketChannelId = multiplexer.openVirtualChannel("ship.rocket");
+        int engineChannelId = multiplexerLogic.openVirtualChannel("ship.engine");
+        int rocketChannelId = multiplexerLogic.openVirtualChannel("ship.rocket");
 
         ArgumentCaptor<Channel> engineChannelCaptured = ArgumentCaptor.forClass(Channel.class);
         verify(engineMock).attachToChannel(engineChannelCaptured.capture());
@@ -104,10 +104,10 @@ public class MultiplexerTests {
         verify(rocketMock).attachToChannel(rocketChannelCaptured.capture());
 
         // Checking forwarding messages from client to module
-        multiplexer.forwardingMessage(engineChannelId, new Message("Frame to engine module"));
+        multiplexerLogic.forwardingMessage(engineChannelId, new Message("Frame to engine module"));
         verify(engineMock).onMessageReceived(new Message("Frame to engine module"));
 
-        multiplexer.forwardingMessage(rocketChannelId, new Message("Frame to rocket module"));
+        multiplexerLogic.forwardingMessage(rocketChannelId, new Message("Frame to rocket module"));
         verify(rocketMock).onMessageReceived(new Message("Frame to rocket module"));
 
         // Checking forwarding messages from module to client

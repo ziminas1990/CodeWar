@@ -2,23 +2,22 @@ package ru.codewar.logicconveyor.concept;
 
 import java.util.concurrent.CyclicBarrier;
 
-public class Conveyor {
+public class MultithreadConveyor {
 
     private java.util.List<ConveyorLogic> logicChain = new java.util.ArrayList<>();
     private ConveyorThread masterThreadLogic;
     private java.util.Vector<ConveyorThread> slaveThreads;
     private CyclicBarrier barrier;
 
-    public Conveyor(int slaveThreadsCount)    {
+    public MultithreadConveyor(int slaveThreadsCount)    {
         int totalThreads = slaveThreadsCount + 1;
         barrier = new CyclicBarrier(totalThreads);
 
         masterThreadLogic = new ConveyorThread(this, 0, totalThreads);
         slaveThreads = new java.util.Vector<>(slaveThreadsCount);
         for(int i = 1; i < totalThreads; i++) {
-            ConveyorThread thread = new ConveyorThread(this, i, totalThreads);
-            slaveThreads.add(thread);
-            thread.start();
+            slaveThreads.add(new ConveyorThread(this, i, totalThreads));
+            slaveThreads.lastElement().start();
         }
     }
 

@@ -3,13 +3,11 @@ package ru.codewar.module.types.positionedModule;
 import org.junit.Test;
 import ru.codewar.geometry.Point;
 import ru.codewar.networking.Message;
+import ru.codewar.protocol.module.ModuleController;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-/**
- * Created by Александр on 13.12.2016.
- */
 public class PositionedModuleControllerTests {
 
     @Test
@@ -49,7 +47,19 @@ public class PositionedModuleControllerTests {
         assertEquals(
                 controller.onRequest(1, "position"),
                 new Message(position.getX() + " " + position.getY()));
-        verify(mockedModule, times(2)).getPosition();
+        verify(mockedModule, times(1)).getPosition();
+    }
+
+    // Useful to check, that other controller aggregates positioned module controller correctly
+    // controller - instance of controller, that use PositionedModuleController
+    // mockedModule - mock instance of PositionedModule, to which controller is connected
+    public static void inheritanceChecker(ModuleController controller, PositionedModuleType mockedModule) {
+        Point position = new Point(4, 2);
+        when(mockedModule.getPosition()).thenReturn(position);
+        assertEquals(
+                controller.onRequest(1, "position"),
+                new Message(position.getX() + " " + position.getY()));
+        verify(mockedModule, times(1)).getPosition();
     }
 
 }
