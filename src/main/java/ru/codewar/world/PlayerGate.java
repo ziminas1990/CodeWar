@@ -1,7 +1,7 @@
 package ru.codewar.world;
 
+import ru.codewar.database.playerloader.PlayerLoaderDummy;
 import ru.codewar.networking.Message;
-import ru.codewar.networking.NetworkTerminal;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ public class PlayerGate {
 
     Map<String, String> playersPasswords = new HashMap<>();
     World world;
-    PlayerLoader playerLoader = new PlayerLoader();
+    PlayerLoaderDummy playerLoader = new PlayerLoaderDummy();
 
     public PlayerGate(World world) {
         this.world = world;

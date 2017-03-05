@@ -1,10 +1,12 @@
-package ru.codewar.world;
+package ru.codewar.database.playerloader;
 
 import ru.codewar.module.ship.ShipModule;
+import ru.codewar.world.Player;
+import ru.codewar.database.shiploader.ShipLoaderDummy;
 
-public class PlayerLoader {
+public class PlayerLoaderDummy implements PlayerLoader {
 
-    private ShipLoader shipLoader = new ShipLoader();
+    private ShipLoaderDummy shipLoader = new ShipLoaderDummy();
 
     public Player loadPlayer(String login) {
         Player player = new Player(login);

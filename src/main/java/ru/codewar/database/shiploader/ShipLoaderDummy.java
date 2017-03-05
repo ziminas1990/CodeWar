@@ -1,12 +1,13 @@
-package ru.codewar.world;
+package ru.codewar.database.shiploader;
 
 import ru.codewar.geometry.Point;
 import ru.codewar.geometry.Vector;
 import ru.codewar.module.ship.ShipModule;
 import ru.codewar.module.ship.ShipLogic;
+import ru.codewar.world.Player;
 
-public class ShipLoader {
-    public ShipLoader() {}
+public class ShipLoaderDummy {
+    public ShipLoaderDummy() {}
 
     public ShipModule loadShip(Player player, String shipName) {
         ShipLogic ship =
