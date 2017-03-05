@@ -1,6 +1,7 @@
 package ru.codewar.module.ship;
 
 import org.junit.Test;
+import ru.codewar.module.BaseModuleControllerTests;
 import ru.codewar.module.types.positionedModule.PositionedModuleControllerTests;
 import ru.codewar.module.types.rotatableModule.RotatableModuleControllerTests;
 
@@ -17,6 +18,7 @@ public class ShipControllerTests {
         ShipController controller = new ShipController();
         controller.attachToModule(mockedShip);
 
+        BaseModuleControllerTests.inheritanceChecker(controller, mockedShip);
         PositionedModuleControllerTests.inheritanceChecker(controller, mockedShip);
         RotatableModuleControllerTests.inheritanceChecker(controller, mockedShip);
     }

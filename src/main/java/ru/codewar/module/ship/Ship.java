@@ -12,7 +12,7 @@ public class Ship {
 
     public Ship(ShipModule logic, String address) {
         this.logic = logic;
-        operator = new ModuleOperator(address, "Ship");
+        operator = new ModuleOperator(address, logic.getType());
         controller.attachToModule(logic);
         operator.attachToModuleController(controller);
     }
@@ -26,5 +26,4 @@ public class Ship {
     public PhysicalObject asPhysicalObject() {
         return (logic instanceof PhysicalObject) ? (PhysicalObject)logic : null;
     }
-
 }

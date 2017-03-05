@@ -21,6 +21,13 @@ public class ShipLogic extends PhysicalObjectImpl implements ShipModule {
     // @Override
     // public Point getPosition() {}
 
+    @Override // from ShipModule -> BaseModuleInterface
+    public String getType() { return "ship"; }
+    @Override // from ShipModule -> BaseModuleInterface
+    public String getModel() { return "noobship"; }
+    @Override // from ShipModule -> BaseModuleInterface
+    public String getParameters() { return ""; };
+
     @Override // from ShipModule -> RotatableModuleType
     public double getMaxRotationSpeed() { return 0; }
     @Override // from ShipModule -> RotatableModuleType
