@@ -4,7 +4,9 @@ public class Vector extends Point {
     private double length;  // Access only via getLength() - lazy semantics is used
     private boolean needToUpdateLength = true;
 
-    public Vector() {}
+    public Vector() {
+        needToUpdateLength = false;
+    }
     public Vector(double x, double y) {
         setPosition(x, y);
     }
@@ -18,6 +20,14 @@ public class Vector extends Point {
         this.y = y;
         this.length = length;
         needToUpdateLength = false;
+    }
+
+    public Vector clone() {
+        return (needToUpdateLength) ? new Vector(x, y) : new Vector(x, y, length);
+    }
+
+    public double scalarProduct(Vector other) {
+        return (x * other.x + y * other.y) / (getLength() * other.getLength());
     }
 
     @Override
@@ -44,10 +54,11 @@ public class Vector extends Point {
         return y / getLength();
     }
 
-    public void normalize() {
+    public Vector normalize() {
         x /= getLength();
         y /= getLength();
         length = 1;
+        return this;
     }
 
     public void reset() {
@@ -84,31 +95,53 @@ public class Vector extends Point {
         return x * x + y * y;
     }
 
-    public void rotate(double angle) {
+    public Vector rotate(double angle) {
         double sinAngle = Math.sin(angle);
         double cosAngle = Math.cos(angle);
+        double oldX = x;
         x = x * cosAngle - y * sinAngle;
-        y = x * sinAngle + y * cosAngle;
+        y = oldX * sinAngle + y * cosAngle;
+        return this;
     }
 
-    public void turnToLeft() {
-        double oldX = x;
-        x = -y;
-        y = oldX;
+    public Vector rotateTo(double x, double y) {
+        double oldLength = getLength();
+        this.x = x;
+        this.y = y;
+        setLength(oldLength);
+        return this;
     }
 
     public Vector getLeftDirection() {
         return (needToUpdateLength) ? new Vector(-y, x) : new Vector(-y, x, length);
     }
 
-    public void turnToRight() {
+    public Vector turnToLeft() {
         double oldX = x;
-        x = y;
-        y = -oldX;
+        x = -y;
+        y = oldX;
+        return this;
     }
 
     public Vector getRightDirection() {
         return (needToUpdateLength) ? new Vector(y, -x) : new Vector(y, -x, length);
+    }
+
+    public Vector turnToRight() {
+        double oldX = x;
+        x = y;
+        y = -oldX;
+        return this;
+    }
+
+    public Vector getBackward() {
+        return (needToUpdateLength) ? new Vector(-x, -y) : new Vector(-x, -y, length);
+    }
+
+    public Vector turnToBackward() {
+        x = -x;
+        y = -y;
+        return this;
     }
 
 }

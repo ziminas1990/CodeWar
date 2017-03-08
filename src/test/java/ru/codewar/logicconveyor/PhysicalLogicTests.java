@@ -26,9 +26,9 @@ public class PhysicalLogicTests {
     public void simpleMultithreadTest() {
 
         int extraThreads = 3;
-        int totalObjectsInCenter = 5;
+        int totalObjectsInCenter = 3;
         int totalOrbits = 2;
-        int totalObjectsOnEachOrbit = 200;
+        int totalObjectsOnEachOrbit = 100;
 
         MultithreadConveyor multithreadConveyor = new MultithreadConveyor(extraThreads);
         PhysicalLogic world = new PhysicalLogic();

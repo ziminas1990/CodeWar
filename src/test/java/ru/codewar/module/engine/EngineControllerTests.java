@@ -2,6 +2,8 @@ package ru.codewar.module.engine;
 
 import org.junit.Test;
 import ru.codewar.geometry.Vector;
+import ru.codewar.module.BaseModuleControllerTests;
+import ru.codewar.module.types.rotatableModule.RotatableModuleControllerTests;
 import ru.codewar.networking.Message;
 
 import static org.junit.Assert.assertEquals;
@@ -25,9 +27,19 @@ public class EngineControllerTests {
     }
 
     @Test
+    public void checkControllerInheritances() {
+        EngineModule mockedModule = mock(EngineModule.class);
+        EngineController controller = new EngineController();
+        controller.attachToEngine(mockedModule);
+
+        BaseModuleControllerTests.inheritanceChecker(controller, mockedModule);
+        RotatableModuleControllerTests.inheritanceChecker(controller, mockedModule);
+    }
+
+    @Test
     public void rotatableModuleInheritedTypeTests() {
         // Check, that interface, inherited from RotatableModuleType, work properly
-        Engine mockedModule = mock(Engine.class);
+        EngineModule mockedModule = mock(EngineModule.class);
         EngineController controller = new EngineController();
         controller.attachToEngine(mockedModule);
 
@@ -56,7 +68,7 @@ public class EngineControllerTests {
 
     @Test
     public void getMaxAndCurrentThrust() {
-        Engine mockedModule = mock(Engine.class);
+        EngineModule mockedModule = mock(EngineModule.class);
         EngineController controller = new EngineController();
         controller.attachToEngine(mockedModule);
 
@@ -74,7 +86,7 @@ public class EngineControllerTests {
 
     @Test
     public void setThrust() {
-        Engine mockedModule = mock(Engine.class);
+        EngineModule mockedModule = mock(EngineModule.class);
         EngineController controller = new EngineController();
         controller.attachToEngine(mockedModule);
 
