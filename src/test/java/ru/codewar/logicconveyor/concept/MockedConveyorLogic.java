@@ -16,7 +16,7 @@ public class MockedConveyorLogic implements ConveyorLogic {
     public int stagesCount() { return 1; }
 
     @Override
-    public void prepareStage(int stageId) {}
+    public boolean prepareStage(int stageId) { return true; }
 
     @Override
     public void proceedStage(int stageId, int threadId, int totalThreads) {

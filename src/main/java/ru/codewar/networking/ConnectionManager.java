@@ -40,8 +40,9 @@ public class ConnectionManager implements ConveyorLogic {
     @Override // from ConveyorLogic
     public int stagesCount() { return totalStages; }
     @Override // from ConveyorLogic
-    public void prepareStage(int stageId) {
+    public boolean prepareStage(int stageId) {
         connectionIdx.set(0);
+        return connections.size() > 0;
     }
 
     @Override // from ConveyorLogic

@@ -38,9 +38,10 @@ public class PhysicalLogic implements ConveyorLogic {
     }
 
     @Override
-    public void prepareStage(int stageId)
+    public boolean prepareStage(int stageId)
     {
         nextObjectId.set(0);
+        return objects.size() > 0;
     }
 
     @Override

@@ -1,22 +1,18 @@
 package ru.codewar.logicconveyor.concept;
 
-import java.util.concurrent.CyclicBarrier;
-
 public class MultithreadConveyor {
 
     private java.util.List<ConveyorLogic> logicChain = new java.util.ArrayList<>();
-    private ConveyorThread masterThreadLogic;
-    private java.util.Vector<ConveyorThread> slaveThreads;
-    private CyclicBarrier barrier;
+    private MasterThreadLogic masterThreadLogic;
+    private java.util.Vector<SlaveThread> slaveThreads;
 
     public MultithreadConveyor(int slaveThreadsCount)    {
         int totalThreads = slaveThreadsCount + 1;
-        barrier = new CyclicBarrier(totalThreads);
 
-        masterThreadLogic = new ConveyorThread(this, 0, totalThreads);
+        masterThreadLogic = new MasterThreadLogic(this, totalThreads);
         slaveThreads = new java.util.Vector<>(slaveThreadsCount);
         for(int i = 1; i < totalThreads; i++) {
-            slaveThreads.add(new ConveyorThread(this, i, totalThreads));
+            slaveThreads.add(new SlaveThread(masterThreadLogic.getContext(), i, totalThreads));
             slaveThreads.lastElement().start();
         }
     }
@@ -26,7 +22,8 @@ public class MultithreadConveyor {
         // We are not starting master thread logic in separate thread, but just running it
         // in current thread. Slave threads are waiting for master thread on barrier
         long start = System.currentTimeMillis();
-        masterThreadLogic.singleshotLogic();
+
+        masterThreadLogic.proceed();
 
         // If proceeding is slow, printing statistic after every proceedStage
         long proceedTime = System.currentTimeMillis() - start;
@@ -42,7 +39,5 @@ public class MultithreadConveyor {
     }
 
     public java.util.List<ConveyorLogic> getLogicChain() { return logicChain; }
-
-    public CyclicBarrier getBarrier() { return barrier; }
 
 }
