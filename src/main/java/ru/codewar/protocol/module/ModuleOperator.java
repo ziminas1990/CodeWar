@@ -55,7 +55,6 @@ public class ModuleOperator implements NetworkTerminal {
 
     public void onResponse(int transactionId, Message response) {
         // Adding header to response and send it via channel
-
         channel.sendMessage(response.addHeader("RESP " + transactionId));
     }
 

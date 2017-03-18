@@ -14,6 +14,8 @@ public class Message {
         return this;
     }
 
+    public String toString() { return data; }
+
     @Override // from Object
     public boolean equals(Object other) {
         if(other == this)

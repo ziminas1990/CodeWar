@@ -68,19 +68,21 @@ public class Vector extends Point {
         needToUpdateLength = false;
     }
 
-    public void setLength(double length) {
+    public Vector setLength(double length) {
         double factor = length / getLength();
         x *= factor;
         y *= factor;
         this.length = length;
+        return this;
     }
 
-    public void divideLength(double k) {
+    public Vector divideLength(double k) {
         if(k == 0)
-            return;
+            return this;
         x /= k;
         y /= k;
         this.length /= k;
+        return this;
     }
 
     public double getLength() {

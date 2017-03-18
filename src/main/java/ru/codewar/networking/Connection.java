@@ -1,6 +1,7 @@
 package ru.codewar.networking;
 
 import java.io.IOException;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -18,6 +19,8 @@ class Connection implements Channel {
         this.receiver = receiver;
         this.channel = channel;
     }
+
+    public SocketAddress getClientAddress() { return channel.getClientAddress(); }
 
     @Override // from Channel
     public void sendMessage(Message message) {

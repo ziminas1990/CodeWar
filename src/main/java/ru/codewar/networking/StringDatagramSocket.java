@@ -42,6 +42,8 @@ public class StringDatagramSocket {
         }
     }
 
+    public SocketAddress getClientAddress() { return client; }
+
     public SocketAddress lastReceivedFrameSource() {
         return lastReceivedFrameSource;
     }
