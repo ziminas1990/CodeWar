@@ -25,12 +25,13 @@ public class Server {
 
     public static void main(String args[]) {
         // General server settings:
+        String version = "0.1.0";
         int loginSocketPort = 4835;
         int millisecondsInTick = 1;
         int extraThreadsNumber = 3;
         logger.info(
-                "Server started on port {}! millisecondsInTick: {} ms; totalThreads: {}",
-                loginSocketPort, millisecondsInTick, extraThreadsNumber);
+                "CodeWar server {} started on port {}! millisecondsInTick: {} ms; totalThreads: {}",
+                version, loginSocketPort, millisecondsInTick, extraThreadsNumber);
 
         World world = new World();
 

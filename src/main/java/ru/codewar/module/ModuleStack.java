@@ -1,5 +1,6 @@
 package ru.codewar.module;
 
+import ru.codewar.networking.Channel;
 import ru.codewar.protocol.module.ModuleOperator;
 
 /*
@@ -29,8 +30,10 @@ import ru.codewar.protocol.module.ModuleOperator;
 
 public interface ModuleStack {
 
-    BaseModuleInterface getBaseModule();
-    BaseModuleController getController();
-    ModuleOperator getOperator();
+    public BaseModuleInterface getBaseModule();
+    public BaseModuleController getController();
+    public ModuleOperator getOperator();
+
+    public void attachToChannel(Channel channel);
 
 }

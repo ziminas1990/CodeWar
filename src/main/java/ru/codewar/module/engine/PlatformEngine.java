@@ -21,12 +21,16 @@ public class PlatformEngine implements EngineModule {
     private double maxThrust;
     private double currentThrust;
 
-    public PlatformEngine(RotatableModuleType platform, Orientation orientation,
-                          double maxThrust) {
-        this.platform = platform;
+    public PlatformEngine(Orientation orientation, double maxThrust) {
         this.orientation = orientation;
         this.maxThrust = maxThrust;
     }
+
+    public void installOnPlatform(RotatableModuleType platform) {
+        this.platform = platform;
+    }
+
+    public Orientation getEngineOrientation() { return orientation; }
 
     @Override // from EngineModule
     public double getMaxThrust() {
@@ -59,6 +63,8 @@ public class PlatformEngine implements EngineModule {
     public void rotate(double delta, double speed) { }
     @Override // from EngineModule -> RotatableModuleType
     public Vector getOrientation() {
+        if(platform == null)
+            return new Vector();
         switch (orientation) {
             case eOrientationForward:
                 return platform.getOrientation();
