@@ -23,6 +23,8 @@ public class ModuleTerminal implements NetworkTerminal {
     }
 
     public BaseModuleInterface getModule() { return module; }
+    public ModuleController getController() { return controller; }
+    public ModuleOperator getOperator() { return operator; }
 
     @Override // from NetworkTerminal
     public void attachToChannel(Channel channel) {

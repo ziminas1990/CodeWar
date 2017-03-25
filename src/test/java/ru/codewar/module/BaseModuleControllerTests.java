@@ -1,5 +1,6 @@
 package ru.codewar.module;
 
+import org.json.JSONObject;
 import org.junit.Test;
 import ru.codewar.networking.Message;
 import ru.codewar.protocol.module.ModuleController;
@@ -23,7 +24,7 @@ public class BaseModuleControllerTests {
         checkGetModuleInfoReq(controller, mockedModule);
     }
 
-    // Useful to check, that other controller aggregates positioned module controller correctly
+    // Useful to check, that other controller aggregates base module controller correctly
     // controller - instance of controller, that use PositionedModuleController
     // mockedModule - mock instance of PositionedModule, to which controller is connected
     public static void inheritanceChecker(ModuleController controller, BaseModuleInterface mockedModule) {
@@ -31,18 +32,22 @@ public class BaseModuleControllerTests {
     }
 
     private static void checkGetModuleInfoReq(ModuleController controller, BaseModuleInterface mockedModule) {
+        when(mockedModule.getModuleAddress()).thenReturn("Test address");
         when(mockedModule.getModuleType()).thenReturn("Test Type");
         when(mockedModule.getModuleModel()).thenReturn("Test Model");
-        when(mockedModule.getModuleInfo()).thenReturn("Test Parameters");
+        when(mockedModule.getModuleInfo()).thenReturn("{\"test\" : \"value\"}");
 
         Message response = controller.onRequest(1, "getModuleInfo ");
-        assertEquals(
-                "Type: \"Test Type\", Model: \"Test Model\", Parameters: \"Test Parameters\"",
-                response.data);
+        JSONObject info = new JSONObject(response.data);
+        assertEquals(info.getString("address"), "Test address");
+        assertEquals(info.getString("type"), "Test Type");
+        assertEquals(info.getString("model"), "Test Model");
+        assertEquals(info.getJSONObject("parameters").get("test"), "value");
 
-        verify(mockedModule).getModuleType();
-        verify(mockedModule).getModuleModel();
-        verify(mockedModule).getModuleInfo();
+        verify(mockedModule, atLeastOnce()).getModuleAddress();
+        verify(mockedModule, atLeastOnce()).getModuleType();
+        verify(mockedModule, atLeastOnce()).getModuleModel();
+        verify(mockedModule, atLeastOnce()).getModuleInfo();
     }
 
 }

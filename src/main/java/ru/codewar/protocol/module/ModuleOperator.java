@@ -25,6 +25,8 @@ public class ModuleOperator implements NetworkTerminal {
 
     @Override // from NetworkTerminal
     public void onMessageReceived(Message message) {
+        if(module == null)
+            return;
         // Received a message, we should read it header and call an
         // appropriate function of the module
         Matcher result = requestPattern.matcher(message.data);

@@ -1,5 +1,10 @@
 package ru.codewar.module;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.codewar.networking.Message;
 import ru.codewar.protocol.module.ModuleController;
 
@@ -78,6 +83,8 @@ public class BaseModuleController implements ModuleController {
     private final static Pattern checkPattern = Pattern.compile("getModuleInfo\\s*");
     private final static Pattern getModuleInfo = Pattern.compile("getModuleInfo\\s*");
 
+    private Logger logger = LoggerFactory.getLogger(BaseModuleController.class);
+    private String logPrefix = "";
     private BaseModuleInterface module;
 
     public static boolean checkIfSupported(String message)
@@ -85,14 +92,25 @@ public class BaseModuleController implements ModuleController {
         return checkPattern.matcher(message).matches();
     }
 
-    public void attachToModule(BaseModuleInterface module) { this.module = module; }
+    public void attachToModule(BaseModuleInterface module) {
+        logPrefix = " for " + module.getModuleAddress() + ": ";
+        this.module = module;
+    }
 
     public void onCommand(String command) {}
 
     public Message onRequest(Integer transactionId, String request) {
         if(getModuleInfo.matcher(request).matches()) {
-            return new Message("Type: \"" + module.getModuleType() + "\", Model: \"" + module.getModuleModel() +
-                    "\", Parameters: \"" + module.getModuleInfo() + "\"");
+            JSONObject data = new JSONObject();
+            try {
+                data.put("address", module.getModuleAddress());
+                data.put("type", module.getModuleType());
+                data.put("model", module.getModuleModel());
+                data.put("parameters", new JSONObject(module.getModuleInfo()));
+            } catch (JSONException exception) {
+                logger.warn("{} error occurred, while reading module info", logPrefix, exception);
+            }
+            return new Message(data.toString());
         }
         return null;
     }

@@ -74,12 +74,19 @@ public class MultiplexerLogic {
     }
 
     public void closeVirtualChannel(int virtualChannelId)  {
+        logger.info("Close virtual channel {} requested", virtualChannelId);
         VirtualChannel virtualChannel = virtualChannels.get(virtualChannelId);
         if(virtualChannel == null) {
+            logger.warn("Can't close virtual channel {}! No such channel!", virtualChannelId);
             throw new IllegalArgumentException("Virtual channel " + virtualChannelId + " doesn't exist");
+        } else {
+            String moduleAddress = virtualChannel.getTerminal().getModule().getModuleAddress();
+            logger.debug("Virtual channel {} connected to module {}", virtualChannelId, moduleAddress);
+            if(!modulesInUse.remove(moduleAddress)) {
+                logger.warn("Module {} wasn't marked as used!", moduleAddress);
+            }
+            virtualChannels.remove(virtualChannelId);
         }
-        modulesInUse.remove(virtualChannel.getTerminal().getModule().getModuleAddress());
-        virtualChannels.remove(virtualChannelId);
     }
 
     public void forwardingMessage(int virtualChannelId, Message message) {
