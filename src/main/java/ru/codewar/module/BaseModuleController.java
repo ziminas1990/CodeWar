@@ -91,8 +91,8 @@ public class BaseModuleController implements ModuleController {
 
     public Message onRequest(Integer transactionId, String request) {
         if(getModuleInfo.matcher(request).matches()) {
-            return new Message("Type: \"" + module.getType() + "\", Model: \"" + module.getModel() +
-                    "\", Parameters: \"" + module.getParameters() + "\"");
+            return new Message("Type: \"" + module.getModuleType() + "\", Model: \"" + module.getModuleModel() +
+                    "\", Parameters: \"" + module.getModuleInfo() + "\"");
         }
         return null;
     }

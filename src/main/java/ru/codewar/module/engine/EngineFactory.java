@@ -15,12 +15,13 @@ public class EngineFactory {
     public static EngineModule make(JSONObject description) {
         logger.trace("Creating engine module by description: " + description);
         try {
+            String address = description.getString("address");
             String model = description.getString("model");
             switch (model) {
                 case "platform engine":
-                    return makePlatformEngine(description.getJSONObject("parameters"));
+                    return makePlatformEngine(address, description.getJSONObject("parameters"));
                 default:
-                    logger.warn("Unsupported engine model \"{}\"", model);
+                    logger.warn("Can't create engine {}: unsupported engine model \"{}\"", address, model);
                     return null;
             }
         } catch(JSONException exception) {
@@ -29,7 +30,7 @@ public class EngineFactory {
         }
     }
 
-    private static PlatformEngine makePlatformEngine(JSONObject parameters) {
+    private static PlatformEngine makePlatformEngine(String address, JSONObject parameters) {
         /*
           {
             "model"      : "platform engine",
@@ -39,28 +40,28 @@ public class EngineFactory {
             }
           }
          */
-        logger.trace("Creating platform engine");
+        logger.trace("Creating platform engine {}", address);
         try {
             String orientation = parameters.getString("orientation");
             int maxThrust = parameters.getInt("maxThrust");
 
             switch (orientation) {
                 case "forward":
-                    return new PlatformEngine(PlatformEngine.Orientation.eOrientationForward, maxThrust);
+                    return new PlatformEngine(address, PlatformEngine.Orientation.eOrientationForward, maxThrust);
                 case "backward":
-                    return new PlatformEngine(PlatformEngine.Orientation.eOrientationBackward, maxThrust);
+                    return new PlatformEngine(address, PlatformEngine.Orientation.eOrientationBackward, maxThrust);
                 case "left":
-                    return new PlatformEngine(PlatformEngine.Orientation.eOrientationLeft, maxThrust);
+                    return new PlatformEngine(address, PlatformEngine.Orientation.eOrientationLeft, maxThrust);
                 case "right":
-                    return new PlatformEngine(PlatformEngine.Orientation.eOrientationRight, maxThrust);
+                    return new PlatformEngine(address, PlatformEngine.Orientation.eOrientationRight, maxThrust);
                 default:
-                    logger.warn("Can't create platform engine: \"orientation\" value \"{}\" is invalid!" +
-                            "Expected are: forward, backward, left, right", orientation);
+                    logger.warn("Can't create platform engine {}: \"orientation\" value \"{}\" is invalid!" +
+                            "Expected are: forward, backward, left, right", address, orientation);
                     return null;
             }
 
         } catch(JSONException exception) {
-            logger.warn("Can't create platform engine! Reason: {}", exception);
+            logger.warn("Can't create platform engine {}! Reason: {}", address, exception);
             return null;
         }
     }

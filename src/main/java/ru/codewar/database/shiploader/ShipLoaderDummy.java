@@ -20,7 +20,7 @@ public class ShipLoaderDummy implements ShipLoader {
     public ShipModule loadShip(Player player, String shipName) {
         ShipLogic ship =
                 new ShipLogic(
-                        1, 1000000, 100, new Point(100, 100),
+                        "ship", 1, 1000000, 100, new Point(100, 100),
                         new Vector(0.5, 0.5), new Vector(0.001, 0.001));
         physicalEngine.registerObject(ship);
         shipsLogicConveyor.addShip(ship);

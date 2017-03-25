@@ -20,13 +20,13 @@ public class PlatformEngineTests {
         Vector platformOrientation = new Vector(1, 1).normalize();
 
         PlatformEngine forwardEngine =
-                new PlatformEngine(PlatformEngine.Orientation.eOrientationForward, 10000);
+                new PlatformEngine("engine", PlatformEngine.Orientation.eOrientationForward, 10000);
         PlatformEngine backwardEngine =
-                new PlatformEngine(PlatformEngine.Orientation.eOrientationBackward, 10000);
+                new PlatformEngine("engine", PlatformEngine.Orientation.eOrientationBackward, 10000);
         PlatformEngine leftEngine =
-                new PlatformEngine(PlatformEngine.Orientation.eOrientationLeft, 10000);
+                new PlatformEngine("engine", PlatformEngine.Orientation.eOrientationLeft, 10000);
         PlatformEngine rightEngine =
-                new PlatformEngine(PlatformEngine.Orientation.eOrientationRight, 10000);
+                new PlatformEngine("engine", PlatformEngine.Orientation.eOrientationRight, 10000);
 
         forwardEngine.installOnPlatform(platform);
         backwardEngine.installOnPlatform(platform);

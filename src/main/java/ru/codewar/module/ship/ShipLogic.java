@@ -10,12 +10,14 @@ import java.util.ArrayList;
 
 public class ShipLogic extends PhysicalObjectImpl implements ShipModule {
 
+    private String address;
     private Vector orientation = new Vector(0, 1);
     private ArrayList<EngineModule> engines = new ArrayList<>();
 
-    public ShipLogic(int objectId, double mass, double signature, Point position,
+    public ShipLogic(String address, int objectId, double mass, double signature, Point position,
                      Vector orientation, Vector velocity) {
         super(objectId, mass, signature, position, velocity);
+        this.address = address;
         this.orientation = orientation;
         this.orientation.normalize();
     }
@@ -36,11 +38,13 @@ public class ShipLogic extends PhysicalObjectImpl implements ShipModule {
     // public Point getPosition() {}
 
     @Override // from ShipModule -> BaseModuleInterface
-    public String getType() { return "ship"; }
+    public String getModuleAddress() { return address; }
     @Override // from ShipModule -> BaseModuleInterface
-    public String getModel() { return "noobship"; }
+    public String getModuleType() { return "ship"; }
     @Override // from ShipModule -> BaseModuleInterface
-    public String getParameters() { return ""; }
+    public String getModuleModel() { return "noobship"; }
+    @Override // from ShipModule -> BaseModuleInterface
+    public String getModuleInfo() { return ""; }
 
     @Override // from ShipModule -> RotatableModuleType
     public double getMaxRotationSpeed() { return 0; }

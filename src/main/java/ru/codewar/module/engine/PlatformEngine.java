@@ -16,12 +16,14 @@ public class PlatformEngine implements EngineModule {
         eOrientationRight { public String toString() { return "right"; }}
     }
 
+    private String address;
     private RotatableModuleType platform;
     private Orientation orientation;
     private double maxThrust;
     private double currentThrust;
 
-    public PlatformEngine(Orientation orientation, double maxThrust) {
+    public PlatformEngine(String address, Orientation orientation, double maxThrust) {
+        this.address = address;
         this.orientation = orientation;
         this.maxThrust = maxThrust;
     }
@@ -36,12 +38,10 @@ public class PlatformEngine implements EngineModule {
     public double getMaxThrust() {
         return maxThrust;
     }
-
     @Override // from EngineModule
     public double getCurrentThrust() {
         return currentThrust;
     }
-
     @Override // from EngineModule
     public void setThrust(double thrust) {
         if(this.maxThrust < thrust)
@@ -50,11 +50,13 @@ public class PlatformEngine implements EngineModule {
     }
 
     @Override // from EngineModule -> BaseModuleInterface
-    public String getType() { return "engine"; }
+    public String getModuleAddress() { return address; }
     @Override // from EngineModule -> BaseModuleInterface
-    public String getModel() { return "simple engine"; }
+    public String getModuleType() { return "engine"; }
     @Override // from EngineModule -> BaseModuleInterface
-    public String getParameters() { return "orientation = " + orientation; }
+    public String getModuleModel() { return "platform engine"; }
+    @Override // from EngineModule -> BaseModuleInterface
+    public String getModuleInfo() { return "orientation = " + orientation; }
 
     // Platform engine is not rotatable, but it's orientation is depend on platform orientation
     @Override // from EngineModule -> RotatableModuleType

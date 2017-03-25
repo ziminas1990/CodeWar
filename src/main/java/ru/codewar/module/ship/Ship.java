@@ -12,7 +12,7 @@ public class Ship {
 
     public Ship(ShipModule logic, String address) {
         this.logic = logic;
-        operator = new ModuleOperator(address, logic.getType());
+        operator = new ModuleOperator(address, logic.getModuleType());
         controller.attachToModule(logic);
         operator.attachToModuleController(controller);
     }

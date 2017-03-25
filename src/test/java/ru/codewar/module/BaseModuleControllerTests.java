@@ -31,18 +31,18 @@ public class BaseModuleControllerTests {
     }
 
     private static void checkGetModuleInfoReq(ModuleController controller, BaseModuleInterface mockedModule) {
-        when(mockedModule.getType()).thenReturn("Test Type");
-        when(mockedModule.getModel()).thenReturn("Test Model");
-        when(mockedModule.getParameters()).thenReturn("Test Parameters");
+        when(mockedModule.getModuleType()).thenReturn("Test Type");
+        when(mockedModule.getModuleModel()).thenReturn("Test Model");
+        when(mockedModule.getModuleInfo()).thenReturn("Test Parameters");
 
         Message response = controller.onRequest(1, "getModuleInfo ");
         assertEquals(
                 "Type: \"Test Type\", Model: \"Test Model\", Parameters: \"Test Parameters\"",
                 response.data);
 
-        verify(mockedModule).getType();
-        verify(mockedModule).getModel();
-        verify(mockedModule).getParameters();
+        verify(mockedModule).getModuleType();
+        verify(mockedModule).getModuleModel();
+        verify(mockedModule).getModuleInfo();
     }
 
 }
