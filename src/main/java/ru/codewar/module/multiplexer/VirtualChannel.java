@@ -1,5 +1,6 @@
 package ru.codewar.module.multiplexer;
 
+import ru.codewar.module.ModuleTerminal;
 import ru.codewar.networking.Channel;
 import ru.codewar.networking.Message;
 import ru.codewar.networking.NetworkTerminal;
@@ -7,17 +8,18 @@ import ru.codewar.networking.NetworkTerminal;
 public class VirtualChannel implements Channel, NetworkTerminal {
 
     private String virtualChannelId;
-    private String endPointAddress;
-    private NetworkTerminal upLevel;
+    private ModuleTerminal terminal;
     private Channel downLevel;
 
-    public VirtualChannel(String virtualChannelId, String endPointAddress) {
+    public VirtualChannel(String virtualChannelId) {
         this.virtualChannelId = virtualChannelId;
-        this.endPointAddress = endPointAddress;
     }
 
-    public void attachToLogic(NetworkTerminal upLevel) {
-        this.upLevel = upLevel;
+    public ModuleTerminal getTerminal() { return terminal; }
+
+    public void attachToLogic(ModuleTerminal upLevel) {
+        this.terminal = upLevel;
+        this.terminal.attachToChannel(this);
     }
 
     @Override // from NetworkTerminal
@@ -25,13 +27,11 @@ public class VirtualChannel implements Channel, NetworkTerminal {
         this.downLevel = channel;
     }
 
-    public String getEndPointAddress() { return endPointAddress; }
-
     @Override // from onMessageReceived
     public void onMessageReceived(Message message)
     {
-        // Just passing message to upLevel logic
-        upLevel.onMessageReceived(message);
+        // Just passing message to terminal logic
+        terminal.onMessageReceived(message);
     }
 
     @Override // from Channel

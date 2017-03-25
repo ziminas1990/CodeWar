@@ -12,7 +12,7 @@ public class EngineFactory {
 
     private static Logger logger = LoggerFactory.getLogger(EngineFactory.class);
 
-    public static EngineModule make(JSONObject description) {
+    public static BaseEngine make(JSONObject description) {
         logger.trace("Creating engine module by description: " + description);
         try {
             String address = description.getString("address");

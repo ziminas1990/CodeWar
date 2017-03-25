@@ -1,29 +1,40 @@
 package ru.codewar.module.multiplexer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ru.codewar.module.BaseModuleInterface;
+import ru.codewar.module.ModuleTerminal;
+import ru.codewar.module.ModuleTerminalFactory;
 import ru.codewar.networking.Channel;
 import ru.codewar.networking.Message;
-import ru.codewar.protocol.module.ModuleOperator;
 import ru.codewar.util.IdPool;
 
 import java.util.*;
 
 public class MultiplexerLogic {
 
+    private ModuleTerminalFactory terminalFactory;
+    private Logger logger = LoggerFactory.getLogger(MultiplexerLogic.class);
     private IdPool idPool = new IdPool();
     private Channel channel;
-    private Map<String, ModuleOperator> modules = new HashMap<>();
+    private Map<String, BaseModuleInterface> modules = new HashMap<>();
     private Set<String> modulesInUse = new HashSet<>();
     private Map<Integer, VirtualChannel> virtualChannels = new HashMap<>();
+
+    public MultiplexerLogic(ModuleTerminalFactory terminalFactory)
+    {
+        this.terminalFactory = terminalFactory;
+    }
 
     public void attachToChannel(Channel channel) {
         this.channel = channel;
     }
 
-    public void addModule(ModuleOperator module) {
-        modules.put(module.getAddress(), module);
+    public void addModule(BaseModuleInterface module) {
+        modules.put(module.getModuleAddress(), module);
     }
 
-    public Map<String, ModuleOperator> getAllModules() {
+    public Map<String, BaseModuleInterface> getAllModules() {
         return modules;
     }
 
@@ -31,24 +42,34 @@ public class MultiplexerLogic {
     // Return created virtual channel id on success
     public int openVirtualChannel(String moduleAddress) {
 
+        logger.info("Open virtual channel to {} requested", moduleAddress);
         if(modulesInUse.contains(moduleAddress)) {
+            logger.warn("Module {} is already in use!", moduleAddress);
             throw new IllegalArgumentException("Module " + moduleAddress + " is already in use");
         }
 
-        ModuleOperator operator = modules.get(moduleAddress);
-        if(operator == null) {
+        BaseModuleInterface module = modules.get(moduleAddress);
+        if(module == null) {
+            logger.warn("Module {} not found!", moduleAddress);
             throw new IllegalArgumentException("Element " + moduleAddress + " NOT found");
         }
 
+        ModuleTerminal moduleTerminal = terminalFactory.make(module);
+        if(moduleTerminal == null) {
+            logger.warn("Can't create terminal for module {} {}", moduleAddress, module);
+            throw new IllegalArgumentException("Failed to create terminal for module " + moduleAddress);
+        }
+
         int virtualChannelId = idPool.getNextId();
-        VirtualChannel virtualChannel = new VirtualChannel(Integer.toString(virtualChannelId), moduleAddress);
+
+        VirtualChannel virtualChannel = new VirtualChannel(Integer.toString(virtualChannelId));
         virtualChannel.attachToChannel(channel);
-        virtualChannel.attachToLogic(operator);
-        operator.attachToChannel(virtualChannel);
+        virtualChannel.attachToLogic(moduleTerminal);
 
         // Registering created virtual channel and returning channel id
         virtualChannels.put(virtualChannelId, virtualChannel);
         modulesInUse.add(moduleAddress);
+        logger.debug("Virtual channel created with id: {}", virtualChannelId);
         return virtualChannelId;
     }
 
@@ -57,7 +78,7 @@ public class MultiplexerLogic {
         if(virtualChannel == null) {
             throw new IllegalArgumentException("Virtual channel " + virtualChannelId + " doesn't exist");
         }
-        modulesInUse.remove(virtualChannel.getEndPointAddress());
+        modulesInUse.remove(virtualChannel.getTerminal().getModule().getModuleAddress());
         virtualChannels.remove(virtualChannelId);
     }
 

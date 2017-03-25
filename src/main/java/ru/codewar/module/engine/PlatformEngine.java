@@ -7,7 +7,7 @@ import ru.codewar.module.types.rotatableModule.RotatableModuleType;
 // for possible directions: "Forward", "Backward", "Left" and "Right"
 // This engine is not rotatable, so MaxRotationSpeed is 0
 // Orientation of engine is depend of orientation of platform, that engine is installed on
-public class PlatformEngine implements EngineModule {
+public class PlatformEngine extends BaseEngine {
 
     public enum Orientation {
         eOrientationForward { public String toString() { return "forward"; }},
@@ -16,16 +16,12 @@ public class PlatformEngine implements EngineModule {
         eOrientationRight { public String toString() { return "right"; }}
     }
 
-    private String address;
     private RotatableModuleType platform;
     private Orientation orientation;
-    private double maxThrust;
-    private double currentThrust;
 
     public PlatformEngine(String address, Orientation orientation, double maxThrust) {
-        this.address = address;
+        super(address, maxThrust);
         this.orientation = orientation;
-        this.maxThrust = maxThrust;
     }
 
     public void installOnPlatform(RotatableModuleType platform) {
@@ -34,36 +30,13 @@ public class PlatformEngine implements EngineModule {
 
     public Orientation getEngineOrientation() { return orientation; }
 
-    @Override // from EngineModule
-    public double getMaxThrust() {
-        return maxThrust;
-    }
-    @Override // from EngineModule
-    public double getCurrentThrust() {
-        return currentThrust;
-    }
-    @Override // from EngineModule
-    public void setThrust(double thrust) {
-        if(this.maxThrust < thrust)
-            thrust = this.maxThrust;
-        this.currentThrust = thrust;
-    }
 
-    @Override // from EngineModule -> BaseModuleInterface
-    public String getModuleAddress() { return address; }
-    @Override // from EngineModule -> BaseModuleInterface
-    public String getModuleType() { return "engine"; }
-    @Override // from EngineModule -> BaseModuleInterface
+    @Override // from BaseEngine -> BaseModuleInterface
     public String getModuleModel() { return "platform engine"; }
-    @Override // from EngineModule -> BaseModuleInterface
+    @Override // from BaseEngine -> BaseModuleInterface
     public String getModuleInfo() { return "orientation = " + orientation; }
 
-    // Platform engine is not rotatable, but it's orientation is depend on platform orientation
-    @Override // from EngineModule -> RotatableModuleType
-    public double getMaxRotationSpeed() { return 0; }
-    @Override // from EngineModule -> RotatableModuleType
-    public void rotate(double delta, double speed) { }
-    @Override // from EngineModule -> RotatableModuleType
+    @Override // from BaseEngine -> RotatableModuleType
     public Vector getOrientation() {
         if(platform == null)
             return new Vector();

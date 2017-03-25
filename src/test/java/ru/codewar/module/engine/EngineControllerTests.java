@@ -28,7 +28,7 @@ public class EngineControllerTests {
 
     @Test
     public void checkControllerInheritances() {
-        EngineModule mockedModule = mock(EngineModule.class);
+        BaseEngine mockedModule = mock(BaseEngine.class);
         EngineController controller = new EngineController();
         controller.attachToEngine(mockedModule);
 
@@ -39,7 +39,7 @@ public class EngineControllerTests {
     @Test
     public void rotatableModuleInheritedTypeTests() {
         // Check, that interface, inherited from RotatableModuleType, work properly
-        EngineModule mockedModule = mock(EngineModule.class);
+        BaseEngine mockedModule = mock(BaseEngine.class);
         EngineController controller = new EngineController();
         controller.attachToEngine(mockedModule);
 
@@ -68,7 +68,7 @@ public class EngineControllerTests {
 
     @Test
     public void getMaxAndCurrentThrust() {
-        EngineModule mockedModule = mock(EngineModule.class);
+        BaseEngine mockedModule = mock(BaseEngine.class);
         EngineController controller = new EngineController();
         controller.attachToEngine(mockedModule);
 
@@ -86,7 +86,7 @@ public class EngineControllerTests {
 
     @Test
     public void setThrust() {
-        EngineModule mockedModule = mock(EngineModule.class);
+        BaseEngine mockedModule = mock(BaseEngine.class);
         EngineController controller = new EngineController();
         controller.attachToEngine(mockedModule);
 

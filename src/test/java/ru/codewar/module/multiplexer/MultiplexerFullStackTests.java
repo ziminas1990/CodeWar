@@ -6,6 +6,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import org.mockito.ArgumentCaptor;
+import ru.codewar.module.BaseModuleInterface;
+import ru.codewar.module.ModuleTerminal;
+import ru.codewar.module.ModuleTerminalFactory;
 import ru.codewar.networking.Channel;
 import ru.codewar.networking.Message;
 import ru.codewar.protocol.module.ModuleOperator;
@@ -17,11 +20,18 @@ import java.util.regex.Pattern;
 
 public class MultiplexerFullStackTests {
 
+
     private MultiplexerLogic multiplexerLogic;
     private MultiplexerController controller;
-    private ModuleOperator engineMocked;
-    private ModuleOperator rocketMocked;
     private ModuleOperator multiplexerOperator;
+
+    private BaseModuleInterface engineMocked;
+    private BaseModuleInterface rocketMocked;
+
+    private ModuleTerminalFactory terminalFactoryMock;
+    private ModuleTerminal engineTerminalMock;
+    private ModuleTerminal rocketTerminalMock;
+
     private Channel channelMocked;
 
     @Before
@@ -56,19 +66,27 @@ public class MultiplexerFullStackTests {
            openVirtualChannel() function be called
          */
 
-        multiplexerLogic = new MultiplexerLogic();
-        controller = new MultiplexerController();
-        multiplexerOperator = new MultiplexerOperator("ship.mux");
+        engineMocked = mock(BaseModuleInterface.class);
+        when(engineMocked.getModuleAddress()).thenReturn("ship.engine");
+        when(engineMocked.getModuleType()).thenReturn("engine");
 
-        engineMocked = mock(ModuleOperator.class);
-        when(engineMocked.getAddress()).thenReturn("ship.engine");
-        when(engineMocked.getType()).thenReturn("engine");
+        rocketMocked = mock(BaseModuleInterface.class);
+        when(rocketMocked.getModuleAddress()).thenReturn("ship.rocket");
+        when(rocketMocked.getModuleType()).thenReturn("rocket");
 
-        rocketMocked = mock(ModuleOperator.class);
-        when(rocketMocked.getAddress()).thenReturn("ship.rocket");
-        when(rocketMocked.getType()).thenReturn("rocket");
+        engineTerminalMock = mock(ModuleTerminal.class);
+        when(engineTerminalMock.getModule()).thenReturn(engineMocked);
+        rocketTerminalMock = mock(ModuleTerminal.class);
+        when(rocketTerminalMock.getModule()).thenReturn(rocketMocked);
+        terminalFactoryMock = mock(ModuleTerminalFactory.class);
+        when(terminalFactoryMock.make(engineMocked)).thenReturn(engineTerminalMock);
+        when(terminalFactoryMock.make(rocketMocked)).thenReturn(rocketTerminalMock);
 
         channelMocked = mock(Channel.class);
+
+        multiplexerLogic = new MultiplexerLogic(terminalFactoryMock);
+        controller = new MultiplexerController();
+        multiplexerOperator = new MultiplexerOperator();
 
         multiplexerLogic.addModule(engineMocked);
         multiplexerLogic.addModule(rocketMocked);
@@ -103,10 +121,10 @@ public class MultiplexerFullStackTests {
     @Test
     public void openVirtualChannel() {
         multiplexerOperator.onMessageReceived(new Message("openVirtualChannel ship.engine").addHeader("REQ 1"));
-        verify(engineMocked).attachToChannel(any());
+        verify(engineTerminalMock).attachToChannel(any());
 
         multiplexerOperator.onMessageReceived(new Message("openVirtualChannel ship.rocket").addHeader("REQ 2"));
-        verify(rocketMocked).attachToChannel(any());
+        verify(rocketTerminalMock).attachToChannel(any());
 
         multiplexerOperator.onMessageReceived(new Message("openVirtualChannel ship.restroom").addHeader("REQ 3"));
         verify(channelMocked).sendMessage(new Message("REQ 3 FAILED: Element ship.restroom NOT found"));
@@ -123,8 +141,8 @@ public class MultiplexerFullStackTests {
         multiplexerOperator.onMessageReceived(new Message("VC " + engineVC + " message to engine"));
         multiplexerOperator.onMessageReceived(new Message("VC " + rocketVC + " message to rocket"));
 
-        verify(engineMocked).onMessageReceived(new Message("message to engine"));
-        verify(rocketMocked).onMessageReceived(new Message("message to rocket"));
+        verify(engineTerminalMock).onMessageReceived(new Message("message to engine"));
+        verify(rocketTerminalMock).onMessageReceived(new Message("message to rocket"));
     }
 
     @Test

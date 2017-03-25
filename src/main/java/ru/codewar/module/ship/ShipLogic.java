@@ -4,7 +4,7 @@ package ru.codewar.module.ship;
 import ru.codewar.geometry.Point;
 import ru.codewar.geometry.Vector;
 import ru.codewar.logicconveyor.physicallogic.PhysicalObjectImpl;
-import ru.codewar.module.engine.EngineModule;
+import ru.codewar.module.engine.BaseEngine;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ public class ShipLogic extends PhysicalObjectImpl implements ShipModule {
 
     private String address;
     private Vector orientation = new Vector(0, 1);
-    private ArrayList<EngineModule> engines = new ArrayList<>();
+    private ArrayList<BaseEngine> engines = new ArrayList<>();
 
     public ShipLogic(String address, int objectId, double mass, double signature, Point position,
                      Vector orientation, Vector velocity) {
@@ -22,13 +22,13 @@ public class ShipLogic extends PhysicalObjectImpl implements ShipModule {
         this.orientation.normalize();
     }
 
-    public void addEngine(EngineModule engine) {
+    public void addEngine(BaseEngine engine) {
         engines.add(engine);
     }
 
     public void proceed() {
-        for(EngineModule engine : engines) {
-            pushForce(EngineModule.getThrustVector(engine));
+        for(BaseEngine engine : engines) {
+            pushForce(engine.getThrustVector());
         }
     }
 

@@ -14,7 +14,7 @@ public class ModuleOperatorTests {
         ModuleController mockedController = mock(ModuleController.class);
         Channel mockedChannel = mock(Channel.class);
 
-        ModuleOperator moduleOperator = new ModuleOperator("test", "test");
+        ModuleOperator moduleOperator = new ModuleOperator();
         moduleOperator.attachToChannel(mockedChannel);
         moduleOperator.attachToModuleController(mockedController);
 
@@ -31,7 +31,7 @@ public class ModuleOperatorTests {
         ModuleController mockedController = mock(ModuleController.class);
         Channel mockedChannel = mock(Channel.class);
 
-        ModuleOperator moduleOperator = new ModuleOperator("test", "test");
+        ModuleOperator moduleOperator = new ModuleOperator();
         moduleOperator.attachToChannel(mockedChannel);
         moduleOperator.attachToModuleController(mockedController);
 

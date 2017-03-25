@@ -6,44 +6,61 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import org.mockito.ArgumentCaptor;
+import ru.codewar.module.BaseModuleInterface;
+import ru.codewar.module.ModuleTerminal;
+import ru.codewar.module.ModuleTerminalFactory;
 import ru.codewar.networking.Channel;
 import ru.codewar.networking.Message;
-import ru.codewar.protocol.module.ModuleOperator;
 
 public class MultiplexerTests {
 
+    private ModuleTerminalFactory terminalFactoryMock;
     private MultiplexerLogic multiplexerLogic;
-    private ModuleOperator engineMock;
-    private ModuleOperator rocketMock;
+    private BaseModuleInterface engineMock;
+    private ModuleTerminal engineTerminalMock;
+    private BaseModuleInterface rocketMock;
+    private ModuleTerminal rocketTerminalMock;
     private Channel channelMock;
 
     @Before
     public void SetUp() {
         /*
-            +------------+     +------------+
-            | engineMock |     | rocketMock |
-            +------------+     +------------+
-                  |                   |
-                  +-------+   +-------+
+     +--------------------+   +--------------------+
+     |     engineMock     |   |     rocketMock     |
+     +--------------------+   +--------------------+
+               |                         |
+     +--------------------+   +--------------------+
+     | engineTerminalMock |   | rocketTerminalMock |
+     +--------------------+   +--------------------+
+               |                         |
+               +----------+   +----------+
                           |   |
-                  +-------------------+
-                  |  multiplexerLogic |
-                  +-------------------+
+                  +-------------------+                 +---------------------+
+                  |  multiplexerLogic | <-------------> | terminalFactoryMock |
+                  +-------------------+                 +---------------------+
                             |
                     +--------------+
                     |  channelMock |
                     +--------------+
          */
 
-        engineMock = mock(ModuleOperator.class);
-        when(engineMock.getAddress()).thenReturn("ship.engine");
+        engineMock = mock(BaseModuleInterface.class);
+        when(engineMock.getModuleAddress()).thenReturn("ship.engine");
+        rocketMock = mock(BaseModuleInterface.class);
+        when(rocketMock.getModuleAddress()).thenReturn("ship.rocket");
 
-        rocketMock = mock(ModuleOperator.class);
-        when(rocketMock.getAddress()).thenReturn("ship.rocket");
+        engineTerminalMock = mock(ModuleTerminal.class);
+        when(engineTerminalMock.getModule()).thenReturn(engineMock);
+        rocketTerminalMock = mock(ModuleTerminal.class);
+        when(rocketTerminalMock.getModule()).thenReturn(rocketMock);
+
+        terminalFactoryMock = mock(ModuleTerminalFactory.class);
+        when(terminalFactoryMock.make(engineMock)).thenReturn(engineTerminalMock);
+        when(terminalFactoryMock.make(rocketMock)).thenReturn(rocketTerminalMock);
 
         channelMock = mock(Channel.class);
 
-        multiplexerLogic = new MultiplexerLogic();
+        multiplexerLogic = new MultiplexerLogic(terminalFactoryMock);
         multiplexerLogic.addModule(engineMock);
         multiplexerLogic.addModule(rocketMock);
         multiplexerLogic.attachToChannel(channelMock);
@@ -52,10 +69,10 @@ public class MultiplexerTests {
     @Test
     public void createVirtualChannel() {
         int engineChannelId = multiplexerLogic.openVirtualChannel("ship.engine");
-        verify(engineMock).attachToChannel(any());
+        verify(engineTerminalMock).attachToChannel(any());
 
         int rocketChannelId = multiplexerLogic.openVirtualChannel("ship.rocket");
-        verify(rocketMock).attachToChannel(any());
+        verify(rocketTerminalMock).attachToChannel(any());
 
         assertNotEquals(engineChannelId, rocketChannelId);
 
@@ -75,14 +92,14 @@ public class MultiplexerTests {
     @Test
     public void closeVirtualChannel() {
         int engineChannelId = multiplexerLogic.openVirtualChannel("ship.engine");
-        verify(engineMock).attachToChannel(any());
+        verify(engineTerminalMock).attachToChannel(any());
 
         multiplexerLogic.closeVirtualChannel(engineChannelId);
 
         // Checking, that after the channel was closed, it is possible to
         // open new channel
         multiplexerLogic.openVirtualChannel("ship.engine");
-        verify(engineMock, times(2)).attachToChannel(any());
+        verify(engineTerminalMock, times(2)).attachToChannel(any());
 
         // Trying to close a non-existent channel
         try {
@@ -98,17 +115,17 @@ public class MultiplexerTests {
         int rocketChannelId = multiplexerLogic.openVirtualChannel("ship.rocket");
 
         ArgumentCaptor<Channel> engineChannelCaptured = ArgumentCaptor.forClass(Channel.class);
-        verify(engineMock).attachToChannel(engineChannelCaptured.capture());
+        verify(engineTerminalMock).attachToChannel(engineChannelCaptured.capture());
 
         ArgumentCaptor<Channel> rocketChannelCaptured = ArgumentCaptor.forClass(Channel.class);
-        verify(rocketMock).attachToChannel(rocketChannelCaptured.capture());
+        verify(rocketTerminalMock).attachToChannel(rocketChannelCaptured.capture());
 
         // Checking forwarding messages from client to module
         multiplexerLogic.forwardingMessage(engineChannelId, new Message("Frame to engine module"));
-        verify(engineMock).onMessageReceived(new Message("Frame to engine module"));
+        verify(engineTerminalMock).onMessageReceived(new Message("Frame to engine module"));
 
         multiplexerLogic.forwardingMessage(rocketChannelId, new Message("Frame to rocket module"));
-        verify(rocketMock).onMessageReceived(new Message("Frame to rocket module"));
+        verify(rocketTerminalMock).onMessageReceived(new Message("Frame to rocket module"));
 
         // Checking forwarding messages from module to client
         engineChannelCaptured.getValue().sendMessage(new Message("Response from engine module"));

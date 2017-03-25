@@ -18,10 +18,6 @@ public class MultiplexerOperator extends ModuleOperator {
 
     private MultiplexerController controller;
 
-    public MultiplexerOperator(String address) {
-        super(address, "multiplexer");
-    }
-
     public void attachToModuleController(ModuleController module) {
         if(module instanceof MultiplexerController) {
             super.attachToModuleController(module);

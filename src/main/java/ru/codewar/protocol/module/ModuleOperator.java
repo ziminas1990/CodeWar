@@ -12,18 +12,8 @@ public class ModuleOperator implements NetworkTerminal {
     private final Pattern requestPattern = Pattern.compile("REQ\\s+(\\w+)\\s+(.*)");
     private final Pattern commandPattern = Pattern.compile("CMD\\s(.*)");
 
-    private String address;
-    private String type;
     private ModuleController module;
     private Channel channel;
-
-    public ModuleOperator(String address, String type) {
-        this.address = address;
-        this.type = type;
-    }
-
-    public String getAddress() { return address; }
-    public String getType() { return type; }
 
     public void attachToModuleController(ModuleController module) {
         this.module = module;
