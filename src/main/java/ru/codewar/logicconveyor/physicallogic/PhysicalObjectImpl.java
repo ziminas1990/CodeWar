@@ -1,20 +1,19 @@
 package ru.codewar.logicconveyor.physicallogic;
 
+import org.json.JSONObject;
 import ru.codewar.geometry.Point;
 import ru.codewar.geometry.Vector;
 
 
 public class PhysicalObjectImpl implements PhysicalObject {
 
-    private Integer objectId;
     private double mass;
     private double signature;
     private Point position;
     private Vector velocity;
     private Vector forces;
 
-    public PhysicalObjectImpl(int objectId, double mass, double signature) {
-        this.objectId =  objectId;
+    public PhysicalObjectImpl(double mass, double signature) {
         this.mass = mass;
         this.signature = signature;
         this.position = new Point();
@@ -22,8 +21,7 @@ public class PhysicalObjectImpl implements PhysicalObject {
         this.forces = new Vector();
     }
 
-    public PhysicalObjectImpl(int objectId, double mass, double signature, Point position) {
-        this.objectId =  objectId;
+    public PhysicalObjectImpl(double mass, double signature, Point position) {
         this.mass = mass;
         this.signature = signature;
         this.position = new Point(position);
@@ -31,8 +29,7 @@ public class PhysicalObjectImpl implements PhysicalObject {
         this.forces = new Vector();
     }
 
-    public PhysicalObjectImpl(int objectId, double mass, double signature, Point position, Vector velocity) {
-        this.objectId =  objectId;
+    public PhysicalObjectImpl(double mass, double signature, Point position, Vector velocity) {
         this.mass = mass;
         this.position = new Point(position);
         this.signature = signature;
@@ -40,7 +37,21 @@ public class PhysicalObjectImpl implements PhysicalObject {
         this.forces = new Vector();
     }
 
-    public Integer getObjectId() { return objectId; }
+    public PhysicalObjectImpl(JSONObject parameters) {
+        this.mass = parameters.getInt("mass");
+        this.signature = parameters.getInt("signature");
+        if(parameters.has("position")) {
+            this.position = new Point(parameters.getJSONArray("position"));
+        } else {
+            this.position = new Point();
+        }
+        if(parameters.has("velocity")) {
+            this.velocity = new Vector(parameters.getJSONArray("velocity"));
+        } else {
+            this.velocity = new Vector();
+        }
+    }
+
     public Vector getVelocity() { return velocity; }
     public Point getPosition() { return position; }
     public double getSignature() { return signature; }

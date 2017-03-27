@@ -1,0 +1,6 @@
+{
+  "mass"      : 1000,
+  "signature" : 10,
+  "position"  : [ 25, 15 ],
+  "velocity"  : [ 10, 10 ]
+}

@@ -1,31 +1,46 @@
 package ru.codewar.module.ship;
 
-
+import org.json.JSONObject;
 import ru.codewar.geometry.Point;
 import ru.codewar.geometry.Vector;
 import ru.codewar.logicconveyor.physicallogic.PhysicalObjectImpl;
+import ru.codewar.module.BaseModuleInterface;
 import ru.codewar.module.engine.BaseEngine;
+import ru.codewar.module.engine.EngineModule;
 
 import java.util.ArrayList;
 
-public class ShipLogic extends PhysicalObjectImpl implements ShipModule {
+public class BaseShip extends PhysicalObjectImpl implements ShipModule {
 
-    private String address;
+    public static final String getShipModel() { return "base ship"; }
+
+    private String address = "";
     private Vector orientation = new Vector(0, 1);
+    private ArrayList<BaseModuleInterface> modules = new ArrayList<>();
     private ArrayList<BaseEngine> engines = new ArrayList<>();
 
-    public ShipLogic(String address, int objectId, double mass, double signature, Point position,
-                     Vector orientation, Vector velocity) {
-        super(objectId, mass, signature, position, velocity);
+    public BaseShip(String address, JSONObject data) {
+        super(data.getJSONObject("physical object"));
+        this.address = address;
+        this.orientation = new Vector(data.getJSONArray("orientation"));
+    }
+
+    public BaseShip(String address, double mass, double signature, Point position,
+                    Vector orientation, Vector velocity) {
+        super(mass, signature, position, velocity);
         this.address = address;
         this.orientation = orientation;
         this.orientation.normalize();
     }
 
-    public void addEngine(BaseEngine engine) {
-        engines.add(engine);
+    public void addModule(BaseModuleInterface module) {
+        if(module instanceof EngineModule) {
+            engines.add((BaseEngine)module);
+        }
+        modules.add(module);
     }
 
+    // Usually called from ShipsLogicConveyor
     public void proceed() {
         for(BaseEngine engine : engines) {
             pushForce(engine.getThrustVector());
@@ -42,7 +57,7 @@ public class ShipLogic extends PhysicalObjectImpl implements ShipModule {
     @Override // from ShipModule -> BaseModuleInterface
     public String getModuleType() { return "ship"; }
     @Override // from ShipModule -> BaseModuleInterface
-    public String getModuleModel() { return "noobship"; }
+    public String getModuleModel() { return "base ship"; }
     @Override // from ShipModule -> BaseModuleInterface
     public String getModuleInfo() { return ""; }
 

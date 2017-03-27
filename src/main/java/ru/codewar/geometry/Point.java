@@ -1,5 +1,7 @@
 package ru.codewar.geometry;
 
+import org.json.JSONArray;
+
 public class Point {
     double x;
     double y;
@@ -8,6 +10,9 @@ public class Point {
     public Point(Point other) { setPosition(other);}
     public Point(double x, double y) {
         setPosition(x, y);
+    }
+    public Point(JSONArray coordinates) {
+        setPosition(coordinates.getInt(0), coordinates.getInt(1));
     }
 
     public void setPosition(double x, double y) {

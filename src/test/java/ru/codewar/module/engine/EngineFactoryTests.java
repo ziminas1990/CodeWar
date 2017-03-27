@@ -10,14 +10,13 @@ public class EngineFactoryTests {
     public void makePlatformEngine() {
         String description =
                 "{\n" +
-                        "  \"address\"    : \"ship.engine.forward.1\",\n" +
                         "  \"model\"      : \"platform engine\",\n" +
                         "  \"parameters\" : {\n" +
                         "    \"orientation\" : \"forward\",\n" +
                         "    \"maxThrust\"   : 10000\n" +
                         "  }\n" +
                         "}";
-        PlatformEngine engine = (PlatformEngine)EngineFactory.make(new JSONObject(description));
+        PlatformEngine engine = (PlatformEngine)EngineFactory.make(new JSONObject(description), "ship.engine.forward.1");
         assertTrue(engine != null);
         assertEquals("ship.engine.forward.1", engine.getModuleAddress());
         assertEquals("platform engine", engine.getModuleModel());

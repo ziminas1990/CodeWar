@@ -1,5 +1,7 @@
 package ru.codewar.geometry;
 
+import org.json.JSONArray;
+
 public class Vector extends Point {
     private double length;  // Access only via getLength() - lazy semantics is used
     private boolean needToUpdateLength = true;
@@ -14,6 +16,7 @@ public class Vector extends Point {
     public Vector(Point from, Point to) {
         super(to.getX() - from.getX(), to.getY() - from.getY());
     }
+    public Vector(JSONArray coordinates) { super(coordinates); }
 
     private Vector(double x, double y, double length) {
         this.x = x;

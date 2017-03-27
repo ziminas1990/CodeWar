@@ -12,10 +12,8 @@ public class EngineFactory {
 
     private static Logger logger = LoggerFactory.getLogger(EngineFactory.class);
 
-    public static BaseEngine make(JSONObject description) {
-        logger.trace("Creating engine module by description: " + description);
+    public static BaseEngine make(JSONObject description, String address) {
         try {
-            String address = description.getString("address");
             String model = description.getString("model");
             switch (model) {
                 case "platform engine":
@@ -25,7 +23,7 @@ public class EngineFactory {
                     return null;
             }
         } catch(JSONException exception) {
-            logger.warn("Can't create engine: {}", exception.toString());
+            logger.warn("Can't create engine! Invalid JSON configuration: {}", exception.toString());
             return null;
         }
     }

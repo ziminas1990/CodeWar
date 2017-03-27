@@ -40,7 +40,7 @@ public class PhysicalLogicTests {
         double centralObjectsTotalMass = 1 / PhysicalLogic.G;
 
         for(int i = 0; i < totalObjectsInCenter; i++) {
-            PhysicalObject centralObject = new PhysicalObjectImpl(0, centralObjectsTotalMass / totalObjectsInCenter, 1);
+            PhysicalObject centralObject = new PhysicalObjectImpl(centralObjectsTotalMass / totalObjectsInCenter, 1);
             world.registerObject(centralObject);
         }
 
@@ -49,7 +49,7 @@ public class PhysicalLogicTests {
             double R = getOrbitRadius(centralObjectsTotalMass, t);
             double v = getRequiredVelocity(centralObjectsTotalMass, R) / world.getTicksInSecond();
             for(int copies = 0; copies < totalObjectsOnEachOrbit; copies++) {
-                PhysicalObject object = new PhysicalObjectImpl(objId, 1, R, new Point(R, 0), new Vector(0, v));
+                PhysicalObject object = new PhysicalObjectImpl(1, R, new Point(R, 0), new Vector(0, v));
                 world.registerObject(object);
                 createdObjects.add(object);
             }

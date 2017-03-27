@@ -1,18 +1,18 @@
 package ru.codewar.logicconveyor;
 
 import ru.codewar.logicconveyor.concept.ConveyorLogic;
-import ru.codewar.module.ship.ShipLogic;
+import ru.codewar.module.ship.BaseShip;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ShipsLogicConveyor implements ConveyorLogic {
 
-    private ArrayList<ShipLogic> ships = new ArrayList<>();
+    private ArrayList<BaseShip> ships = new ArrayList<>();
     private AtomicInteger nextShipId = new AtomicInteger(0);
 
-    public void addShip(ShipLogic ship) { ships.add(ship); }
-    public void removeShip(ShipLogic ship) { ships.remove(ship); }
+    public void addShip(BaseShip ship) { ships.add(ship); }
+    public void removeShip(BaseShip ship) { ships.remove(ship); }
 
     public int stagesCount() { return 1; }
     public boolean prepareStage(int stageId) {
