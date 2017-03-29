@@ -26,18 +26,18 @@ public class ShipFactory {
             for(int id = 0; id < modules.length(); id++) {
                 JSONObject parameters = modules.getJSONObject(id);
                 String moduleAddress = address + "." + parameters.getString("address");
-                BaseModuleInterface module = ModulesFactory.make(parameters, address);
+                BaseModuleInterface module = ModulesFactory.make(parameters, moduleAddress);
                 if(module != null) {
                     ship.addModule(module);
                 } else {
-                    logger.warn("Can't create module #{} with address {}!", id, address);
+                    logger.warn("Can't create module #{} with address {}!", id, moduleAddress);
                 }
             }
+            return ship;
         } catch (JSONException exception) {
             logger.warn("Can't create ship! Invalid JSON configuration: {}", exception.toString());
             return null;
         }
-        return null;
     }
 
     private BaseShip makeShipByModel(String model, String address, JSONObject parameters) {
