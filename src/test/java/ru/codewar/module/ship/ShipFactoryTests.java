@@ -13,10 +13,10 @@ public class ShipFactoryTests {
         assertTrue(jsonDescription != null);
 
         ShipFactory factory = new ShipFactory();
-        BaseShip ship = factory.make(jsonDescription, jsonDescription.getString("address"));
+        BaseShip ship = factory.make(jsonDescription, "zimin");
         assertTrue(ship != null);
 
-        assertEquals(ship.getModuleAddress(), "ship.1");
+        assertEquals(ship.getModuleAddress(), "zimin.ship.1");
         assertEquals(ship.getModuleModel(), "base ship");
     }
 }

@@ -2,21 +2,27 @@ package ru.codewar.module.engine;
 
 import org.json.JSONObject;
 import org.junit.Test;
+import static org.mockito.Mockito.*;
+import ru.codewar.module.ModulesPlatform;
+
 import static org.junit.Assert.*;
 
 public class EngineFactoryTests {
 
     @Test
     public void makePlatformEngine() {
+        ModulesPlatform platform = mock(ModulesPlatform.class);
+        when(platform.getPlatformAddress()).thenReturn("ship");
         String description =
                 "{\n" +
+                        "  \"address\"    : \"engine.forward.1\",\n" +
                         "  \"model\"      : \"platform engine\",\n" +
                         "  \"parameters\" : {\n" +
                         "    \"orientation\" : \"forward\",\n" +
                         "    \"maxThrust\"   : 10000\n" +
                         "  }\n" +
                         "}";
-        PlatformEngine engine = (PlatformEngine)EngineFactory.make(new JSONObject(description), "ship.engine.forward.1");
+        PlatformEngine engine = (PlatformEngine)EngineFactory.make(new JSONObject(description), platform);
         assertTrue(engine != null);
         assertEquals("ship.engine.forward.1", engine.getModuleAddress());
         assertEquals("platform engine", engine.getModuleModel());

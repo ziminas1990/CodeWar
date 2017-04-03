@@ -11,11 +11,12 @@ public class ModulesFactory {
 
     private static Logger logger = LoggerFactory.getLogger(ModulesFactory.class);
 
-    public static BaseModuleInterface make(JSONObject data, String address) {
+    public static PlatformedModuleInterface make(JSONObject data, ModulesPlatform platform)
+    {
         try {
             String type = data.getString("type");
             if (type.equals(BaseEngine.moduleType)) {
-                return EngineFactory.make(data, address);
+                return EngineFactory.make(data, platform);
             }
             logger.warn("Can't make module with type \"{}\": type not supported!", data.getString("type"));
             return null;

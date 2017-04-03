@@ -42,7 +42,7 @@ public class Server {
 
         ShipsLogicConveyor shipsLogicConveyor = new ShipsLogicConveyor();
 
-        ShipLoader shipLoader = new ShipLoaderDummy(physicalEngine, shipsLogicConveyor);
+        ShipLoader shipLoader = new ShipLoaderDummy();
         PlayerLoader playerLoader = new PlayerLoaderDummy(shipLoader);
 
         PlayerGate gate = new PlayerGate(world, playerLoader);

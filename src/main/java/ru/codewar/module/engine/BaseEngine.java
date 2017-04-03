@@ -2,8 +2,7 @@ package ru.codewar.module.engine;
 
 
 import ru.codewar.geometry.Vector;
-import ru.codewar.module.BaseModuleInterface;
-import ru.codewar.module.types.rotatableModule.RotatableModuleType;
+import ru.codewar.module.ModulesPlatform;
 
 // Engine module is used to produce force to physical object, engine is installed on.
 // Engine orientation defines the direction of jet, so the produced thrust has opposite direction
@@ -14,9 +13,11 @@ public class BaseEngine implements EngineModule {
     private String address;
     private double maxThrust;
     private double currentThrust;
+    private ModulesPlatform platform;
 
-    public BaseEngine(String address, double maxThrust) {
-        this.address = address;
+    public BaseEngine(ModulesPlatform platform, String address, double maxThrust) {
+        this.address = platform.getPlatformAddress() + "." + address;
+        this.platform = platform;
         this.maxThrust = maxThrust;
     }
 
@@ -39,21 +40,30 @@ public class BaseEngine implements EngineModule {
         this.currentThrust = thrust;
     }
 
-    @Override // from BaseModuleInterface
+    @Override // from EngineModule -> PlatformedModuleInterface
+    public void installOnPlatform(ModulesPlatform platform) {
+        this.platform = platform;
+    }
+    @Override // from EngineModule -> PlatformedModuleInterface
+    public ModulesPlatform installedOn() {
+        return this.platform;
+    }
+
+    @Override // from EngineModule -> PlatformedModuleInterface -> BaseModuleInterface
     public String getModuleAddress() { return address; }
-    @Override // from BaseModuleInterface
+    @Override // from EngineModule -> PlatformedModuleInterface -> BaseModuleInterface
     public String getModuleType() { return moduleType; }
-    @Override // from BaseModuleInterface
+    @Override // from EngineModule -> PlatformedModuleInterface -> BaseModuleInterface
     public String getModuleModel() { return "base engine"; }
-    @Override // from BaseModuleInterface
+    @Override // from EngineModule -> PlatformedModuleInterface -> BaseModuleInterface
     public String getModuleInfo() { return ""; }
 
     // Platform engine is not rotatable, but it's orientation is depend on platform orientation
-    @Override // from RotatableModuleType
+    @Override // from EngineModule -> PlatformedModuleInterface -> RotatableModuleType
     public double getMaxRotationSpeed() { return 0; }
-    @Override // from RotatableModuleType
+    @Override // from EngineModule -> PlatformedModuleInterface -> RotatableModuleType
     public void rotate(double delta, double speed) { }
-    @Override // from RotatableModuleType
+    @Override // from EngineModule -> PlatformedModuleInterface -> RotatableModuleType
     public Vector getOrientation() { return new Vector(); }
 
 }

@@ -67,5 +67,14 @@ public class BaseShip extends PhysicalObjectImpl implements ShipModule {
     public void rotate(double delta, double speed) {}
     @Override // from ShipModule -> RotatableModuleType
     public Vector getOrientation() { return orientation; }
+
+    @Override // from ShipModule -> ModulesPlatform
+    public int getModulesCount() { return modules.size(); }
+    @Override // from ShipModule -> ModulesPlatform
+    public BaseModuleInterface getModule(int index) { return modules.get(index); }
+    @Override // from ShipModule -> ModulesPlatform
+    public String getPlatformAddress() { return getModuleAddress(); }
+    @Override // from ShipModule -> ModulesPlatform
+    public  ArrayList<BaseModuleInterface> getAllModules() { return modules; }
 }
 

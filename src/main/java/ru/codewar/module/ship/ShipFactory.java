@@ -12,9 +12,9 @@ public class ShipFactory {
 
     Logger logger = LoggerFactory.getLogger(ShipFactory.class);
 
-    public BaseShip make(JSONObject description, String address) {
-
+    public BaseShip make(JSONObject description, String rootAddress) {
         try {
+            String address = rootAddress + "." + description.getString("address");
             BaseShip ship = makeShipByModel(
                     description.getString("model"), address, description.getJSONObject("parameters"));
             if(ship == null) {
@@ -25,12 +25,12 @@ public class ShipFactory {
             JSONArray modules = description.getJSONArray("modules");
             for(int id = 0; id < modules.length(); id++) {
                 JSONObject parameters = modules.getJSONObject(id);
-                String moduleAddress = address + "." + parameters.getString("address");
-                BaseModuleInterface module = ModulesFactory.make(parameters, moduleAddress);
+                BaseModuleInterface module = ModulesFactory.make(parameters, ship);
                 if(module != null) {
                     ship.addModule(module);
                 } else {
-                    logger.warn("Can't create module #{} with address {}!", id, moduleAddress);
+                    logger.warn("Can't create module #{} with address {}!",
+                            id, address + "." + parameters.getString("address"));
                 }
             }
             return ship;

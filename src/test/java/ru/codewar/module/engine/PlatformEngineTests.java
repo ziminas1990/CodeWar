@@ -2,7 +2,7 @@ package ru.codewar.module.engine;
 
 import org.junit.Test;
 import ru.codewar.geometry.Vector;
-import ru.codewar.module.types.rotatableModule.RotatableModuleType;
+import ru.codewar.module.ModulesPlatform;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
@@ -16,17 +16,17 @@ public class PlatformEngineTests {
     @Test
     public void getEngineOrientationTest() {
 
-        RotatableModuleType platform = mock(RotatableModuleType.class);
+        ModulesPlatform platform = mock(ModulesPlatform.class);
         Vector platformOrientation = new Vector(1, 1).normalize();
 
         PlatformEngine forwardEngine =
-                new PlatformEngine("engine", PlatformEngine.Orientation.eOrientationForward, 10000);
+                new PlatformEngine(platform, "engine", PlatformEngine.Orientation.eOrientationForward, 10000);
         PlatformEngine backwardEngine =
-                new PlatformEngine("engine", PlatformEngine.Orientation.eOrientationBackward, 10000);
+                new PlatformEngine(platform, "engine", PlatformEngine.Orientation.eOrientationBackward, 10000);
         PlatformEngine leftEngine =
-                new PlatformEngine("engine", PlatformEngine.Orientation.eOrientationLeft, 10000);
+                new PlatformEngine(platform, "engine", PlatformEngine.Orientation.eOrientationLeft, 10000);
         PlatformEngine rightEngine =
-                new PlatformEngine("engine", PlatformEngine.Orientation.eOrientationRight, 10000);
+                new PlatformEngine(platform, "engine", PlatformEngine.Orientation.eOrientationRight, 10000);
 
         forwardEngine.installOnPlatform(platform);
         backwardEngine.installOnPlatform(platform);

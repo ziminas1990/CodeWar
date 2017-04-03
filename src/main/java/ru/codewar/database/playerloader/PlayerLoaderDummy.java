@@ -15,8 +15,7 @@ public class PlayerLoaderDummy implements PlayerLoader {
 
     public Player loadPlayer(String login) {
         Player player = new Player(login);
-        ShipModule ship = shipLoader.loadShip(player, "luna-1");
-        player.setShip(ship);
+        player.setShip(shipLoader.loadShip(player, "shuttle"));
         return player;
     }
 

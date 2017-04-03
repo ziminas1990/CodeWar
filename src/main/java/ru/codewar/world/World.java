@@ -1,7 +1,5 @@
 package ru.codewar.world;
 
-import ru.codewar.logicconveyor.physicallogic.PhysicalLogic;
-
 import java.util.HashMap;
 import java.util.Map;
 

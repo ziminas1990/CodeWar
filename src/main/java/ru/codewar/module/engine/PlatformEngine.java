@@ -1,6 +1,7 @@
 package ru.codewar.module.engine;
 
 import ru.codewar.geometry.Vector;
+import ru.codewar.module.ModulesPlatform;
 import ru.codewar.module.types.rotatableModule.RotatableModuleType;
 
 // PlatformEngine is engine, that installed on some rotatable module and oriented to one of
@@ -16,20 +17,14 @@ public class PlatformEngine extends BaseEngine {
         eOrientationRight { public String toString() { return "right"; }}
     }
 
-    private RotatableModuleType platform;
     private Orientation orientation;
 
-    public PlatformEngine(String address, Orientation orientation, double maxThrust) {
-        super(address, maxThrust);
+    public PlatformEngine(ModulesPlatform platform, String address, Orientation orientation, double maxThrust) {
+        super(platform, address, maxThrust);
         this.orientation = orientation;
     }
 
-    public void installOnPlatform(RotatableModuleType platform) {
-        this.platform = platform;
-    }
-
     public Orientation getEngineOrientation() { return orientation; }
-
 
     @Override // from BaseEngine -> BaseModuleInterface
     public String getModuleModel() { return "platform engine"; }
@@ -38,17 +33,17 @@ public class PlatformEngine extends BaseEngine {
 
     @Override // from BaseEngine -> RotatableModuleType
     public Vector getOrientation() {
-        if(platform == null)
+        if(installedOn() == null)
             return new Vector();
         switch (orientation) {
             case eOrientationForward:
-                return platform.getOrientation();
+                return installedOn().getOrientation();
             case eOrientationBackward:
-                return platform.getOrientation().getBackward();
+                return installedOn().getOrientation().getBackward();
             case eOrientationRight:
-                return platform.getOrientation().getRightDirection();
+                return installedOn().getOrientation().getRightDirection();
             case eOrientationLeft:
-                return platform.getOrientation().getLeftDirection();
+                return installedOn().getOrientation().getLeftDirection();
             default:
                 return new Vector();
         }

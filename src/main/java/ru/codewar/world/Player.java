@@ -9,8 +9,8 @@ import ru.codewar.networking.Channel;
 public class Player {
 
     private String login;
-
     private Multiplexer multiplexer = new Multiplexer();
+    private ShipModule ship;
 
     public Player(String login) {
         this.login = login;
@@ -21,6 +21,7 @@ public class Player {
     }
 
     public void setShip(ShipModule shipLogic) {
+
         multiplexer.addModule(shipLogic);
     }
 
