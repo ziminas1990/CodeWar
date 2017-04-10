@@ -50,6 +50,7 @@ public class PhysicalObjectImpl implements PhysicalObject {
         } else {
             this.velocity = new Vector();
         }
+        this.forces = new Vector();
     }
 
     public Vector getVelocity() { return velocity; }

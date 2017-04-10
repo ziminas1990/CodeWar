@@ -3,6 +3,7 @@ package ru.codewar.module.multiplexer;
 
 import ru.codewar.module.BaseModuleInterface;
 import ru.codewar.module.ModuleTerminalFactory;
+import ru.codewar.module.ModulesPlatform;
 import ru.codewar.networking.Channel;
 import ru.codewar.protocol.module.ModuleOperator;
 
@@ -27,6 +28,13 @@ public class Multiplexer {
 
     public void addModule(BaseModuleInterface module) {
         logic.addModule(module);
+    }
+
+    public void addModulesInstalledOn(ModulesPlatform platform) {
+        int totalModules = platform.getModulesCount();
+        for(int index = 0; index < totalModules; index++) {
+            addModule(platform.getModule(index));
+        }
     }
 
     public MultiplexerOperator getOperator() { return operator; }

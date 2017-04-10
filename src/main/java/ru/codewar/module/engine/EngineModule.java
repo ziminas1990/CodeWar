@@ -3,7 +3,6 @@ package ru.codewar.module.engine;
 import ru.codewar.module.PlatformedModuleInterface;
 import ru.codewar.module.types.rotatableModule.RotatableModuleType;
 
-
 /*
     EngineModule inherits:
     1. PlatformedModuleInterface - because engine is a module, that could only be installed on some platform

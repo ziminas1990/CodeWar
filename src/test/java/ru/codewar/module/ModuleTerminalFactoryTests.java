@@ -7,6 +7,8 @@ import static org.mockito.Mockito.*;
 import org.mockito.ArgumentCaptor;
 import ru.codewar.module.engine.EngineController;
 import ru.codewar.module.engine.EngineModule;
+import ru.codewar.module.ship.ShipController;
+import ru.codewar.module.ship.ShipModule;
 import ru.codewar.networking.Channel;
 import ru.codewar.networking.Message;
 
@@ -24,8 +26,18 @@ public class ModuleTerminalFactoryTests {
         checkTerminal(terminal, module);
     }
 
+    @Test
+    public void makeShipTest() {
+        ShipModule module = mock(ShipModule.class);
+        ModuleTerminalFactory factory = new ModuleTerminalFactory();
+        ModuleTerminal terminal = factory.make(module);
+
+        assertTrue(terminal.getController() instanceof ShipController);
+        checkTerminal(terminal, module);
+    }
+
+    // Checking that terminal works correctly using BaseModuleInterface protocol
     private void checkTerminal(ModuleTerminal terminal, BaseModuleInterface mockedModule) {
-        // Checking that terminal works correctly using BaseModuleInterface protocol
 
         Channel channelMocked = mock(Channel.class);
         terminal.attachToChannel(channelMocked);

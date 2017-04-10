@@ -54,7 +54,7 @@ public class PlayerGate {
 
         Player player = world.getPlayer(login);
         if(player == null) {
-            // we should create player and add him to the world
+            // we should load player and add him to the world
             player = playerLoader.loadPlayer(login);
             if (player != null) {
                 world.addPlayer(player);

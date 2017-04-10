@@ -1,8 +1,11 @@
 package ru.codewar.logicconveyor.concept;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SlaveThread extends Thread {
 
+    private Logger logger = LoggerFactory.getLogger(SlaveThread.class);
     private ConveyorThreadContext context;
     private int threadId;
     private int totalThreads;
@@ -24,7 +27,7 @@ public class SlaveThread extends Thread {
                 context.barrier.await();
             }
         } catch (Exception exp) {
-            System.out.println("Slave thread #" + threadId + ": awaiting failed! Details: " + exp);
+            logger.warn("Slave thread #" + threadId + ": awaiting failed! Details: ", exp);
             context.barrier.reset();
         }
     }

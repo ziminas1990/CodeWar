@@ -33,18 +33,16 @@ public class Server {
                 "CodeWar server {} started on port {}! millisecondsInTick: {} ms; totalThreads: {}",
                 version, loginSocketPort, millisecondsInTick, extraThreadsNumber);
 
-        World world = new World();
-
         // Creating logics for multithread multithreadConveyor
-
         PhysicalLogic physicalEngine = new PhysicalLogic();
         physicalEngine.setSecondsInTick(millisecondsInTick / 1000);
 
         ShipsLogicConveyor shipsLogicConveyor = new ShipsLogicConveyor();
 
+        // Creating world, loaders and player gate
+        World world = new World(physicalEngine);
         ShipLoader shipLoader = new ShipLoaderDummy();
         PlayerLoader playerLoader = new PlayerLoaderDummy(shipLoader);
-
         PlayerGate gate = new PlayerGate(world, playerLoader);
         gate.addPlayer("admin", "admin");
 

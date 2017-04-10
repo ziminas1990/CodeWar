@@ -2,7 +2,6 @@ package ru.codewar.module;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.codewar.networking.Message;
@@ -92,7 +91,7 @@ public class BaseModuleController implements ModuleController {
         return checkPattern.matcher(message).matches();
     }
 
-    public void attachToModule(BaseModuleInterface module) {
+    protected void attachToModule(BaseModuleInterface module) {
         logPrefix = " for " + module.getModuleAddress() + ": ";
         this.module = module;
     }

@@ -1,8 +1,13 @@
 package ru.codewar.logicconveyor.concept;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.CyclicBarrier;
 
 public class MasterThreadLogic {
+
+    private Logger logger = LoggerFactory.getLogger(MasterThreadLogic.class);
     private MultithreadConveyor conveyor;
     private ConveyorThreadContext context = new ConveyorThreadContext();
     private int totalThreads;
@@ -32,7 +37,7 @@ public class MasterThreadLogic {
                 }
             }
         } catch (Exception exp) {
-            System.out.println("Master thread: awaiting failed! Details: " + exp);
+            logger.warn("Master thread: awaiting failed! Details ", exp);
         }
     }
 }

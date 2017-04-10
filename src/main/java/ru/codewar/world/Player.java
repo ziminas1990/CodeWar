@@ -21,8 +21,9 @@ public class Player {
     }
 
     public void setShip(ShipModule shipLogic) {
-
+        ship = shipLogic;
         multiplexer.addModule(shipLogic);
+        multiplexer.addModulesInstalledOn(ship);
     }
 
     public String getLogin() { return login; }
@@ -31,6 +32,6 @@ public class Player {
     {
         return multiplexer.getOperator();
     }
-
+    public ShipModule getActiveShip() { return ship; }
 
 }
