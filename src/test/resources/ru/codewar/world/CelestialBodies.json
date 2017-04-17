@@ -1,0 +1,26 @@
+{
+  "Sol" : {
+    "type"      : "star",
+    "name"      : "Sol",
+    "mass"      : 1.989e30,
+    "signature" : 695700000,
+    "position"  : [ 0, 0 ],
+    "velocity"  : [ 0, 0 ]
+  },
+  "Earth" : {
+    "type"      : "planet",
+    "name"      : "Earth",
+    "mass"      : 5.97e24,
+    "signature" : 6700000,
+    "position"  : [149.6e9, 0],
+    "velocity"  : [0, 29783]
+  },
+  "Moon" : {
+    "type"      : "moon",
+    "name"      : "Moon",
+    "mass"      : 7.347e22,
+    "signature" : 1737000,
+    "position"  : [149.6e9, 384.4e3],
+    "velocity"  : [1023, 30000]
+  }
+}

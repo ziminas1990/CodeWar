@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.codewar.logicconveyor.physicallogic.PhysicalLogic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,10 +14,15 @@ public class World {
 
     private Map<String, Player> players = new HashMap<>();
     private PhysicalLogic physicalEngine;
+    private ArrayList<CelestialBody> bodies = new ArrayList<>();
 
     public World(PhysicalLogic physicalEngine)
     {
         this.physicalEngine = physicalEngine;
+    }
+
+    public void addCelestialBody(CelestialBody body) {
+        bodies.add(body);
     }
 
     public Player getPlayer(String playerName) {
@@ -29,5 +35,4 @@ public class World {
         physicalEngine.registerObject(player.getActiveShip());
         players.put(player.getLogin(), player);
     }
-
 }

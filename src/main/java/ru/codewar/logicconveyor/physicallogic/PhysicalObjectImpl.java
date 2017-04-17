@@ -38,8 +38,8 @@ public class PhysicalObjectImpl implements PhysicalObject {
     }
 
     public PhysicalObjectImpl(JSONObject parameters) {
-        this.mass = parameters.getInt("mass");
-        this.signature = parameters.getInt("signature");
+        this.mass = parameters.getDouble("mass");
+        this.signature = parameters.getDouble("signature");
         if(parameters.has("position")) {
             this.position = new Point(parameters.getJSONArray("position"));
         } else {
