@@ -4,15 +4,17 @@ package ru.codewar.logicconveyor.physicallogic;
 import ru.codewar.geometry.Vector;
 import ru.codewar.logicconveyor.concept.ConveyorLogic;
 
+import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PhysicalLogic implements ConveyorLogic {
     public static final double G = 6.67408E-11;
-    public static final double RevG = 1 / G;
 
     private double secondsInTick = 0.001;
     private java.util.ArrayList<PhysicalObject> objects = new java.util.ArrayList<>();
     private java.util.ArrayList<PhysicalObject> hugeObjects = new java.util.ArrayList<>();
+    private java.util.HashSet<PhysicalObject> allObjectsSet = new java.util.HashSet<>();
+
     private AtomicInteger nextObjectId = new AtomicInteger(0);
 
     public void setSecondsInTick(double secondsInTick)
@@ -20,11 +22,22 @@ public class PhysicalLogic implements ConveyorLogic {
         this.secondsInTick = secondsInTick;
     }
 
-    public void registerObject(PhysicalObject object) {
+    public synchronized void registerObject(PhysicalObject object) {
+        if(allObjectsSet.contains(object))
+            return;
+        objects.add(object);
+        allObjectsSet.add(object);
         if(checkIfObjectIsHuge(object)) {
             hugeObjects.add(object);
-        } else {
-            objects.add(object);
+        }
+    }
+    public synchronized void deregisterObject(PhysicalObject object) {
+        if(!allObjectsSet.contains(object))
+            return;
+        allObjectsSet.remove(object);
+        objects.remove(object);
+        if(checkIfObjectIsHuge(object)) {
+            hugeObjects.remove(object);
         }
     }
 
@@ -46,14 +59,16 @@ public class PhysicalLogic implements ConveyorLogic {
 
     @Override
     public void proceedStage(int stageId, int threadId, int totalThreads) {
-        if(stageId == 0) {
-            calculateAccelerationsStage(threadId);
-        } else if(stageId == 1) {
-            movingStage(threadId);
+        switch (stageId) {
+            case 0:
+                calculateAccelerationsStage();
+                return;
+            case 1:
+                movingStage();
         }
     }
 
-    private void calculateAccelerationsStage(int threadId) {
+    private void calculateAccelerationsStage() {
         int totalObjects = objects.size();
         int totalHugeObjects = hugeObjects.size();
         Vector gravityForce = new Vector();
@@ -72,7 +87,7 @@ public class PhysicalLogic implements ConveyorLogic {
         }
     }
 
-    private void movingStage(int threadId) {
+    private void movingStage() {
         int totalObjects = objects.size();
         Vector acceleration = new Vector();
         for(int idx = nextObjectId.getAndIncrement(); idx < totalObjects; idx = nextObjectId.getAndIncrement()) {
