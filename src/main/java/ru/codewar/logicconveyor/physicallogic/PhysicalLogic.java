@@ -4,7 +4,6 @@ package ru.codewar.logicconveyor.physicallogic;
 import ru.codewar.geometry.Vector;
 import ru.codewar.logicconveyor.concept.ConveyorLogic;
 
-import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PhysicalLogic implements ConveyorLogic {

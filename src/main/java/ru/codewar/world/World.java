@@ -4,25 +4,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.codewar.logicconveyor.physicallogic.PhysicalLogic;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class World {
+public class World implements IWorld {
 
     Logger logger = LoggerFactory.getLogger(World.class);
 
     private Map<String, Player> players = new HashMap<>();
     private PhysicalLogic physicalEngine;
-    private ArrayList<CelestialBody> bodies = new ArrayList<>();
+    private SolarSystem solarSystem;
 
     public World(PhysicalLogic physicalEngine)
     {
         this.physicalEngine = physicalEngine;
-    }
-
-    public void addCelestialBody(CelestialBody body) {
-        bodies.add(body);
+        solarSystem = new SolarSystem(physicalEngine);
     }
 
     public Player getPlayer(String playerName) {
@@ -35,4 +31,6 @@ public class World {
         physicalEngine.registerObject(player.getActiveShip());
         players.put(player.getLogin(), player);
     }
+
+    public ISolarSystem getSolarSystem() { return solarSystem; }
 }
