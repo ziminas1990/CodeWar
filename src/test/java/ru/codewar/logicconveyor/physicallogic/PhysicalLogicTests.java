@@ -1,12 +1,9 @@
-package ru.codewar.logicconveyor;
+package ru.codewar.logicconveyor.physicallogic;
 
 import org.junit.Test;
 import ru.codewar.geometry.Point;
 import ru.codewar.geometry.Vector;
 import ru.codewar.logicconveyor.concept.MultithreadConveyor;
-import ru.codewar.logicconveyor.physicallogic.PhysicalObject;
-import ru.codewar.logicconveyor.physicallogic.PhysicalObjectImpl;
-import ru.codewar.logicconveyor.physicallogic.PhysicalLogic;
 
 import static org.junit.Assert.assertEquals;
 

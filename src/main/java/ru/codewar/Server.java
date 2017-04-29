@@ -12,7 +12,6 @@ import ru.codewar.logicconveyor.concept.MultithreadConveyor;
 import ru.codewar.logicconveyor.physicallogic.PhysicalLogic;
 import ru.codewar.networking.ConnectionManager;
 import ru.codewar.networking.StringDatagramSocket;
-import ru.codewar.world.Player;
 import ru.codewar.world.PlayerGate;
 import ru.codewar.world.World;
 

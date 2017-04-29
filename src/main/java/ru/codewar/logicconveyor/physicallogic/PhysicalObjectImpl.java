@@ -3,6 +3,7 @@ package ru.codewar.logicconveyor.physicallogic;
 import org.json.JSONObject;
 import ru.codewar.geometry.Point;
 import ru.codewar.geometry.Vector;
+import ru.codewar.logicconveyor.physicallogic.PhysicalObject;
 
 
 public class PhysicalObjectImpl implements PhysicalObject {
@@ -38,19 +39,12 @@ public class PhysicalObjectImpl implements PhysicalObject {
     }
 
     public PhysicalObjectImpl(JSONObject parameters) {
-        this.mass = parameters.getDouble("mass");
-        this.signature = parameters.getDouble("signature");
-        if(parameters.has("position")) {
-            this.position = new Point(parameters.getJSONArray("position"));
-        } else {
-            this.position = new Point();
-        }
-        if(parameters.has("velocity")) {
-            this.velocity = new Vector(parameters.getJSONArray("velocity"));
-        } else {
-            this.velocity = new Vector();
-        }
-        this.forces = new Vector();
+        PhysicalObject data = PhysicalObject.fromJson(parameters);
+        this.mass = data.getMass();
+        this.signature = data.getSignature();
+        this.position = data.getPosition();
+        this.velocity = data.getVelocity();
+        this.forces = data.getForce();
     }
 
     public Vector getVelocity() { return velocity; }

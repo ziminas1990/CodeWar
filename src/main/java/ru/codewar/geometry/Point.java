@@ -15,6 +15,8 @@ public class Point {
         setPosition(coordinates.getInt(0), coordinates.getInt(1));
     }
 
+    public JSONArray toJson() { return new JSONArray().put(0, x).put(1, y); }
+
     public void setPosition(double x, double y) {
         this.x = x;
         this.y = y;

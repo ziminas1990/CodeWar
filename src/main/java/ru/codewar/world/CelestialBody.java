@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.codewar.geometry.Point;
 import ru.codewar.geometry.Vector;
+import ru.codewar.logicconveyor.physicallogic.PhysicalObject;
 import ru.codewar.logicconveyor.physicallogic.PhysicalObjectImpl;
 
 
@@ -56,6 +57,10 @@ public class CelestialBody extends PhysicalObjectImpl {
         } catch (JSONException exception) {
             logger.warn("Can't create celestial body! Reason: " + exception);
         }
+    }
+
+    public JSONObject toJson() {
+        return super.toJson().put("type", type.toString()).put("name", getName());
     }
 
     BodyType getType() { return type; }

@@ -27,7 +27,7 @@ public class VirtualChannel implements Channel, NetworkTerminal {
         this.downLevel = channel;
     }
 
-    @Override // from onMessageReceived
+    @Override // from NetworkTerminal
     public void onMessageReceived(Message message)
     {
         // Just passing message to terminal logic
