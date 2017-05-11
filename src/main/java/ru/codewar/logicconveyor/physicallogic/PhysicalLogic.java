@@ -9,17 +9,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class PhysicalLogic implements ConveyorLogic {
     public static final double G = 6.67408E-11;
 
-    private double secondsInTick = 0.001;
     private java.util.ArrayList<PhysicalObject> objects = new java.util.ArrayList<>();
     private java.util.ArrayList<PhysicalObject> hugeObjects = new java.util.ArrayList<>();
     private java.util.HashSet<PhysicalObject> allObjectsSet = new java.util.HashSet<>();
 
     private AtomicInteger nextObjectId = new AtomicInteger(0);
-
-    public void setSecondsInTick(double secondsInTick)
-    {
-        this.secondsInTick = secondsInTick;
-    }
 
     public synchronized void registerObject(PhysicalObject object) {
         if(allObjectsSet.contains(object))
@@ -40,9 +34,6 @@ public class PhysicalLogic implements ConveyorLogic {
         }
     }
 
-    public double getSecondsInTick() { return secondsInTick; }
-    public int getTicksInSecond() { return (int)(1 / secondsInTick); }
-
     @Override
     public int stagesCount() {
         // Two stages: calculating accelerations and moving objects
@@ -57,13 +48,13 @@ public class PhysicalLogic implements ConveyorLogic {
     }
 
     @Override
-    public void proceedStage(int stageId, int threadId, int totalThreads) {
+    public void proceedStage(int stageId, double dt, int threadId, int totalThreads) {
         switch (stageId) {
             case 0:
                 calculateAccelerationsStage();
                 return;
             case 1:
-                movingStage();
+                movingStage(dt);
         }
     }
 
@@ -86,12 +77,12 @@ public class PhysicalLogic implements ConveyorLogic {
         }
     }
 
-    private void movingStage() {
+    private void movingStage(double dt) {
         int totalObjects = objects.size();
         Vector acceleration = new Vector();
         for(int idx = nextObjectId.getAndIncrement(); idx < totalObjects; idx = nextObjectId.getAndIncrement()) {
             PhysicalObject object = objects.get(idx);
-            acceleration.setPosition(object.getForce(), secondsInTick * secondsInTick / object.getMass());
+            acceleration.setPosition(object.getForce(), dt * dt / object.getMass());
             object.getPosition().move(
                     object.getVelocity().getX() + acceleration.getX() / 2,
                     object.getVelocity().getY() + acceleration.getY() / 2);

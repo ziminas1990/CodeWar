@@ -23,7 +23,7 @@ public class SlaveThread extends Thread {
         try {
             while (true) {
                 context.barrier.await();
-                context.logic.proceedStage(context.stage, threadId, totalThreads);
+                context.logic.proceedStage(context.stage, context.dt, threadId, totalThreads);
                 context.barrier.await();
             }
         } catch (Exception exp) {

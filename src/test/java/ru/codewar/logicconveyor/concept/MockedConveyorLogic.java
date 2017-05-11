@@ -19,7 +19,7 @@ public class MockedConveyorLogic implements ConveyorLogic {
     public boolean prepareStage(int stageId) { return true; }
 
     @Override
-    public void proceedStage(int stageId, int threadId, int totalThreads) {
+    public void proceedStage(int stageId, double dt, int threadId, int totalThreads) {
         totalProceeds.set(threadId, totalProceeds.get(threadId) + 1);
         if(timeToProceed > 0) {
             for(int i = threadId; i < timeToProceed; i += totalThreads) {

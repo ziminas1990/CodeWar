@@ -19,7 +19,7 @@ public class ShipsLogicConveyor implements ConveyorLogic {
         nextShipId.set(0);
         return true;
     }
-    public void proceedStage(int stageId, int threadId, int totalThreads) {
+    public void proceedStage(int stageId, double dt, int threadId, int totalThreads) {
         for(int shipId = nextShipId.getAndIncrement(); shipId < ships.size(); shipId = nextShipId.getAndIncrement())
             ships.get(shipId).proceed();
     }

@@ -17,21 +17,25 @@ public class MultithreadConveyor {
         }
     }
 
-    public void proceed()
+    /**
+     * Proceed conveyor logic once
+     * @param dt number of milliseconds passed after previous proceed() call
+     * @return return number of nanoseconds, that took to proceed conveyor
+     */
+    public long proceed(long dt)
     {
         // We are not starting master thread logic in separate thread, but just running it
         // in current thread. Slave threads are waiting for master thread on barrier
-        long start = System.currentTimeMillis();
+        long start = System.nanoTime();
+        masterThreadLogic.proceed(dt * 0.001);
 
-        masterThreadLogic.proceed();
-
-        // If proceeding is slow, printing statistic after every proceedStage
-        long proceedTime = System.currentTimeMillis() - start;
-        if(proceedTime > 50) {
+        long nanosecProceeded = System.nanoTime() - start;
+        if(nanosecProceeded > 50e6) {
             // Waiting while slave threads print their statistic
             try { Thread.sleep(1); } catch (Exception ex) {}
-            System.out.println("proceedStage(): " + proceedTime + " ms");
+            System.out.println("proceedStage(): ~" + nanosecProceeded / 1000000 + " ms");
         }
+        return nanosecProceeded;
     }
 
     public void addLogic(ConveyorLogic logic) {

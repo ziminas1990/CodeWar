@@ -20,13 +20,14 @@ import java.net.InetSocketAddress;
 
 public class Server {
 
+    private static final int MILLION = 1000000;
     public static Logger logger = LoggerFactory.getLogger(Server.class);
 
     public static void main(String args[]) {
         // General server settings:
         String version = "0.1.0";
         int loginSocketPort = 4835;
-        int millisecondsInTick = 1;
+        int millisecondsInTick = 2;
         int extraThreadsNumber = 3;
         logger.info(
                 "CodeWar server {} started on port {}! millisecondsInTick: {} ms; totalThreads: {}",
@@ -34,7 +35,6 @@ public class Server {
 
         // Creating logics for multithread multithreadConveyor
         PhysicalLogic physicalEngine = new PhysicalLogic();
-        physicalEngine.setSecondsInTick(millisecondsInTick / 1000);
 
         ShipsLogicConveyor shipsLogicConveyor = new ShipsLogicConveyor();
 
@@ -63,11 +63,14 @@ public class Server {
         multithreadConveyor.addLogic(shipsLogicConveyor);
 
         while(true) {
-            multithreadConveyor.proceed();
-            try {
-                Thread.sleep(millisecondsInTick);
-            } catch(Exception exception) {
-                logger.warn("Unhandled exception has occurred during Thread.sleep: {}", exception);
+            long nanosecProceeded = multithreadConveyor.proceed(millisecondsInTick);
+            long nanosecToSleep = millisecondsInTick * MILLION - nanosecProceeded;
+            if(nanosecToSleep > MILLION) {
+                try {
+                    Thread.sleep(nanosecToSleep / MILLION, (int)(nanosecToSleep % MILLION));
+                } catch (Exception exception) {
+                    logger.warn("Unhandled exception has occurred during Thread.sleep: {}", exception);
+                }
             }
         }
     }

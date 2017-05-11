@@ -27,9 +27,10 @@ public class PhysicalLogicTests {
         int totalOrbits = 2;
         int totalObjectsOnEachOrbit = 100;
 
+        int ticksInSecond = 1000;
+
         MultithreadConveyor multithreadConveyor = new MultithreadConveyor(extraThreads);
         PhysicalLogic world = new PhysicalLogic();
-        world.setSecondsInTick(0.001);
         multithreadConveyor.addLogic(world);
 
         java.util.List<PhysicalObject> createdObjects = new java.util.ArrayList<>();
@@ -44,7 +45,7 @@ public class PhysicalLogicTests {
         double t = 10;
         for(int objId = 1; objId <= totalOrbits; objId++, t *= 2) {
             double R = getOrbitRadius(centralObjectsTotalMass, t);
-            double v = getRequiredVelocity(centralObjectsTotalMass, R) / world.getTicksInSecond();
+            double v = getRequiredVelocity(centralObjectsTotalMass, R) / ticksInSecond;
             for(int copies = 0; copies < totalObjectsOnEachOrbit; copies++) {
                 PhysicalObject object = new PhysicalObjectImpl(1, R, new Point(R, 0), new Vector(0, v));
                 world.registerObject(object);
@@ -52,11 +53,11 @@ public class PhysicalLogicTests {
             }
         }
 
-        int totalTicks = (int)(t * world.getTicksInSecond() / 2);
+        int totalTicks = (int)(t * ticksInSecond / 2);
         for(int i = 0; i < totalTicks; i++) {
             if(i % 1000 == 0)
                 System.out.println("Tick #" + i + " / " + totalTicks);
-            multithreadConveyor.proceed();
+            multithreadConveyor.proceed(ticksInSecond / 1000);
         }
 
         for(PhysicalObject object : createdObjects) {

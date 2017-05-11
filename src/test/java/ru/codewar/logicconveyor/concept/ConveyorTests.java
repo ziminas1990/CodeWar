@@ -16,7 +16,7 @@ public class ConveyorTests {
         multithreadConveyor.addLogic(mockedLogic);
 
         for(int i = 0; i < totalProceeds; i++) {
-            multithreadConveyor.proceed();
+            multithreadConveyor.proceed(1);
         }
 
         for(int i = 0; i < totalThreads; i++) {

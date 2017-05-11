@@ -52,7 +52,7 @@ public class ConnectionManager implements ConveyorLogic {
     }
 
     @Override // from ConveyorLogic
-    public void proceedStage(int stageId, int threadId, int totalThreads)
+    public void proceedStage(int stageId, double dt, int threadId, int totalThreads)
     {
         if(stageId == loginStageId) {
             if(threadId == 0) {
