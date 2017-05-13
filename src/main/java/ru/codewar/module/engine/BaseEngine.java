@@ -2,27 +2,26 @@ package ru.codewar.module.engine;
 
 
 import ru.codewar.geometry.Vector;
-import ru.codewar.module.BaseModule;
-import ru.codewar.module.ModulesPlatform;
+import ru.codewar.module.IModulesPlatform;
+import ru.codewar.module.PlatformedModule;
 
 // Engine module is used to produce force to physical object, engine is installed on.
 // Engine orientation defines the direction of jet, so the produced thrust has opposite direction
-public class BaseEngine extends BaseModule implements EngineModule {
+public class BaseEngine extends PlatformedModule implements EngineModule {
 
     public static final String moduleType = "engine";
 
     private double maxThrust;
     private double currentThrust;
-    private ModulesPlatform platform;
 
-    public BaseEngine(ModulesPlatform platform, String address, double maxThrust) {
+    public BaseEngine(IModulesPlatform platform, String address, double maxThrust) {
         this(platform, address, "base engine", "", maxThrust);
     }
 
-    protected BaseEngine(ModulesPlatform platform, String address, String moduleModel,
+    protected BaseEngine(IModulesPlatform platform, String address, String moduleModel,
                          String moduleInfo, double maxThrust) {
-        super(platform.getPlatformAddress() + "." + address, moduleType, moduleModel, moduleInfo);
-        this.platform = platform;
+        super(platform, address, moduleType, moduleModel, moduleInfo);
+        installOnPlatform(platform);
         this.maxThrust = maxThrust;
     }
 
@@ -45,21 +44,12 @@ public class BaseEngine extends BaseModule implements EngineModule {
         this.currentThrust = thrust;
     }
 
-    @Override // from EngineModule -> PlatformedModuleInterface
-    public void installOnPlatform(ModulesPlatform platform) {
-        this.platform = platform;
-    }
-    @Override // from EngineModule -> PlatformedModuleInterface
-    public ModulesPlatform installedOn() {
-        return this.platform;
-    }
-
     // Platform engine is not rotatable, but it's orientation is depend on platform orientation
-    @Override // from EngineModule -> PlatformedModuleInterface -> RotatableModuleType
+    @Override // from EngineModule -> RotatableModuleType
     public double getMaxRotationSpeed() { return 0; }
-    @Override // from EngineModule -> PlatformedModuleInterface -> RotatableModuleType
+    @Override // from EngineModule -> RotatableModuleType
     public void rotate(double delta, double speed) { }
-    @Override // from EngineModule -> PlatformedModuleInterface -> RotatableModuleType
+    @Override // from EngineModule -> RotatableModuleType
     public Vector getOrientation() { return new Vector(); }
 
 }

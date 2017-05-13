@@ -15,7 +15,7 @@ public class ModulesFactory {
 
     public static void attachToWorld(IWorld world) { ModulesFactory.world = world; }
 
-    public static PlatformedModuleInterface make(JSONObject data, ModulesPlatform platform)
+    public static IPlatformedModule make(JSONObject data, IModulesPlatform platform)
     {
         try {
             String type = data.getString("type");

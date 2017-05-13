@@ -2,7 +2,7 @@ package ru.codewar.module.engine;
 
 import org.junit.Test;
 import ru.codewar.geometry.Vector;
-import ru.codewar.module.ModulesPlatform;
+import ru.codewar.module.IModulesPlatform;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
@@ -16,7 +16,7 @@ public class PlatformEngineTests {
     @Test
     public void getEngineOrientationTest() {
 
-        ModulesPlatform platform = mock(ModulesPlatform.class);
+        IModulesPlatform platform = mock(IModulesPlatform.class);
         Vector platformOrientation = new Vector(1, 1).normalize();
 
         PlatformEngine forwardEngine =

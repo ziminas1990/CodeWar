@@ -3,7 +3,7 @@ package ru.codewar.module.multiplexer;
 
 import ru.codewar.module.IBaseModule;
 import ru.codewar.module.ModuleTerminalFactory;
-import ru.codewar.module.ModulesPlatform;
+import ru.codewar.module.IModulesPlatform;
 import ru.codewar.networking.Channel;
 
 public class Multiplexer {
@@ -27,7 +27,7 @@ public class Multiplexer {
         logic.addModule(module);
     }
 
-    public void addModulesInstalledOn(ModulesPlatform platform) {
+    public void addModulesInstalledOn(IModulesPlatform platform) {
         int totalModules = platform.getModulesCount();
         for(int index = 0; index < totalModules; index++) {
             addModule(platform.getModule(index));

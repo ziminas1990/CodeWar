@@ -4,7 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.codewar.module.ModulesPlatform;
+import ru.codewar.module.IModulesPlatform;
 
 /**
  * Create and configure engine instance by it JSON description
@@ -13,7 +13,7 @@ public class EngineFactory {
 
     private static Logger logger = LoggerFactory.getLogger(EngineFactory.class);
 
-    public static BaseEngine make(JSONObject description, ModulesPlatform platform) {
+    public static BaseEngine make(JSONObject description, IModulesPlatform platform) {
         String address = ".invalid";
         try {
             String model = description.getString("model");
@@ -34,7 +34,7 @@ public class EngineFactory {
     }
 
     private static PlatformEngine makePlatformEngine(
-            JSONObject parameters, ModulesPlatform platform, String address) {
+            JSONObject parameters, IModulesPlatform platform, String address) {
         /*
           {
             "model"      : "platform engine",

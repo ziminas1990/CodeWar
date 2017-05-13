@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * 1. PhysicalObject - because it has a position in space
  * 2. RotatableModuleType - because it has an orientation and, possibly, could be rotated
  */
-public interface ModulesPlatform extends PhysicalObject, RotatableModuleType {
+public interface IModulesPlatform extends PhysicalObject, RotatableModuleType {
 
     int getModulesCount();
     IBaseModule getModule(int index);
