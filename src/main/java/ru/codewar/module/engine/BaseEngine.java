@@ -2,21 +2,26 @@ package ru.codewar.module.engine;
 
 
 import ru.codewar.geometry.Vector;
+import ru.codewar.module.BaseModule;
 import ru.codewar.module.ModulesPlatform;
 
 // Engine module is used to produce force to physical object, engine is installed on.
 // Engine orientation defines the direction of jet, so the produced thrust has opposite direction
-public class BaseEngine implements EngineModule {
+public class BaseEngine extends BaseModule implements EngineModule {
 
     public static final String moduleType = "engine";
 
-    private String address;
     private double maxThrust;
     private double currentThrust;
     private ModulesPlatform platform;
 
     public BaseEngine(ModulesPlatform platform, String address, double maxThrust) {
-        this.address = platform.getPlatformAddress() + "." + address;
+        this(platform, address, "base engine", "", maxThrust);
+    }
+
+    protected BaseEngine(ModulesPlatform platform, String address, String moduleModel,
+                         String moduleInfo, double maxThrust) {
+        super(platform.getPlatformAddress() + "." + address, moduleType, moduleModel, moduleInfo);
         this.platform = platform;
         this.maxThrust = maxThrust;
     }
@@ -48,15 +53,6 @@ public class BaseEngine implements EngineModule {
     public ModulesPlatform installedOn() {
         return this.platform;
     }
-
-    @Override // from EngineModule -> PlatformedModuleInterface -> IBaseModule
-    public String getModuleAddress() { return address; }
-    @Override // from EngineModule -> PlatformedModuleInterface -> IBaseModule
-    public String getModuleType() { return moduleType; }
-    @Override // from EngineModule -> PlatformedModuleInterface -> IBaseModule
-    public String getModuleModel() { return "base engine"; }
-    @Override // from EngineModule -> PlatformedModuleInterface -> IBaseModule
-    public String getModuleInfo() { return ""; }
 
     // Platform engine is not rotatable, but it's orientation is depend on platform orientation
     @Override // from EngineModule -> PlatformedModuleInterface -> RotatableModuleType

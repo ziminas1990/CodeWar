@@ -20,16 +20,11 @@ public class PlatformEngine extends BaseEngine {
     private Orientation orientation;
 
     public PlatformEngine(ModulesPlatform platform, String address, Orientation orientation, double maxThrust) {
-        super(platform, address, maxThrust);
+        super(platform, address, "platform engine", "orientation = " + orientation, maxThrust);
         this.orientation = orientation;
     }
 
     public Orientation getEngineOrientation() { return orientation; }
-
-    @Override // from BaseEngine -> IBaseModule
-    public String getModuleModel() { return "platform engine"; }
-    @Override // from BaseEngine -> IBaseModule
-    public String getModuleInfo() { return "orientation = " + orientation; }
 
     @Override // from BaseEngine -> RotatableModuleType
     public Vector getOrientation() {
