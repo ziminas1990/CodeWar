@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import org.mockito.ArgumentCaptor;
-import ru.codewar.module.BaseModuleInterface;
+import ru.codewar.module.IBaseModule;
 import ru.codewar.module.ModuleTerminal;
 import ru.codewar.module.ModuleTerminalFactory;
 import ru.codewar.networking.Channel;
@@ -16,9 +16,9 @@ public class MultiplexerTests {
 
     private ModuleTerminalFactory terminalFactoryMock;
     private MultiplexerLogic multiplexerLogic;
-    private BaseModuleInterface engineMock;
+    private IBaseModule engineMock;
     private ModuleTerminal engineTerminalMock;
-    private BaseModuleInterface rocketMock;
+    private IBaseModule rocketMock;
     private ModuleTerminal rocketTerminalMock;
     private Channel channelMock;
 
@@ -44,9 +44,9 @@ public class MultiplexerTests {
                     +--------------+
          */
 
-        engineMock = mock(BaseModuleInterface.class);
+        engineMock = mock(IBaseModule.class);
         when(engineMock.getModuleAddress()).thenReturn("ship.engine");
-        rocketMock = mock(BaseModuleInterface.class);
+        rocketMock = mock(IBaseModule.class);
         when(rocketMock.getModuleAddress()).thenReturn("ship.rocket");
 
         engineTerminalMock = mock(ModuleTerminal.class);

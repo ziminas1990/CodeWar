@@ -5,7 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.codewar.module.BaseModuleInterface;
+import ru.codewar.module.IBaseModule;
 import ru.codewar.module.ModulesFactory;
 
 public class ShipFactory {
@@ -25,7 +25,7 @@ public class ShipFactory {
             JSONArray modules = description.getJSONArray("modules");
             for(int id = 0; id < modules.length(); id++) {
                 JSONObject parameters = modules.getJSONObject(id);
-                BaseModuleInterface module = ModulesFactory.make(parameters, ship);
+                IBaseModule module = ModulesFactory.make(parameters, ship);
                 if(module != null) {
                     ship.addModule(module);
                 } else {

@@ -18,7 +18,7 @@ public class ModuleTerminalFactory {
 
     static Logger logger = LoggerFactory.getLogger(ModuleTerminalFactory.class);
 
-    public ModuleTerminal make(BaseModuleInterface module) {
+    public ModuleTerminal make(IBaseModule module) {
         logger.info("Creating terminal for \"{}\" module \"{}\" requested",
                 module.getModuleType(), module.getModuleAddress());
 
@@ -33,7 +33,7 @@ public class ModuleTerminalFactory {
         return new ModuleTerminal(module, controller, operator);
     }
 
-    private BaseModuleController makeController(BaseModuleInterface module) {
+    private BaseModuleController makeController(IBaseModule module) {
         if(module instanceof EngineModule) {
             EngineController controller = new EngineController();
             controller.attachToEngine((EngineModule)module);

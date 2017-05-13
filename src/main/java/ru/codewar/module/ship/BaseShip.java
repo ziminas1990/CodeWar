@@ -4,7 +4,7 @@ import org.json.JSONObject;
 import ru.codewar.geometry.Point;
 import ru.codewar.geometry.Vector;
 import ru.codewar.logicconveyor.physicallogic.PhysicalObjectImpl;
-import ru.codewar.module.BaseModuleInterface;
+import ru.codewar.module.IBaseModule;
 import ru.codewar.module.engine.BaseEngine;
 import ru.codewar.module.engine.EngineModule;
 
@@ -16,7 +16,7 @@ public class BaseShip extends PhysicalObjectImpl implements ShipModule {
 
     private String address = "";
     private Vector orientation = new Vector(0, 1);
-    private ArrayList<BaseModuleInterface> modules = new ArrayList<>();
+    private ArrayList<IBaseModule> modules = new ArrayList<>();
     private ArrayList<BaseEngine> engines = new ArrayList<>();
 
     public BaseShip(String address, JSONObject data) {
@@ -33,7 +33,7 @@ public class BaseShip extends PhysicalObjectImpl implements ShipModule {
         this.orientation.normalize();
     }
 
-    public void addModule(BaseModuleInterface module) {
+    public void addModule(IBaseModule module) {
         if(module instanceof EngineModule) {
             engines.add((BaseEngine)module);
         }
@@ -52,13 +52,13 @@ public class BaseShip extends PhysicalObjectImpl implements ShipModule {
     // @Override
     // public Point getPosition() {}
 
-    @Override // from ShipModule -> BaseModuleInterface
+    @Override // from ShipModule -> IBaseModule
     public String getModuleAddress() { return address; }
-    @Override // from ShipModule -> BaseModuleInterface
+    @Override // from ShipModule -> IBaseModule
     public String getModuleType() { return "ship"; }
-    @Override // from ShipModule -> BaseModuleInterface
+    @Override // from ShipModule -> IBaseModule
     public String getModuleModel() { return "base ship"; }
-    @Override // from ShipModule -> BaseModuleInterface
+    @Override // from ShipModule -> IBaseModule
     public String getModuleInfo() { return ""; }
 
     @Override // from ShipModule -> RotatableModuleType
@@ -71,10 +71,10 @@ public class BaseShip extends PhysicalObjectImpl implements ShipModule {
     @Override // from ShipModule -> ModulesPlatform
     public int getModulesCount() { return modules.size(); }
     @Override // from ShipModule -> ModulesPlatform
-    public BaseModuleInterface getModule(int index) { return modules.get(index); }
+    public IBaseModule getModule(int index) { return modules.get(index); }
     @Override // from ShipModule -> ModulesPlatform
     public String getPlatformAddress() { return getModuleAddress(); }
     @Override // from ShipModule -> ModulesPlatform
-    public  ArrayList<BaseModuleInterface> getAllModules() { return modules; }
+    public  ArrayList<IBaseModule> getAllModules() { return modules; }
 }
 

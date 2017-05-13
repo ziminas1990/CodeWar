@@ -49,13 +49,13 @@ public class BaseEngine implements EngineModule {
         return this.platform;
     }
 
-    @Override // from EngineModule -> PlatformedModuleInterface -> BaseModuleInterface
+    @Override // from EngineModule -> PlatformedModuleInterface -> IBaseModule
     public String getModuleAddress() { return address; }
-    @Override // from EngineModule -> PlatformedModuleInterface -> BaseModuleInterface
+    @Override // from EngineModule -> PlatformedModuleInterface -> IBaseModule
     public String getModuleType() { return moduleType; }
-    @Override // from EngineModule -> PlatformedModuleInterface -> BaseModuleInterface
+    @Override // from EngineModule -> PlatformedModuleInterface -> IBaseModule
     public String getModuleModel() { return "base engine"; }
-    @Override // from EngineModule -> PlatformedModuleInterface -> BaseModuleInterface
+    @Override // from EngineModule -> PlatformedModuleInterface -> IBaseModule
     public String getModuleInfo() { return ""; }
 
     // Platform engine is not rotatable, but it's orientation is depend on platform orientation

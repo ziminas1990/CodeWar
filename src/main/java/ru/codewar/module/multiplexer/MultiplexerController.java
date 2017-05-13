@@ -1,6 +1,6 @@
 package ru.codewar.module.multiplexer;
 
-import ru.codewar.module.BaseModuleInterface;
+import ru.codewar.module.IBaseModule;
 import ru.codewar.networking.Message;
 import ru.codewar.protocol.module.ModuleController;
 import ru.codewar.protocol.module.ModuleOperator;
@@ -97,9 +97,9 @@ public class MultiplexerController implements ModuleController {
 
     private Message onGetAllModulesRequest()
     {
-        Map<String, BaseModuleInterface> allModules = multiplexerLogic.getAllModules();
+        Map<String, IBaseModule> allModules = multiplexerLogic.getAllModules();
         String response = "{";
-        for(BaseModuleInterface module : allModules.values()) {
+        for(IBaseModule module : allModules.values()) {
             response += "[" + module.getModuleAddress() + " " + module.getModuleType() + "] ";
         }
         response += "}";

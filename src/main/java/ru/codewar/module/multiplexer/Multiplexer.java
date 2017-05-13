@@ -1,13 +1,10 @@
 package ru.codewar.module.multiplexer;
 
 
-import ru.codewar.module.BaseModuleInterface;
+import ru.codewar.module.IBaseModule;
 import ru.codewar.module.ModuleTerminalFactory;
 import ru.codewar.module.ModulesPlatform;
 import ru.codewar.networking.Channel;
-import ru.codewar.protocol.module.ModuleOperator;
-
-import javax.smartcardio.TerminalFactory;
 
 public class Multiplexer {
     private MultiplexerLogic logic = new MultiplexerLogic(new ModuleTerminalFactory());
@@ -26,7 +23,7 @@ public class Multiplexer {
         logic.attachToChannel(channel);
     }
 
-    public void addModule(BaseModuleInterface module) {
+    public void addModule(IBaseModule module) {
         logic.addModule(module);
     }
 

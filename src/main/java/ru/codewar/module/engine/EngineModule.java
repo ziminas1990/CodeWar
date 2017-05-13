@@ -5,7 +5,7 @@ import ru.codewar.module.types.rotatableModule.RotatableModuleType;
 
 /*
     EngineModule inherits:
-    1. PlatformedModuleInterface - because engine is a module, that could only be installed on some platform
+    1. PlatformedModuleInterface - because engine is a module, that should only be installed on some platform
     2. RotatableModuleType - because engine could has his own orientation, that could not depend on
        platforms orientation
  */

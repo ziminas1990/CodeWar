@@ -84,14 +84,14 @@ public class BaseModuleController implements ModuleController {
 
     private Logger logger = LoggerFactory.getLogger(BaseModuleController.class);
     private String logPrefix = "";
-    private BaseModuleInterface module;
+    private IBaseModule module;
 
     public static boolean checkIfSupported(String message)
     {
         return checkPattern.matcher(message).matches();
     }
 
-    protected void attachToModule(BaseModuleInterface module) {
+    protected void attachToModule(IBaseModule module) {
         logPrefix = " for " + module.getModuleAddress() + ": ";
         this.module = module;
     }

@@ -26,9 +26,9 @@ public class PlatformEngine extends BaseEngine {
 
     public Orientation getEngineOrientation() { return orientation; }
 
-    @Override // from BaseEngine -> BaseModuleInterface
+    @Override // from BaseEngine -> IBaseModule
     public String getModuleModel() { return "platform engine"; }
-    @Override // from BaseEngine -> BaseModuleInterface
+    @Override // from BaseEngine -> IBaseModule
     public String getModuleInfo() { return "orientation = " + orientation; }
 
     @Override // from BaseEngine -> RotatableModuleType

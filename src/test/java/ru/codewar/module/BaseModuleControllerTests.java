@@ -17,7 +17,7 @@ public class BaseModuleControllerTests {
 
     @Test
     public void getModuleInfoTest() {
-        BaseModuleInterface mockedModule = mock(BaseModuleInterface.class);
+        IBaseModule mockedModule = mock(IBaseModule.class);
         BaseModuleController controller = new BaseModuleController();
         controller.attachToModule(mockedModule);
 
@@ -27,11 +27,11 @@ public class BaseModuleControllerTests {
     // Useful to check, that other controller aggregates base module controller correctly
     // controller - instance of controller, that use PositionedModuleController
     // mockedModule - mock instance of PositionedModule, to which controller is connected
-    public static void inheritanceChecker(ModuleController controller, BaseModuleInterface mockedModule) {
+    public static void inheritanceChecker(ModuleController controller, IBaseModule mockedModule) {
         checkGetModuleInfoReq(controller, mockedModule);
     }
 
-    private static void checkGetModuleInfoReq(ModuleController controller, BaseModuleInterface mockedModule) {
+    private static void checkGetModuleInfoReq(ModuleController controller, IBaseModule mockedModule) {
         when(mockedModule.getModuleAddress()).thenReturn("Test address");
         when(mockedModule.getModuleType()).thenReturn("Test Type");
         when(mockedModule.getModuleModel()).thenReturn("Test Model");

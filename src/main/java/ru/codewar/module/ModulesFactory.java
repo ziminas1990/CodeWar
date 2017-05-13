@@ -6,10 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.codewar.module.engine.BaseEngine;
 import ru.codewar.module.engine.EngineFactory;
+import ru.codewar.world.IWorld;
 
 public class ModulesFactory {
 
     private static Logger logger = LoggerFactory.getLogger(ModulesFactory.class);
+    private static IWorld world;
+
+    public static void attachToWorld(IWorld world) { ModulesFactory.world = world; }
 
     public static PlatformedModuleInterface make(JSONObject data, ModulesPlatform platform)
     {

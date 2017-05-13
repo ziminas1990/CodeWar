@@ -12,17 +12,17 @@ import ru.codewar.protocol.module.ModuleOperator;
  */
 public class ModuleTerminal implements NetworkTerminal {
 
-    BaseModuleInterface module;
+    IBaseModule module;
     ModuleController controller;
     ModuleOperator operator;
 
-    public ModuleTerminal(BaseModuleInterface module, ModuleController controller, ModuleOperator operator) {
+    public ModuleTerminal(IBaseModule module, ModuleController controller, ModuleOperator operator) {
         this.module = module;
         this.controller = controller;
         this.operator = operator;
     }
 
-    public BaseModuleInterface getModule() { return module; }
+    public IBaseModule getModule() { return module; }
     public ModuleController getController() { return controller; }
     public ModuleOperator getOperator() { return operator; }
 

@@ -14,11 +14,11 @@ import java.util.ArrayList;
 public interface ModulesPlatform extends PhysicalObject, RotatableModuleType {
 
     int getModulesCount();
-    BaseModuleInterface getModule(int index);
+    IBaseModule getModule(int index);
     default String getPlatformAddress() { return ""; }
 
-    default ArrayList<BaseModuleInterface> getAllModules() {
-        ArrayList<BaseModuleInterface> modulesList = new ArrayList<>();
+    default ArrayList<IBaseModule> getAllModules() {
+        ArrayList<IBaseModule> modulesList = new ArrayList<>();
         int totalModules = getModulesCount();
         for(int i = 0; i < totalModules; i++) {
             modulesList.add(getModule(i));

@@ -36,8 +36,8 @@ public class ModuleTerminalFactoryTests {
         checkTerminal(terminal, module);
     }
 
-    // Checking that terminal works correctly using BaseModuleInterface protocol
-    private void checkTerminal(ModuleTerminal terminal, BaseModuleInterface mockedModule) {
+    // Checking that terminal works correctly using IBaseModule protocol
+    private void checkTerminal(ModuleTerminal terminal, IBaseModule mockedModule) {
 
         Channel channelMocked = mock(Channel.class);
         terminal.attachToChannel(channelMocked);

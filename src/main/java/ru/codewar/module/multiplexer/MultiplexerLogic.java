@@ -2,7 +2,7 @@ package ru.codewar.module.multiplexer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.codewar.module.BaseModuleInterface;
+import ru.codewar.module.IBaseModule;
 import ru.codewar.module.ModuleTerminal;
 import ru.codewar.module.ModuleTerminalFactory;
 import ru.codewar.networking.Channel;
@@ -17,7 +17,7 @@ public class MultiplexerLogic {
     private Logger logger = LoggerFactory.getLogger(MultiplexerLogic.class);
     private IdPool idPool = new IdPool();
     private Channel channel;
-    private Map<String, BaseModuleInterface> modules = new HashMap<>();
+    private Map<String, IBaseModule> modules = new HashMap<>();
     private Set<String> modulesInUse = new HashSet<>();
     private Map<Integer, VirtualChannel> virtualChannels = new HashMap<>();
 
@@ -30,11 +30,11 @@ public class MultiplexerLogic {
         this.channel = channel;
     }
 
-    public void addModule(BaseModuleInterface module) {
+    public void addModule(IBaseModule module) {
         modules.put(module.getModuleAddress(), module);
     }
 
-    public Map<String, BaseModuleInterface> getAllModules() {
+    public Map<String, IBaseModule> getAllModules() {
         return modules;
     }
 
@@ -48,7 +48,7 @@ public class MultiplexerLogic {
             throw new IllegalArgumentException("Module " + moduleAddress + " is already in use");
         }
 
-        BaseModuleInterface module = modules.get(moduleAddress);
+        IBaseModule module = modules.get(moduleAddress);
         if(module == null) {
             logger.warn("Module {} not found!", moduleAddress);
             throw new IllegalArgumentException("Element " + moduleAddress + " NOT found");
