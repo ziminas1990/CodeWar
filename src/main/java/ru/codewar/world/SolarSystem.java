@@ -8,7 +8,7 @@ import java.util.HashSet;
 public class SolarSystem implements ISolarSystem {
     private PhysicalLogic physicalEngine;
 
-    private CelestialBody sol;
+    private ArrayList<CelestialBody> stars = new ArrayList<>();
     private ArrayList<CelestialBody> planets = new ArrayList<>();
     private ArrayList<CelestialBody> moons = new ArrayList<>();
     private ArrayList<CelestialBody> asteroids = new ArrayList<>();
@@ -21,57 +21,23 @@ public class SolarSystem implements ISolarSystem {
     public void addCelestialBody(CelestialBody body) {
         if(allObjects.contains(body))
             return;
-
-        switch (body.getType()) {
-            case STAR:
-                if(sol != null)
-                    return;
-                sol = body;
-                break;
-            case PLANET:
-                planets.add(body);
-                break;
-            case MOON:
-                moons.add(body);
-                break;
-            case ASTEROID:
-                asteroids.add(body);
-                break;
-            default:
-                return;
-        }
-        physicalEngine.registerObject(body);
+        if(physicalEngine != null)
+            physicalEngine.registerObject(body);
         allObjects.add(body);
+        ISolarSystem.super.addCelestialBody(body);
     }
 
     public void removeCelestialBody(CelestialBody body)
     {
         if(!allObjects.contains(body))
             return;
-
-        switch (body.getType()) {
-            case STAR:
-                if(sol != body)
-                    return;
-                sol = null;
-                break;
-            case PLANET:
-                planets.remove(body);
-                break;
-            case MOON:
-                moons.remove(body);
-                break;
-            case ASTEROID:
-                asteroids.remove(body);
-                break;
-            default:
-                return;
-        }
-        physicalEngine.deregisterObject(body);
+        if(physicalEngine != null)
+            physicalEngine.deregisterObject(body);
         allObjects.remove(body);
+        ISolarSystem.super.removeCelestialBody(body);
     }
 
-    public CelestialBody getSol() { return sol; }
+    public ArrayList<CelestialBody> getStars() { return stars; }
     public ArrayList<CelestialBody> getPlanets() { return planets; }
     public ArrayList<CelestialBody> getMoons() { return moons; }
     public ArrayList<CelestialBody> getAsteroids() { return asteroids; }

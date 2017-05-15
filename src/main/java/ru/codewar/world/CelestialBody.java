@@ -38,6 +38,7 @@ public class CelestialBody extends PhysicalObjectImpl {
     }
 
     private BodyType type = BodyType.UNKNOWN;
+    private double sqrSignature = 0;
     private String name = "";
 
     public CelestialBody(BodyType type, String name,
@@ -46,6 +47,7 @@ public class CelestialBody extends PhysicalObjectImpl {
         super(mass, signature, position, velocity);
         this.type = type;
         this.name = name;
+        this.sqrSignature = signature * signature;
     }
 
     public CelestialBody(JSONObject parameters)
@@ -62,6 +64,7 @@ public class CelestialBody extends PhysicalObjectImpl {
     public JSONObject toJson() {
         return super.toJson().put("type", type.toString()).put("name", getName());
     }
+    public double getSqrOfSignature() { return sqrSignature; }
 
     BodyType getType() { return type; }
     String getName() { return name; }
