@@ -8,6 +8,7 @@ public class PlatformedModule extends BaseModule implements IPlatformedModule {
                             String moduleModel, String moduleInfo)
     {
         super(platform.getPlatformAddress() + "." + moduleAddress, moduleType, moduleModel, moduleInfo);
+        this.platform = platform;
     }
 
     @Override // from IPlatformedModule

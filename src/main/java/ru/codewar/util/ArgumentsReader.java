@@ -66,8 +66,11 @@ public class ArgumentsReader {
         }
         arguments = matcher.group("TAIL");
 
-        ArrayList<String> result = new ArrayList<>();
         String arrayContent = matcher.group("CONTENT");
+        if(arrayContent == null)
+            return new ArrayList<>();
+
+        ArrayList<String> result = new ArrayList<>();
         matcher = arrayContentReader.matcher(arrayContent);
         while(matcher.matches()) {
             arrayContent = matcher.group("TAIL");

@@ -66,7 +66,7 @@ public class CelestialBody extends PhysicalObjectImpl {
     }
     public double getSqrOfSignature() { return sqrSignature; }
 
-    BodyType getType() { return type; }
-    String getName() { return name; }
+    public BodyType getType() { return type; }
+    public String getName() { return name; }
 
 }

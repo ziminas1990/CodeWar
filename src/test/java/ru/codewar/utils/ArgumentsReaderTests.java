@@ -41,6 +41,15 @@ public class ArgumentsReaderTests {
     }
 
     @Test
+    public void readEmptyArrayTest() {
+        ArgumentsReader reader = new ArgumentsReader("{ }");
+        ArrayList<String> result;
+
+        result = reader.readArray();
+        assertEquals(0, result.size());
+    }
+
+    @Test
     public void readArrayTest() {
         ArgumentsReader reader =
                 new ArgumentsReader("{ [element_1] [ { [ element_2_1 ] [ element_2_2 ] } ] [ element_2 ] }");

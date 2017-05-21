@@ -45,17 +45,22 @@ public class BaseScanner extends PlatformedModule implements IScannerModule {
     public boolean scanning(double distance, double minSignature, double maxSignature) {
         if(operator == null || system == null)
             return false;
+        this.minSignature = minSignature;
+        this.maxSignature = maxSignature;
         if(distance < 1) {
             // scanning for asteroid/moons is NOT required, so just immediately
             // return sol and planets
-            ArrayList<CelestialBody> result = new ArrayList<>(system.getPlanets().size() + 1);
-            result.addAll(system.getStars());
-            result.addAll(system.getPlanets());
+            ArrayList<CelestialBody> result =
+                    new ArrayList<>(system.getPlanets().size() + system.getStars().size());
+            system.getStars().stream()
+                    .filter(this::isHugeBodyCovered)
+                    .forEach(result::add);
+            system.getPlanets().stream()
+                    .filter(this::isHugeBodyCovered)
+                    .forEach(result::add);
             operator.onScanningComplete(result);
             return true;
         }
-        this.minSignature = minSignature;
-        this.maxSignature = maxSignature;
         sqrDistance = distance * distance;
         timeToFinishScanning = 2 * distance / speedOfLight;
         return true;
@@ -65,6 +70,9 @@ public class BaseScanner extends PlatformedModule implements IScannerModule {
     public void alive(double dt) {
         super.alive(dt);
 
+        if(timeToFinishScanning == 0)
+            return;
+
         if(timeToFinishScanning >= dt) {
             timeToFinishScanning -= dt;
         } else {
@@ -73,22 +81,26 @@ public class BaseScanner extends PlatformedModule implements IScannerModule {
                 return;
             ArrayList<CelestialBody> result = new ArrayList<>();
             system.getMoons().stream()
-                    .filter(this::isCovered)
-                    .peek(result::add);
+                    .filter(this::isSmallBodyCovered)
+                    .forEach(result::add);
             system.getAsteroids().stream()
-                    .filter(this::isCovered)
-                    .peek(result::add);
+                    .filter(this::isSmallBodyCovered)
+                    .forEach(result::add);
             operator.onScanningComplete(result);
         }
     }
 
-    private boolean isCovered(CelestialBody body) {
-        if(body.getSignature() > maxSignature || body.getSignature() < minSignature)
+    private boolean isHugeBodyCovered(CelestialBody body) {
+        return body.getSignature() >= minSignature && (maxSignature <= 1 || body.getSignature() <= maxSignature);
+    }
+
+    private boolean isSmallBodyCovered(CelestialBody body) {
+        if((maxSignature > 1 && body.getSignature() > maxSignature) || body.getSignature() < minSignature)
             return false;
         double sqrR = installedOn().getPosition().getSquareOfDistanceTo(body.getPosition());
         if(sqrR > sqrDistance)
             return false;
-        return sqrResolution > body.getSqrOfSignature() / sqrR;
+        return sqrResolution < body.getSqrOfSignature() / sqrR;
     }
 
 }

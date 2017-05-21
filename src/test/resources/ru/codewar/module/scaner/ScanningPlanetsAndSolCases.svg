@@ -1,0 +1,18 @@
+<svg width="1000" height="500" xmlns="http://www.w3.org/2000/svg">
+    <ellipse id="STAR:sol"            cx="104.2" cy="279.2" rx="75.7" ry="75.7" fill="#ffff00" stroke="#000"/>
+    <ellipse id="PLANET:venus"        cx="525.0" cy="293.4" rx="21"   ry="21"   fill="#fff"    stroke="#000"/>
+    <ellipse id="PLANET:mercury"      cx="283.5" cy="207.8" rx="20"   ry="20"   fill="#fff"    stroke="#000" />
+    <ellipse id="MOON:mercury_1"      cx="262.1" cy="174.3" rx="6"    ry="6"    fill="#00f"    stroke="#000"/>
+    <ellipse id="ASTEROID:asteroid_1" cx="413.8" cy="199.6" rx="1.5"  ry="1.5"  fill="#000000" stroke="#000"/>
+
+    <ellipse id="SCANNER:scanner_1" resolution="1e-4" cx="314" cy="233" rx="0.5" ry="1" stroke="#ff0000" fill="none"/>
+
+    <TestCase scannerId = "scanner_1" radius = "0" minSignature="0"  maxSignature="0"  alive = "0"
+              scanned="{ [sol] [mercury] [venus] }"/>
+    <TestCase scannerId = "scanner_1" radius = "3" minSignature="0"  maxSignature="0"  alive = "1"
+              scanned="{}"/>
+    <TestCase scannerId = "scanner_1" radius = "0" minSignature="70" maxSignature="0"  alive = "0"
+              scanned="{ [sol] }"/>
+    <TestCase scannerId = "scanner_1" radius = "0" minSignature="19" maxSignature="23" alive = "0"
+              scanned="{ [mercury] [venus] }"/>
+</svg>

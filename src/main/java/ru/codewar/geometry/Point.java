@@ -38,6 +38,8 @@ public class Point {
     public void move(Vector vector) { setPosition(x + vector.getX(), y + vector.getY()); }
 
     public double getSquareOfDistanceTo(Point other) {
-        return x * other.x + y * other.y;
+        double dx = other.x - x;
+        double dy = other.y - y;
+        return dx*dx + dy*dy;
     }
 }
