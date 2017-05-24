@@ -24,6 +24,10 @@ public class BaseScannerTests {
         RunTestCases("ScanningPlanetsAndSolCases.svg");
     }
 
+    @Test
+    public void scanningAsteroidsCases() { RunTestCases("ScanningAsteroidsCases.svg"); }
+
+
     public void RunTestCases(String testCaseSvgFile) {
         Element root = readXmlDocument(testCaseSvgFile);
         assertNotEquals(null, root);
@@ -46,7 +50,9 @@ public class BaseScannerTests {
 
             assertEquals(testName, testCase.coveredBodiesName.size(), mockedOperator.scannedBodies.size());
             for (String expectedBodyName : testCase.coveredBodiesName)
-                assertTrue(testName, mockedOperator.hasBodyWithName(expectedBodyName));
+                assertTrue(
+                        testName + ": body " + expectedBodyName,
+                        mockedOperator.hasBodyWithName(expectedBodyName));
         }
     }
 

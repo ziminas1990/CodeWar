@@ -1,0 +1,27 @@
+<svg width="580" height="400" xmlns="http://www.w3.org/2000/svg">
+    <!--
+    helpful replaces:
+    (\d*\.\d)\d+ -> $1
+    ellipse (.*) (cy=".*?")(.*)(cx=".*?") -> ellipse $1 $4 $2 $3
+    ellipse (.*) (ry=".*?")(.*)(rx=".*?") -> ellipse $1 $4 $2 $3
+    -->
+    <ellipse id="ASTEROID:asteroid_1" cx="123.8" cy="250.3" rx="3.3"   ry="3.3"   fill="#ff0000" stroke="#000000" stroke-width="1.5"/>
+    <ellipse id="ASTEROID:asteroid_2" cx="200.4" cy="300.4" rx="3.3"   ry="3.3"   fill="#ff0000" stroke="#000000" stroke-width="1.5"/>
+    <ellipse id="ASTEROID:asteroid_3" cx="255.4" cy="244.4" rx="3.3"   ry="3.3"   fill="#ffff00" stroke="#000000" stroke-width="1.5"/>
+    <ellipse id="ASTEROID:asteroid_4" cx="264.8" cy="206.6" rx="3.3"   ry="3.3"   fill="#00ff00" stroke="#000000" stroke-width="1.5"/>
+    <ellipse id="ASTEROID:asteroid_5" cx="419.6" cy="129.6" rx="14.7"  ry="14.7"  fill="#00ff00" stroke="#000000" stroke-width="1.5"/>
+    <ellipse id="ASTEROID:asteroid_6" cx="241.4" cy="350.9" rx="12.9"  ry="12.9"  fill="none"    stroke="#000000" stroke-width="1.5" fill-opacity="null"/>
+    <ellipse id="ASTEROID:asteroid_7" cx="205.2" cy="174.8" rx="5.3"   ry="5.3"   fill="none"    stroke="#000000" stroke-width="1.5" fill-opacity="null"/>
+    <ellipse id="ASTEROID:asteroid_8" cx="498.8" cy="357.3" rx="12.1"  ry="12.1"  fill="none"    stroke="#000000" stroke-width="1.5" fill-opacity="null"/>
+
+    <ellipse id="SCANNER:scanner_right"  resolution="1e-4"
+             rx="115" ry="115" cx="332.7" cy="188.2" stroke="#ff0000" stroke-width="1.5" fill="none"/>
+    <ellipse id="SCANNER:scanner_left" resolution="1e-4"
+             rx="88"  ry="88"  cx="188.8" cy="272.0" stroke="#ff0000" stroke-width="1.5" fill="none"/>
+
+    <TestCase scannerId = "scanner_left" radius = "88" minSignature="0"  maxSignature="0"  alive = "1"
+              scanned="{ [asteroid_1] [asteroid_2] [asteroid_3] }"/>
+    <TestCase scannerId = "scanner_right" radius = "115" minSignature="0"  maxSignature="0"  alive = "1"
+              scanned="{ [asteroid_3] [asteroid_4] [asteroid_5] }"/>
+
+</svg>
