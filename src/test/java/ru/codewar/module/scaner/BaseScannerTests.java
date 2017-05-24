@@ -27,6 +27,8 @@ public class BaseScannerTests {
     @Test
     public void scanningAsteroidsCases() { RunTestCases("ScanningAsteroidsCases.svg"); }
 
+    @Test
+    public void scanningResolutionCases() { RunTestCases("ScanningResolutionCases.svg"); }
 
     public void RunTestCases(String testCaseSvgFile) {
         Element root = readXmlDocument(testCaseSvgFile);
