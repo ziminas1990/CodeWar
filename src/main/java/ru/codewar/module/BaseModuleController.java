@@ -17,22 +17,25 @@ If you're going to make your own module controller, you should extend this class
 it shown below:
 
     public class SomeAwesomeController extends BaseModuleController {
+        SomeAwesomeModule someAwesomeModule;
 
-        @Override // ModuleController
         public static boolean checkIfSupported(String message)
         {
             return BaseModuleController.checkIfSupported(message);
         }
 
-        public void attachToModule(ShipModule ship) {
-            super.attachToModule(ship);
+        public void attachToModule(SomeAwesomeModule module) {
+            super.attachToModule(module);
+            someAwesomeModule = module;
         }
 
         @Override // ModuleController
         public void onCommand(String command) {
             if(BaseModuleController.checkIfSupported(command)) {
                 super.onCommand(command);
+                return;
             }
+            // your logic goes here...
         }
 
         @Override // ModuleController
@@ -40,6 +43,7 @@ it shown below:
             if(BaseModuleController.checkIfSupported(request)) {
                 return super.onRequest(transactionId, request);
             }
+            // your logic goes here...
             return null;
         }
     }
@@ -47,23 +51,26 @@ it shown below:
 It is also possible to implement other controller without extending BaseModuleController:
 
     public class SomeAwesomeController {
+        SomeAwesomeModule someAwesomeModule;
         BaseModuleController baseModuleController;
 
-        @Override // ModuleController
         public static boolean checkIfSupported(String message)
         {
             return BaseModuleController.checkIfSupported(message);
         }
 
-        public void attachToModule(ShipModule ship) {
-            baseModuleController.attachToModule(ship);
+        public void attachToModule(SomeAwesomeModule module) {
+            baseModuleController.attachToModule(module);
+            someAwesomeModule = module;
         }
 
         @Override // ModuleController
         public void onCommand(String command) {
             if(BaseModuleController.checkIfSupported(command)) {
                 baseModuleController.onCommand(command);
+                return;
             }
+            // your logic goes here...
         }
 
         @Override // ModuleController
@@ -71,6 +78,7 @@ It is also possible to implement other controller without extending BaseModuleCo
             if(BaseModuleController.checkIfSupported(request)) {
                 return baseModuleController.onRequest(transactionId, request);
             }
+            // your logic goes here...
             return null;
         }
     }

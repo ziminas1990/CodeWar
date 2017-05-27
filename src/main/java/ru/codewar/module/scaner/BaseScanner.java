@@ -13,7 +13,7 @@ public class BaseScanner extends PlatformedModule implements IScannerModule {
 
     public static final String moduleType = "scanner";
 
-    private IScannerOperator operator;
+    private ScannerOperator operator;
     private ISolarSystem system;
     private double sqrResolution;
 
@@ -31,14 +31,12 @@ public class BaseScanner extends PlatformedModule implements IScannerModule {
         this.system = system;
     }
 
-    public void setSqrResolution(double sqrResolution) {
-        this.sqrResolution = sqrResolution * sqrResolution;
+    public void setResolution(double resolution) {
+        this.sqrResolution = resolution * resolution;
     }
 
-    // from IScannerModule
-    public double getSqrResolution() { return Math.sqrt(sqrResolution); }
     @Override // from IScannerModule
-    public void attachToOperator(IScannerOperator operator) {
+    public void attachToOperator(ScannerOperator operator) {
         this.operator = operator;
     }
     @Override // from IScannerModule

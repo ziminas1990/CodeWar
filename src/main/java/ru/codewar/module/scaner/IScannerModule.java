@@ -7,17 +7,15 @@ import ru.codewar.module.IPlatformedModule;
  * (star, planets, moons)
  * Main scanner parameter - resolution. Resolution is signature-to-distance ratio, that define
  * a signature of object, that could be detected on specified distance.
- * For example, if scanner can detect object with 1 km signature, that 1 million km away, it means that
+ * For example, if scanner can detect object with 1 km signature, that 1 million m away, it means that
  * scanner has resolution = 1 / 1000000 or 10^-6
  *
  * Extends:
- *   - IPlatformedModule because scanner is installed on ship, drone etc...
+ *   - IPlatformedModule because scanner could be installed on ship, drone etc...
  */
 public interface IScannerModule extends IPlatformedModule {
 
-    double getSqrResolution();
-
-    void attachToOperator(IScannerOperator operator);
+    void attachToOperator(ScannerOperator operator);
 
     /**
      * Start scanning procedure

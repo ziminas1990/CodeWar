@@ -4,7 +4,7 @@ import ru.codewar.world.CelestialBody;
 
 import java.util.ArrayList;
 
-public class MockedScannerOperator implements IScannerOperator {
+public class MockedScannerOperator extends ScannerOperator {
 
     ArrayList<CelestialBody> scannedBodies;
 

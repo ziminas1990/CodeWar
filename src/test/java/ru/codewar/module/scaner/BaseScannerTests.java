@@ -166,7 +166,7 @@ public class BaseScannerTests {
                     Double.valueOf(attributes.getNamedItem("cy").getNodeValue())
             );
             BaseScanner scanner = new BaseScanner(platform, "scanner", system);
-            scanner.setSqrResolution(Double.valueOf(attributes.getNamedItem("resolution").getNodeValue()));
+            scanner.setResolution(Double.valueOf(attributes.getNamedItem("resolution").getNodeValue()));
             return scanner;
         }
 
