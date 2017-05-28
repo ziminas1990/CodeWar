@@ -18,6 +18,7 @@ public class BaseScanner extends PlatformedModule implements IScannerModule {
     private double sqrResolution;
 
     // Current scanning parameters
+    private int transactionId;
     private double sqrDistance;
     private double minSignature, maxSignature;
     private double timeToFinishScanning;
@@ -40,9 +41,12 @@ public class BaseScanner extends PlatformedModule implements IScannerModule {
         this.operator = operator;
     }
     @Override // from IScannerModule
-    public boolean scanning(double distance, double minSignature, double maxSignature) {
+    public boolean scanning(int transactionId, double distance, double minSignature, double maxSignature) {
         if(operator == null || system == null)
             return false;
+        // interrupting previous scanning request
+        if(this.transactionId != 0)
+            operator.onScanningComplete(this.transactionId, new ArrayList<>());
         this.minSignature = minSignature;
         this.maxSignature = maxSignature;
         if(distance < 1) {
@@ -56,9 +60,10 @@ public class BaseScanner extends PlatformedModule implements IScannerModule {
             system.getPlanets().stream()
                     .filter(this::isHugeBodyCovered)
                     .forEach(result::add);
-            operator.onScanningComplete(result);
+            operator.onScanningComplete(transactionId, result);
             return true;
         }
+        this.transactionId = transactionId;
         sqrDistance = distance * distance;
         timeToFinishScanning = 2 * distance / speedOfLight;
         return true;
@@ -75,16 +80,17 @@ public class BaseScanner extends PlatformedModule implements IScannerModule {
             timeToFinishScanning -= dt;
         } else {
             timeToFinishScanning = 0;
-            if(operator == null)
-                return;
-            ArrayList<CelestialBody> result = new ArrayList<>();
-            system.getMoons().stream()
-                    .filter(this::isSmallBodyCovered)
-                    .forEach(result::add);
-            system.getAsteroids().stream()
-                    .filter(this::isSmallBodyCovered)
-                    .forEach(result::add);
-            operator.onScanningComplete(result);
+            if(operator != null) {
+                ArrayList<CelestialBody> result = new ArrayList<>();
+                system.getMoons().stream()
+                        .filter(this::isSmallBodyCovered)
+                        .forEach(result::add);
+                system.getAsteroids().stream()
+                        .filter(this::isSmallBodyCovered)
+                        .forEach(result::add);
+                operator.onScanningComplete(transactionId, result);
+            }
+            transactionId = 0;
         }
     }
 

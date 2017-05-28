@@ -8,7 +8,8 @@ public class MockedScannerOperator extends ScannerOperator {
 
     ArrayList<CelestialBody> scannedBodies;
 
-    public void onScanningComplete(ArrayList<CelestialBody> bodies) {
+    @Override
+    public void onScanningComplete(int transactionId, ArrayList<CelestialBody> bodies) {
         scannedBodies = bodies;
     }
 

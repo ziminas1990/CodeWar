@@ -47,10 +47,6 @@ public class ScannerController extends BaseModuleController {
             operator.onCommandFailed("controller NOT attached to module");
             return;
         }
-        Matcher matcher = scanningPattern.matcher(command);
-        if(matcher.matches()) {
-            scanningRequested(new ArgumentsReader(matcher.group("ARGS")));
-        }
     }
 
     @Override // ModuleController
@@ -62,28 +58,32 @@ public class ScannerController extends BaseModuleController {
             operator.onRequestFailed(transactionId, "controller NOT attached to module");
             return null;
         }
+        Matcher matcher = scanningPattern.matcher(request);
+        if(matcher.matches()) {
+            scanningRequested(transactionId, new ArgumentsReader(matcher.group("ARGS")));
+        }
         return null;
     }
 
 
-    private void scanningRequested(ArgumentsReader args) {
+    private void scanningRequested(int transactionId, ArgumentsReader args) {
         Double distance = args.readDouble();
         if(distance == null) {
-            operator.onCommandFailed("invalid distance");
+            operator.onRequestFailed(transactionId, "invalid distance");
             return;
         }
         Double minSignature = args.readDouble();
         if(minSignature == null) {
-            operator.onCommandFailed("invalid minSignature");
+            operator.onRequestFailed(transactionId, "invalid minSignature");
             return;
         }
         Double maxSignature = args.readDouble();
         if(maxSignature == null) {
-            operator.onCommandFailed("invalid mxnSignature");
+            operator.onRequestFailed(transactionId, "invalid mxnSignature");
             return;
         }
-        if(!scanner.scanning(distance, minSignature, maxSignature)) {
-            operator.onCommandFailed("scanning failed to start");
+        if(!scanner.scanning(transactionId, distance, minSignature, maxSignature)) {
+            operator.onRequestFailed(transactionId, "scanning failed to start");
         }
     }
 }

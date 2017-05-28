@@ -47,7 +47,7 @@ public class BaseScannerTests {
             MockedScannerOperator mockedOperator = new MockedScannerOperator();
 
             testCase.scanner.attachToOperator(mockedOperator);
-            testCase.scanner.scanning(testCase.scanningRadius, testCase.minSignature, testCase.maxSignature);
+            testCase.scanner.scanning(testNumber, testCase.scanningRadius, testCase.minSignature, testCase.maxSignature);
             testCase.scanner.alive(testCase.alive);
 
             assertEquals(testName, testCase.coveredBodiesName.size(), mockedOperator.scannedBodies.size());

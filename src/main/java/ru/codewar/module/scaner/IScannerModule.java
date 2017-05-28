@@ -19,10 +19,11 @@ public interface IScannerModule extends IPlatformedModule {
 
     /**
      * Start scanning procedure
+     * @param transactionId transaction identifier, that will be passed to operator with scanning results
      * @param distance max. distance of scanning (in meters)
      * @param minSignature minimal signature of object
      * @param maxSignature max signature of object
      * @return returns true if scanning begin, otherwise returns false
      */
-    boolean scanning(double distance, double minSignature, double maxSignature);
+    boolean scanning(int transactionId, double distance, double minSignature, double maxSignature);
 }

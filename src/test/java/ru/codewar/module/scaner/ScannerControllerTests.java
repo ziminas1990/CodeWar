@@ -25,7 +25,7 @@ public class ScannerControllerTests {
     }
 
     @Test
-    public void scanningCommandTest() {
+    public void scanningRequestTest() {
 
         IScannerModule mockedScanner = mock(IScannerModule.class);
         ScannerOperator mockedOperator = mock(ScannerOperator.class);
@@ -34,9 +34,9 @@ public class ScannerControllerTests {
         controller.attachToModule(mockedScanner);
         controller.attachToOperator(mockedOperator);
 
-        controller.onCommand("scan 1e6 1e3 100e3");
+        controller.onRequest(15, "scan 1e6 1e3 100e3");
 
-        verify(mockedScanner).scanning(Double.valueOf("1e6"), Double.valueOf("1e3"), Double.valueOf("100e3"));
+        verify(mockedScanner).scanning(15, Double.valueOf("1e6"), Double.valueOf("1e3"), Double.valueOf("100e3"));
 
     }
 }
