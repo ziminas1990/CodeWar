@@ -5,11 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.codewar.database.playerloader.PlayerLoader;
 import ru.codewar.database.playerloader.PlayerLoaderDummy;
-import ru.codewar.database.shiploader.ShipLoader;
-import ru.codewar.database.shiploader.ShipLoaderDummy;
 import ru.codewar.logicconveyor.ShipsLogicConveyor;
 import ru.codewar.logicconveyor.concept.MultithreadConveyor;
 import ru.codewar.logicconveyor.physicallogic.PhysicalLogic;
+import ru.codewar.module.ModulesFactory;
 import ru.codewar.networking.ConnectionManager;
 import ru.codewar.networking.StringDatagramSocket;
 import ru.codewar.world.PlayerGate;
@@ -40,9 +39,9 @@ public class Server {
 
         // Creating world, loaders and player gate
         World world = new World(physicalEngine);
-        ShipLoader shipLoader = new ShipLoaderDummy();
-        PlayerLoader playerLoader = new PlayerLoaderDummy(shipLoader);
-        PlayerGate gate = new PlayerGate(world, playerLoader);
+        ModulesFactory modulesFactory = new ModulesFactory();
+        PlayerLoader playerLoader = new PlayerLoaderDummy(modulesFactory);
+        PlayerGate gate = new PlayerGate(world , playerLoader);
         gate.addPlayer("admin", "admin");
 
         // Creating ConnectionManager:

@@ -13,4 +13,6 @@ import ru.codewar.module.types.rotatableModule.RotatableModuleType;
        and could be rotated
  */
 public interface ShipModule extends IBaseModule, IModulesPlatform, PositionedModuleType, RotatableModuleType
-{}
+{
+    void addModule(IBaseModule module);
+}

@@ -43,7 +43,6 @@ public class ModuleTerminalFactory {
             controller.attachToModule((ShipModule)module);
             return controller;
         }
-
         return null;
     }
 

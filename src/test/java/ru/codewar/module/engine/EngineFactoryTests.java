@@ -5,10 +5,13 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 import ru.codewar.module.IModulesPlatform;
+import ru.codewar.module.IPlatformedModule;
 
 import static org.junit.Assert.*;
 
 public class EngineFactoryTests {
+
+    EngineLoader factory = new EngineLoader();
 
     @Test
     public void makePlatformEngine() {
@@ -23,7 +26,11 @@ public class EngineFactoryTests {
                         "    \"maxThrust\"   : 10000\n" +
                         "  }\n" +
                         "}";
-        PlatformEngine engine = (PlatformEngine)EngineFactory.make(new JSONObject(description), platform);
+        IPlatformedModule module = factory.makeModule(
+                "engine", "platform engine", "engine.forward.1",
+                new JSONObject(description).getJSONObject("parameters"), platform);
+        assertTrue(module instanceof PlatformEngine);
+        PlatformEngine engine = (PlatformEngine)module;
         assertTrue(engine != null);
         assertEquals("ship.engine.forward.1", engine.getModuleAddress());
         assertEquals("platform engine", engine.getModuleModel());

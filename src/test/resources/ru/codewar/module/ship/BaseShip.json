@@ -8,44 +8,52 @@
       "signature" : 30,
       "position"  : [ 1000, 1000 ]
     },
-    "orientation" : [ 1, 0 ]
-  },
-  "modules" : [
-    {
-      "address"    : "engines.forward.1",
-      "type"       : "engine",
-      "model"      : "platform engine",
-      "parameters" : {
-        "orientation" : "forward",
-        "maxThrust"   : 100000
+    "orientation" : [ 1, 0 ],
+    "modules" : [
+      {
+        "address"    : "scanner",
+        "type"       : "scanner",
+        "model"      : "scanner",
+        "parameters" : {
+          "resolution" : 1e-6
+        }
+      },
+      {
+        "address"    : "engines.forward.1",
+        "type"       : "engine",
+        "model"      : "platform engine",
+        "parameters" : {
+          "orientation" : "forward",
+          "maxThrust"   : 100000
+        }
+      },
+      {
+        "address"    : "engines.backward.1",
+        "type"       : "engine",
+        "model"      : "platform engine",
+        "parameters" : {
+          "orientation" : "backward",
+          "maxThrust"   : 50000
+        }
+      },
+      {
+        "address"    : "engines.left.1",
+        "type"       : "engine",
+        "model"      : "platform engine",
+        "parameters" : {
+          "orientation" : "left",
+          "maxThrust"   : 25000
+        }
+      },
+      {
+        "address"    : "engines.right.1",
+        "type"       : "engine",
+        "model"      : "platform engine",
+        "parameters" : {
+          "orientation" : "right",
+          "maxThrust"   : 25000
+        }
       }
-    },
-    {
-      "address"    : "engines.backward.1",
-      "type"       : "engine",
-      "model"      : "platform engine",
-      "parameters" : {
-        "orientation" : "backward",
-        "maxThrust"   : 50000
-      }
-    },
-    {
-      "address"    : "engines.left.1",
-      "type"       : "engine",
-      "model"      : "platform engine",
-      "parameters" : {
-        "orientation" : "left",
-        "maxThrust"   : 25000
-      }
-    },
-    {
-      "address"    : "engines.right.1",
-      "type"       : "engine",
-      "model"      : "platform engine",
-      "parameters" : {
-        "orientation" : "right",
-        "maxThrust"   : 25000
-      }
-    }
-  ]
+    ]
+  }
 }
