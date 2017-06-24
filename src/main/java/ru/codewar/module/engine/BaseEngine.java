@@ -10,12 +10,13 @@ import ru.codewar.module.PlatformedModule;
 public class BaseEngine extends PlatformedModule implements EngineModule {
 
     public static final String moduleType = "engine";
+    public static final String moduleModel = "base engine";
 
     private double maxThrust;
     private double currentThrust;
 
     public BaseEngine(IModulesPlatform platform, String address, double maxThrust) {
-        this(platform, address, "base engine", "", maxThrust);
+        this(platform, address, moduleModel, "", maxThrust);
     }
 
     protected BaseEngine(IModulesPlatform platform, String address, String moduleModel,

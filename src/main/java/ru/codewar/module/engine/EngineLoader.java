@@ -16,7 +16,8 @@ public class EngineLoader implements IModulesLoader {
 
     @Override // from IModulesLoader
     public boolean isSupported(String type, String model) {
-        return type.equals("engine") && (model.equals("platform engine"));
+        return type.equals("engine") && (
+                model.equals("base engine") || model.equals("platform engine"));
     }
 
     @Override // from IModulesLoader
@@ -36,18 +37,21 @@ public class EngineLoader implements IModulesLoader {
     }
 
     @Override // from IModulesLoader
-    public IBaseModule makeModule(String type, String model, String address, JSONObject data) {
-        return null;
-    }
+    public IBaseModule makeModule(String type, String model, String address, JSONObject data) { return null; }
 
     @Override // from IModulesLoader
-    public BaseModuleController makeController(IBaseModule module) {
-        return null;
-    }
+    public ModuleTerminal makeTerminal(IBaseModule module)
+    {
+        EngineModule engine = (EngineModule)module;
+        if(engine == null)
+            return null;
 
-    @Override // from IModulesLoader
-    public ModuleOperator makeOperator(IBaseModule module, BaseModuleController controller) {
-        return null;
+        EngineController controller = new EngineController();
+        ModuleOperator operator = new ModuleOperator();
+
+        controller.attachToEngine(engine);
+        operator.attachToModuleController(controller);
+        return new ModuleTerminal(module, controller, operator);
     }
 
     private static PlatformEngine makePlatformEngine(

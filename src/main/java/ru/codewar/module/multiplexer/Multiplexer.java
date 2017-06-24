@@ -1,17 +1,18 @@
 package ru.codewar.module.multiplexer;
 
-
 import ru.codewar.module.IBaseModule;
+import ru.codewar.module.IModulesFactory;
 import ru.codewar.module.ModuleTerminalFactory;
 import ru.codewar.module.IModulesPlatform;
 import ru.codewar.networking.Channel;
 
 public class Multiplexer {
-    private MultiplexerLogic logic = new MultiplexerLogic(new ModuleTerminalFactory());
+    private MultiplexerLogic logic;
     private MultiplexerController controller = new MultiplexerController();
     private MultiplexerOperator operator;
 
-    public Multiplexer() {
+    public Multiplexer(IModulesFactory factory) {
+        logic = new MultiplexerLogic(factory);
         operator = new MultiplexerOperator();
         operator.attachToModuleController(controller);
         controller.attachToMultiplexer(logic);

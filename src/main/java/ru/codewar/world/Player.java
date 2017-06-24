@@ -9,10 +9,11 @@ import ru.codewar.networking.Channel;
 public class Player {
 
     private String login;
-    private Multiplexer multiplexer = new Multiplexer();
+    private Multiplexer multiplexer;
     private ShipModule ship;
 
-    public Player(String login) {
+    public Player(String login, Multiplexer multiplexer) {
+        this.multiplexer = multiplexer;
         this.login = login;
     }
 

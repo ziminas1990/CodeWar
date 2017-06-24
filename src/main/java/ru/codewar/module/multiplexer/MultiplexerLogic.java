@@ -2,28 +2,28 @@ package ru.codewar.module.multiplexer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.codewar.module.IBaseModule;
-import ru.codewar.module.ModuleTerminal;
-import ru.codewar.module.ModuleTerminalFactory;
+import ru.codewar.module.*;
 import ru.codewar.networking.Channel;
 import ru.codewar.networking.Message;
+import ru.codewar.protocol.module.ModuleController;
+import ru.codewar.protocol.module.ModuleOperator;
 import ru.codewar.util.IdPool;
 
 import java.util.*;
 
 public class MultiplexerLogic {
 
-    private ModuleTerminalFactory terminalFactory;
     private Logger logger = LoggerFactory.getLogger(MultiplexerLogic.class);
     private IdPool idPool = new IdPool();
     private Channel channel;
     private Map<String, IBaseModule> modules = new HashMap<>();
     private Set<String> modulesInUse = new HashSet<>();
     private Map<Integer, VirtualChannel> virtualChannels = new HashMap<>();
+    private IModulesFactory factory;
 
-    public MultiplexerLogic(ModuleTerminalFactory terminalFactory)
+    public MultiplexerLogic(IModulesFactory factory)
     {
-        this.terminalFactory = terminalFactory;
+        this.factory = factory;
     }
 
     public void attachToChannel(Channel channel) {
@@ -54,9 +54,10 @@ public class MultiplexerLogic {
             throw new IllegalArgumentException("Element " + moduleAddress + " NOT found");
         }
 
-        ModuleTerminal moduleTerminal = terminalFactory.make(module);
+
+        ModuleTerminal moduleTerminal = factory.makeTerminal(module);
         if(moduleTerminal == null) {
-            logger.warn("Can't create terminal for module {} {}", moduleAddress, module);
+            logger.warn("Can't create terminal for {} module {}", module.getModuleType(), module.getModuleAddress());
             throw new IllegalArgumentException("Failed to create terminal for module " + moduleAddress);
         }
 

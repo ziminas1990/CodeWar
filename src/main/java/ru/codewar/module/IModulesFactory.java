@@ -7,4 +7,5 @@ import org.json.JSONObject;
 public interface IModulesFactory {
     IBaseModule make(JSONObject data);
     IPlatformedModule make(JSONObject data, IModulesPlatform platform);
+    ModuleTerminal makeTerminal(IBaseModule module);
 }

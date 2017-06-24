@@ -7,7 +7,7 @@ import ru.codewar.protocol.module.ModuleController;
 import ru.codewar.protocol.module.ModuleOperator;
 
 /**
- * This class is a container for all module's infrastructure, that is required
+ * This class is a container for all module's peripherals, that is required
  * to provide communication with module via an appropriate protocol
  */
 public class ModuleTerminal implements NetworkTerminal {

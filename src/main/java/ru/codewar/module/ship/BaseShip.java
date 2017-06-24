@@ -12,7 +12,8 @@ import java.util.ArrayList;
 
 public class BaseShip extends PhysicalObjectImpl implements ShipModule {
 
-    public static final String getShipModel() { return "base ship"; }
+    public static final String moduleType = "ship";
+    public static final String moduleModel = "base ship";
 
     private String address = "";
     private Vector orientation = new Vector(0, 1);

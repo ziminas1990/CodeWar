@@ -5,8 +5,10 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 import org.mockito.ArgumentCaptor;
+import ru.codewar.module.engine.BaseEngine;
 import ru.codewar.module.engine.EngineController;
 import ru.codewar.module.engine.EngineModule;
+import ru.codewar.module.ship.BaseShip;
 import ru.codewar.module.ship.ShipController;
 import ru.codewar.module.ship.ShipModule;
 import ru.codewar.networking.Channel;
@@ -14,24 +16,32 @@ import ru.codewar.networking.Message;
 
 import static org.junit.Assert.*;
 
-public class ModuleTerminalFactoryTests {
+public class ModulesFactoryTests {
 
     @Test
-    public void makeEngineTest() {
+    public void makeEngineTerminalTest() {
         EngineModule module = mock(EngineModule.class);
-        ModuleTerminalFactory factory = new ModuleTerminalFactory();
-        ModuleTerminal terminal = factory.make(module);
+        when(module.getModuleType()).thenReturn(BaseEngine.moduleType);
+        when(module.getModuleModel()).thenReturn(BaseEngine.moduleModel);
 
+        IModulesFactory factory = new ModulesFactory();
+        ModuleTerminal terminal = factory.makeTerminal(module);
+
+        assertNotEquals(null, terminal);
         assertTrue(terminal.getController() instanceof EngineController);
         checkTerminal(terminal, module);
     }
 
     @Test
-    public void makeShipTest() {
+    public void makeShipTerminalTest() {
         ShipModule module = mock(ShipModule.class);
-        ModuleTerminalFactory factory = new ModuleTerminalFactory();
-        ModuleTerminal terminal = factory.make(module);
+        when(module.getModuleType()).thenReturn(BaseShip.moduleType);
+        when(module.getModuleModel()).thenReturn(BaseShip.moduleModel);
 
+        IModulesFactory factory = new ModulesFactory();
+        ModuleTerminal terminal = factory.makeTerminal(module);
+
+        assertNotEquals(null, terminal);
         assertTrue(terminal.getController() instanceof ShipController);
         checkTerminal(terminal, module);
     }

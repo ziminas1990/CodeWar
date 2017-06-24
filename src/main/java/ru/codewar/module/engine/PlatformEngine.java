@@ -9,6 +9,8 @@ import ru.codewar.module.IModulesPlatform;
 // Orientation of engine is depend of orientation of platform, that engine is installed on
 public class PlatformEngine extends BaseEngine {
 
+    public static final String moduleModel = "platform engine";
+
     public enum Orientation {
         eOrientationForward { public String toString() { return "forward"; }},
         eOrientationBackward { public String toString() { return "backward"; }},
@@ -19,7 +21,7 @@ public class PlatformEngine extends BaseEngine {
     private Orientation orientation;
 
     public PlatformEngine(IModulesPlatform platform, String address, Orientation orientation, double maxThrust) {
-        super(platform, address, "platform engine", "orientation = " + orientation, maxThrust);
+        super(platform, address, moduleModel, "orientation = " + orientation, maxThrust);
         this.orientation = orientation;
     }
 

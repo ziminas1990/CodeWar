@@ -12,7 +12,7 @@ public class PlayerGateTests {
 
     @Test
     public void successfulLoginTest() {
-        Player player = new Player("test");
+        Player player = new Player("test", null);
         World worldMocked = mock(World.class);
         PlayerLoader playerLoaderMocked = mock(PlayerLoader.class);
 

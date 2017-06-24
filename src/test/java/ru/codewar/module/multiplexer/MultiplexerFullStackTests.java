@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 import org.mockito.ArgumentCaptor;
 import ru.codewar.module.IBaseModule;
+import ru.codewar.module.IModulesFactory;
 import ru.codewar.module.ModuleTerminal;
 import ru.codewar.module.ModuleTerminalFactory;
 import ru.codewar.networking.Channel;
@@ -28,7 +29,7 @@ public class MultiplexerFullStackTests {
     private IBaseModule engineMocked;
     private IBaseModule rocketMocked;
 
-    private ModuleTerminalFactory terminalFactoryMock;
+    private IModulesFactory moduleFactoryMock;
     private ModuleTerminal engineTerminalMock;
     private ModuleTerminal rocketTerminalMock;
 
@@ -78,13 +79,13 @@ public class MultiplexerFullStackTests {
         when(engineTerminalMock.getModule()).thenReturn(engineMocked);
         rocketTerminalMock = mock(ModuleTerminal.class);
         when(rocketTerminalMock.getModule()).thenReturn(rocketMocked);
-        terminalFactoryMock = mock(ModuleTerminalFactory.class);
-        when(terminalFactoryMock.make(engineMocked)).thenReturn(engineTerminalMock);
-        when(terminalFactoryMock.make(rocketMocked)).thenReturn(rocketTerminalMock);
+        moduleFactoryMock = mock(IModulesFactory.class);
+        when(moduleFactoryMock.makeTerminal(engineMocked)).thenReturn(engineTerminalMock);
+        when(moduleFactoryMock.makeTerminal(rocketMocked)).thenReturn(rocketTerminalMock);
 
         channelMocked = mock(Channel.class);
 
-        multiplexerLogic = new MultiplexerLogic(terminalFactoryMock);
+        multiplexerLogic = new MultiplexerLogic(moduleFactoryMock);
         controller = new MultiplexerController();
         multiplexerOperator = new MultiplexerOperator();
 

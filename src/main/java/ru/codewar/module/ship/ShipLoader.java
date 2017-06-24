@@ -59,17 +59,23 @@ public class ShipLoader implements IModulesLoader {
     }
 
     @Override // from IModulesLoader
-    public BaseModuleController makeController(IBaseModule module) {
-        return new ShipController();
-    }
+    public ModuleTerminal makeTerminal(IBaseModule module)
+    {
+        ShipModule ship = (ShipModule)module;
+        if(ship == null)
+            return null;
 
-    @Override // from IModulesLoader
-    public ModuleOperator makeOperator(IBaseModule module, BaseModuleController controller) {
-        return new ModuleOperator();
+        ShipController controller = new ShipController();
+        ModuleOperator operator = new ModuleOperator();
+
+        controller.attachToModule(ship);
+        operator.attachToModuleController(controller);
+
+        return new ModuleTerminal(module, controller, operator);
     }
 
     private ShipModule makeShipByModel(String model, String address, JSONObject parameters) {
-        if(model.equals(BaseShip.getShipModel())) {
+        if(model.equals(BaseShip.moduleModel)) {
             return new BaseShip(address, parameters);
         }
         logger.warn("Can't create ship! Model \"{}\" is unknown!", model);

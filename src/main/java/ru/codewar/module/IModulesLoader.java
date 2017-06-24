@@ -1,7 +1,6 @@
 package ru.codewar.module;
 
 import org.json.JSONObject;
-import ru.codewar.protocol.module.ModuleOperator;
 
 // Loader is used to create a concrete instance of module by it's type/model and parameters
 // It's also used to create controller and operator instance for concrete module to provide
@@ -22,9 +21,7 @@ public interface IModulesLoader {
     // Should be used, if isSupported() returned TRUE and isPlatformed() returned FALSE
     IBaseModule makeModule(String type, String model, String address, JSONObject data);
 
-    // Creating controller for module and linking it with module
-    BaseModuleController makeController(IBaseModule module);
-
-    // Creating operator for module and linking it with module and controller
-    ModuleOperator makeOperator(IBaseModule module, BaseModuleController controller);
+    // Creates controller and terminal for module, links them with each other, wraps it
+    // to ModuleTerminal container and returns it
+    ModuleTerminal makeTerminal(IBaseModule module);
 }

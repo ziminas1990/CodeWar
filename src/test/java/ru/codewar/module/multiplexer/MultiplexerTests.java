@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 
 import org.mockito.ArgumentCaptor;
 import ru.codewar.module.IBaseModule;
+import ru.codewar.module.IModulesFactory;
 import ru.codewar.module.ModuleTerminal;
 import ru.codewar.module.ModuleTerminalFactory;
 import ru.codewar.networking.Channel;
@@ -14,7 +15,7 @@ import ru.codewar.networking.Message;
 
 public class MultiplexerTests {
 
-    private ModuleTerminalFactory terminalFactoryMock;
+    private IModulesFactory terminalFactoryMock;
     private MultiplexerLogic multiplexerLogic;
     private IBaseModule engineMock;
     private ModuleTerminal engineTerminalMock;
@@ -54,9 +55,9 @@ public class MultiplexerTests {
         rocketTerminalMock = mock(ModuleTerminal.class);
         when(rocketTerminalMock.getModule()).thenReturn(rocketMock);
 
-        terminalFactoryMock = mock(ModuleTerminalFactory.class);
-        when(terminalFactoryMock.make(engineMock)).thenReturn(engineTerminalMock);
-        when(terminalFactoryMock.make(rocketMock)).thenReturn(rocketTerminalMock);
+        terminalFactoryMock = mock(IModulesFactory.class);
+        when(terminalFactoryMock.makeTerminal(engineMock)).thenReturn(engineTerminalMock);
+        when(terminalFactoryMock.makeTerminal(rocketMock)).thenReturn(rocketTerminalMock);
 
         channelMock = mock(Channel.class);
 
