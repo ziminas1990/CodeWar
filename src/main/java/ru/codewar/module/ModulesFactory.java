@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.codewar.module.engine.EngineLoader;
+import ru.codewar.module.scaner.ScannerLoader;
 import ru.codewar.module.ship.ShipLoader;
 import ru.codewar.protocol.module.ModuleOperator;
 import ru.codewar.world.IWorld;
@@ -16,14 +17,12 @@ public class ModulesFactory implements IModulesFactory {
 
     private Logger logger = LoggerFactory.getLogger(ModulesFactory.class);
     private ArrayList<IModulesLoader> loaders = new ArrayList<>();
-    private IWorld world;
 
-    public ModulesFactory() {
+    public ModulesFactory(IWorld world) {
         loaders.add(new EngineLoader());
         loaders.add(new ShipLoader(this));
+        loaders.add(new ScannerLoader(world.getSolarSystem()));
     }
-
-    public void attachToWorld(IWorld world) { this.world = world; }
 
     @Override // from IModulesFactory
     public IBaseModule make(JSONObject data)

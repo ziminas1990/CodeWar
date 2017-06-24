@@ -2,7 +2,6 @@ package ru.codewar.module.multiplexer;
 
 import ru.codewar.module.IBaseModule;
 import ru.codewar.module.IModulesFactory;
-import ru.codewar.module.ModuleTerminalFactory;
 import ru.codewar.module.IModulesPlatform;
 import ru.codewar.networking.Channel;
 

@@ -12,6 +12,7 @@ public class BaseScanner extends PlatformedModule implements IScannerModule {
     private static final double speedOfLight = 3 * 10e8;
 
     public static final String moduleType = "scanner";
+    public static final String moduleModel = "base scanner";
 
     private ScannerOperator operator;
     private ISolarSystem system;
@@ -24,7 +25,7 @@ public class BaseScanner extends PlatformedModule implements IScannerModule {
     private double timeToFinishScanning;
 
     public BaseScanner(IModulesPlatform platform, String address, ISolarSystem system) {
-        this(platform, address, "base scanner", system);
+        this(platform, address, moduleModel, system);
     }
 
     protected BaseScanner(IModulesPlatform platform, String address, String model, ISolarSystem system) {

@@ -39,7 +39,7 @@ public class Server {
 
         // Creating world, loaders and player gate
         World world = new World(physicalEngine);
-        ModulesFactory modulesFactory = new ModulesFactory();
+        ModulesFactory modulesFactory = new ModulesFactory(world);
         PlayerLoader playerLoader = new PlayerLoaderDummy(modulesFactory);
         PlayerGate gate = new PlayerGate(world , playerLoader);
         gate.addPlayer("admin", "admin");

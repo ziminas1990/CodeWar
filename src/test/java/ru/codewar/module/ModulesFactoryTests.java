@@ -1,6 +1,7 @@
 package ru.codewar.module;
 
 import org.json.JSONObject;
+import org.junit.Before;
 import org.junit.Test;
 import static org.mockito.Mockito.*;
 
@@ -8,15 +9,30 @@ import org.mockito.ArgumentCaptor;
 import ru.codewar.module.engine.BaseEngine;
 import ru.codewar.module.engine.EngineController;
 import ru.codewar.module.engine.EngineModule;
+import ru.codewar.module.scaner.BaseScanner;
+import ru.codewar.module.scaner.ScannerController;
+import ru.codewar.module.scaner.ScannerOperator;
 import ru.codewar.module.ship.BaseShip;
 import ru.codewar.module.ship.ShipController;
 import ru.codewar.module.ship.ShipModule;
 import ru.codewar.networking.Channel;
 import ru.codewar.networking.Message;
+import ru.codewar.world.IWorld;
 
 import static org.junit.Assert.*;
 
 public class ModulesFactoryTests {
+
+    IWorld world;
+    ModulesFactory factory;
+
+    @Before
+    public void setUp() {
+        world = mock(IWorld.class);
+        when(world.getSolarSystem()).thenReturn(null);
+
+        factory = new ModulesFactory(world);
+    }
 
     @Test
     public void makeEngineTerminalTest() {
@@ -24,9 +40,7 @@ public class ModulesFactoryTests {
         when(module.getModuleType()).thenReturn(BaseEngine.moduleType);
         when(module.getModuleModel()).thenReturn(BaseEngine.moduleModel);
 
-        IModulesFactory factory = new ModulesFactory();
         ModuleTerminal terminal = factory.makeTerminal(module);
-
         assertNotEquals(null, terminal);
         assertTrue(terminal.getController() instanceof EngineController);
         checkTerminal(terminal, module);
@@ -38,11 +52,22 @@ public class ModulesFactoryTests {
         when(module.getModuleType()).thenReturn(BaseShip.moduleType);
         when(module.getModuleModel()).thenReturn(BaseShip.moduleModel);
 
-        IModulesFactory factory = new ModulesFactory();
         ModuleTerminal terminal = factory.makeTerminal(module);
-
         assertNotEquals(null, terminal);
         assertTrue(terminal.getController() instanceof ShipController);
+        checkTerminal(terminal, module);
+    }
+
+    @Test
+    public void makeScannerTerminalTest() {
+        BaseScanner module = mock(BaseScanner.class);
+        when(module.getModuleType()).thenReturn(BaseScanner.moduleType);
+        when(module.getModuleModel()).thenReturn(BaseScanner.moduleModel);
+
+        ModuleTerminal terminal = factory.makeTerminal(module);
+        assertNotEquals(null, terminal);
+        assertTrue(terminal.getController() instanceof ScannerController);
+        assertTrue(terminal.getOperator() instanceof ScannerOperator);
         checkTerminal(terminal, module);
     }
 
