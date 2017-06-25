@@ -87,6 +87,7 @@ public class MultiplexerLogic {
                 logger.warn("Module {} wasn't marked as used!", moduleAddress);
             }
             virtualChannels.remove(virtualChannelId);
+            idPool.releaseId(virtualChannelId);
         }
     }
 
