@@ -35,7 +35,7 @@ public class Point {
     }
 
     public void move(double dx, double dy) { setPosition(x + dx, y + dy); }
-    public void move(Vector vector) { setPosition(x + vector.getX(), y + vector.getY()); }
+    public void move(Vector vector) { setPosition(x + vector.x, y + vector.y); }
 
     public double getSquareOfDistanceTo(Point other) {
         double dx = other.x - x;

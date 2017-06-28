@@ -15,11 +15,11 @@ public class CelestialBody extends PhysicalObjectImpl {
     static Logger logger = LoggerFactory.getLogger(CelestialBody.class);
 
     public enum BodyType {
-        UNKNOWN { public String toString() { return "Unknown"; }},
-        STAR { public String toString() { return "Star"; }},
-        PLANET { public String toString() { return "Planet"; }},
-        MOON { public String toString() { return "Moon"; }},
-        ASTEROID { public String toString() { return "Asteroid"; }};
+        UNKNOWN("Unknown"),
+        STAR("Star"),
+        PLANET("Planet"),
+        MOON("Moon"),
+        ASTEROID("Asteroid");
 
         public static BodyType fromString(String value) {
             switch (value.toLowerCase()) {
@@ -35,11 +35,26 @@ public class CelestialBody extends PhysicalObjectImpl {
                     return UNKNOWN;
             }
         }
+
+        BodyType(String name) {
+            this.name = name;
+        }
+         public String toString() { return name; }
+
+        private String name;
     }
 
     private BodyType type = BodyType.UNKNOWN;
     private double sqrSignature = 0;
     private String name = "";
+
+    public CelestialBody(BodyType type, String name, double mass, double signature)
+    {
+        super(mass, signature);
+        this.type = type;
+        this.name = name;
+        this.sqrSignature = signature * signature;
+    }
 
     public CelestialBody(BodyType type, String name,
                          double mass, double signature, Point position, Vector velocity)

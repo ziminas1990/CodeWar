@@ -1,6 +1,7 @@
 package ru.codewar;
 
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.codewar.database.playerloader.PlayerLoader;
@@ -11,7 +12,10 @@ import ru.codewar.logicconveyor.physicallogic.PhysicalLogic;
 import ru.codewar.module.ModulesFactory;
 import ru.codewar.networking.ConnectionManager;
 import ru.codewar.networking.StringDatagramSocket;
+import ru.codewar.util.JsonStreamReader;
+import ru.codewar.world.CelestialBodySystem;
 import ru.codewar.world.PlayerGate;
+import ru.codewar.world.WorldGenerator;
 import ru.codewar.world.World;
 
 import java.io.IOException;
@@ -39,6 +43,21 @@ public class Server {
 
         // Creating world, loaders and player gate
         World world = new World(physicalEngine);
+        JSONObject worldParameters = JsonStreamReader.read(
+                Server.class.getResourceAsStream("database/worlds/SinglePlanetWorld.json"));
+        if(worldParameters == null) {
+            logger.error("Can't read world parameters!");
+            return;
+        } else {
+            CelestialBodySystem centralBodyEnviroment = CelestialBodySystem.readFromJson(worldParameters, "world");
+            if(centralBodyEnviroment == null) {
+                logger.error("Can't parse world parameters!");
+                return;
+            }
+            WorldGenerator generator = new WorldGenerator(0);
+            generator.generateWorld(centralBodyEnviroment, world);
+        }
+
         ModulesFactory modulesFactory = new ModulesFactory(world);
         PlayerLoader playerLoader = new PlayerLoaderDummy(modulesFactory);
         PlayerGate gate = new PlayerGate(world , playerLoader);
