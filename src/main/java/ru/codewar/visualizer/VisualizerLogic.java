@@ -35,6 +35,9 @@ public class VisualizerLogic implements ConveyorLogic {
 
     @Override
     public void proceedStage(int stageId, double dt, int threadId, int totalThreads) {
+        if(threadId > 0)
+            // only master-thread draws the world
+            return;
         this.dt += dt;
         if(this.dt > 0.1) {
             this.dt = 0;
