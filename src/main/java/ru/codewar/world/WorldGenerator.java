@@ -21,13 +21,15 @@ public class WorldGenerator {
     }
 
     public void createBodyEnviroment(CelestialBody body, CelestialBodySystem params, ISolarSystem system) {
-        for(CelestialBodySystem moonParams : params.moons) {
-            if(moonParams.parentOrbitRadius == null)
-                continue;
-            CelestialBody moon = moonParams.createCentralBody(random);
-            system.addCelestialBody(moon);
-            setObjectToOrbit(moon, body, moonParams.parentOrbitRadius.getNextValue(random));
-            createBodyEnviroment(moon, moonParams, system);
+        if(params.moons != null) {
+            for (CelestialBodySystem moonParams : params.moons) {
+                if (moonParams.parentOrbitRadius == null)
+                    continue;
+                CelestialBody moon = moonParams.createCentralBody(random);
+                system.addCelestialBody(moon);
+                setObjectToOrbit(moon, body, moonParams.parentOrbitRadius.getNextValue(random));
+                createBodyEnviroment(moon, moonParams, system);
+            }
         }
 
         for(int i = 0; i < params.numberOfAsteroids; i++) {
@@ -42,7 +44,8 @@ public class WorldGenerator {
 
     // Set the position and velocity for orbiter object
     private void setObjectToOrbit(PhysicalObject orbiter, PhysicalObject orbited, double R) {
-        double a = Math.PI * random.nextDouble();
+        double a = 2 * Math.PI * random.nextDouble();
+        double velocityDeviation = 1 + (random.nextDouble() - 0.5) * 0.2;
 
         // place object on some point in orbit
         orbiter.getPosition().setPosition(orbited.getPosition());
@@ -50,7 +53,7 @@ public class WorldGenerator {
 
         // set orbiter velocity
         a += Math.PI/2;
-        double velocity = Math.sqrt(PhysicalLogic.G * orbited.getMass() / R);
+        double velocity = velocityDeviation * Math.sqrt(PhysicalLogic.G * orbited.getMass() / R) / 200;
         Vector velocityVector = new Vector(velocity * Math.cos(a), velocity * Math.sin(a));
         velocityVector.move(orbited.getVelocity());
         orbiter.getVelocity().setPosition(velocityVector);

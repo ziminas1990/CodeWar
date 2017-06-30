@@ -1,28 +1,28 @@
 {
   "name"                 : "Small Earth",
   "type"                 : "planet",
-  "mass"                 : [5e24,  7e24],
+  "mass"                 : [5e28,  7e28],
   "signature"            : [1.5e6, 2.5e6],
-  "numberOfAsteroids"    : 1500,
-  "asteroidsRadius"      : [1e3,   15e3],
-  "asteroidsOrbitRadius" : [3e6,   6e6],
+  "numberOfAsteroids"    : 1000,
+  "asteroidsRadius"      : [15e3,   25e3],
+  "asteroidsOrbitRadius" : [4e6,   7e6],
   "moons" : [
     {
       "name"                 : "Beta",
       "type"                 : "moon",
-      "mass"                 : [5e22, 9e22],
+      "mass"                 : [5e26, 9e26],
       "signature"            : [4e5,  7e5],
-      "parentOrbitRadius"    : [1e7,  3e7],
+      "parentOrbit"          : [1.5e7,  2e7],
       "numberOfAsteroids"    : 200,
-      "asteroidsRadius"      : [1e3,  10e3],
-      "asteroidsOrbitRadius" : [9e5,  1e6]
+      "asteroidsRadius"      : [12e3,   20e3],
+      "asteroidsOrbitRadius" : [0.9e6, 1.5e6]
     },
     {
       "name"                 : "Gamma",
       "type"                 : "moon",
-      "mass"                 : [3e22, 6e22],
+      "mass"                 : [3e24, 6e24],
       "signature"            : [2e5,  5e5],
-      "parentOrbitRadius"    : [8e6,  1e7]
+      "parentOrbit"          : [7e6,  1e7]
     }
   ]
 }

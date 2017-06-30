@@ -4,6 +4,11 @@ import org.json.JSONObject;
 import ru.codewar.geometry.Point;
 import ru.codewar.geometry.Vector;
 import ru.codewar.logicconveyor.physicallogic.PhysicalObject;
+import ru.codewar.visualizer.Picaso;
+
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 
 
 public class PhysicalObjectImpl implements PhysicalObject {
@@ -54,4 +59,11 @@ public class PhysicalObjectImpl implements PhysicalObject {
 
     public void pushForce(Vector force) { this.forces.move(force); }
     public Vector getForce() { return forces; }
+
+    public void drawSelf(Graphics2D g) {
+        Picaso.drawCircle(g, position, signature);
+//        g.draw(new Line2D.Double(
+//                position.getX(), position.getY(),
+//                position.getX() + velocity.getX() * 10, position.getY() + velocity.getY() * 10));
+    }
 }

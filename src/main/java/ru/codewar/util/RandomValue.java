@@ -29,6 +29,6 @@ public class RandomValue {
     }
 
     public double getNextValue(Random random) {
-        return min + (max - min) * random.nextGaussian();
+        return min + (max - min) * random.nextDouble();
     }
 }

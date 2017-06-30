@@ -1,5 +1,6 @@
 package ru.codewar.world;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public interface ISolarSystem {
@@ -43,5 +44,12 @@ public interface ISolarSystem {
                 break;
             default:
         }
+    }
+
+    default void drawSelf(Graphics2D g) {
+        getStars().forEach(body -> body.drawSelf(g));
+        getPlanets().forEach(body -> body.drawSelf(g));
+        getMoons().forEach(body -> body.drawSelf(g));
+        getAsteroids().forEach(body -> body.drawSelf(g));
     }
 }

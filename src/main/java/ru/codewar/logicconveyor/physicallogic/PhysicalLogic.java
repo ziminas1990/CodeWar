@@ -63,14 +63,26 @@ public class PhysicalLogic implements ConveyorLogic {
         int totalHugeObjects = hugeObjects.size();
         Vector gravityForce = new Vector();
         int idx = nextObjectId.getAndIncrement();
+
+        // for optimization reasons
+        double hugeObjectsSqrSignatures[] = new double[hugeObjects.size()];
+        for(int hugeObjectIdx = 0; hugeObjectIdx < totalHugeObjects; hugeObjectIdx++) {
+            hugeObjectsSqrSignatures[hugeObjectIdx] = Math.pow(hugeObjects.get(hugeObjectIdx).getSignature(), 2);
+        }
+
         while(idx < totalObjects) {
             PhysicalObject object = objects.get(idx);
             for(int hugeObjectIdx = 0; hugeObjectIdx < totalHugeObjects; hugeObjectIdx++) {
                 PhysicalObject hugeObject = hugeObjects.get(hugeObjectIdx);
                 gravityForce.setPosition(object.getPosition(), hugeObject.getPosition());
-                if(gravityForce.getLength() < 1)
-                    continue;
-                gravityForce.setLength(G * object.getMass() * hugeObject.getMass() / gravityForce.getSquaredLength());
+                double sqrDistance = gravityForce.getSquaredLength();
+                // if small objects "inside" huge objects, we assume that it on surface of huge object
+                if(sqrDistance < hugeObjectsSqrSignatures[hugeObjectIdx]) {
+                    if(sqrDistance < 1)
+                        continue;
+                    sqrDistance = hugeObjectsSqrSignatures[hugeObjectIdx];
+                }
+                gravityForce.setLength(G * object.getMass() * hugeObject.getMass() / sqrDistance);
                 object.pushForce(gravityForce);
             }
             idx = nextObjectId.getAndIncrement();
@@ -94,7 +106,7 @@ public class PhysicalLogic implements ConveyorLogic {
     private boolean checkIfObjectIsHuge(PhysicalObject object)
     {
         // The object is huge, if acceleration of gravity on its surface is more than 0.01 m/s^2
-        return 0.01 < G * object.getMass() / (object.getSignature() * object.getSignature());
+        return 0.1 < G * object.getMass() / (object.getSignature() * object.getSignature());
     }
 
 }

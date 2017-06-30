@@ -13,11 +13,14 @@ import ru.codewar.module.ModulesFactory;
 import ru.codewar.networking.ConnectionManager;
 import ru.codewar.networking.StringDatagramSocket;
 import ru.codewar.util.JsonStreamReader;
+import ru.codewar.visualizer.VisualizerLogic;
+import ru.codewar.visualizer.VisualizerComponent;
 import ru.codewar.world.CelestialBodySystem;
 import ru.codewar.world.PlayerGate;
 import ru.codewar.world.WorldGenerator;
 import ru.codewar.world.World;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
@@ -26,11 +29,21 @@ public class Server {
     private static final int MILLION = 1000000;
     public static Logger logger = LoggerFactory.getLogger(Server.class);
 
+    private static JFrame window;
+
+    private static  void initVisualizerWindow(VisualizerComponent component) {
+        window = new JFrame("CodeWar Server");
+        window.setSize(component.getWidth(), component.getHeight());
+        window.setVisible(true);
+        window.setContentPane(component);
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
+
     public static void main(String args[]) {
         // General server settings:
         String version = "0.1.0";
         int loginSocketPort = 4835;
-        int millisecondsInTick = 2;
+        int millisecondsInTick = 5;
         int extraThreadsNumber = 3;
         logger.info(
                 "CodeWar server {} started on port {}! millisecondsInTick: {} ms; totalThreads: {}",
@@ -54,7 +67,7 @@ public class Server {
                 logger.error("Can't parse world parameters!");
                 return;
             }
-            WorldGenerator generator = new WorldGenerator(0);
+            WorldGenerator generator = new WorldGenerator(System.currentTimeMillis());
             generator.generateWorld(centralBodyEnviroment, world);
         }
 
@@ -74,11 +87,19 @@ public class Server {
         ConnectionManager connectionManager = new ConnectionManager(gate, loginSocket);
         connectionManager.initPortsPool(10000, 10032);
 
-        // Adding all logics to multithreadConveyor
+        // Creating VisualizerLogic
+        VisualizerLogic visualizerLogic = new VisualizerLogic(world);
+        VisualizerComponent visualizerComponent = new VisualizerComponent(1280, 1024);
+        visualizerComponent.getCamera().scale(3.5e4);
+        visualizerLogic.attachToObserver(visualizerComponent);
+        initVisualizerWindow(visualizerComponent);
+
+        // Adding all logics to multiThreadConveyor
         MultithreadConveyor multithreadConveyor = new MultithreadConveyor(extraThreadsNumber);
         multithreadConveyor.addLogic(connectionManager);
         multithreadConveyor.addLogic(physicalEngine);
         multithreadConveyor.addLogic(shipsLogicConveyor);
+        multithreadConveyor.addLogic(visualizerLogic);
 
         while(true) {
             long nanosecProceeded = multithreadConveyor.proceed(millisecondsInTick);
